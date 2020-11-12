@@ -1,0 +1,9 @@
+[molgenis-releases]
+name=MOLGENIS releases repository
+baseurl=https://registry.molgenis.org/repository/yum-releases/
+enabled=1
+protect=0
+gpgcheck=0
+metadata_expire=30s
+autorefresh=1
+type=rpm-md

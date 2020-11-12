@@ -1,0 +1,32 @@
+---
+- name: Deployment for MOLGENIS - operational development
+  hosts: "{{ host_group }}"
+  gather_facts: true
+  vars:
+    host_group: "backend-molgenis"
+    experimental: false
+    ci: false
+    vault:
+      token: xxxx
+    setup_python: true
+    httpd:
+      setup: true
+      ssl: false
+    molgenis:
+      setup: true
+      version: 8.5.1
+      ssh: true
+  roles:
+    # system configuration
+    -  { role: swap_centos8, when: ansible_distribution == "CentOS" and ansible_distribution_major_version == '8' }
+    -  { role: preinstall_centos8, when: ansible_distribution == "CentOS" and ansible_distribution_major_version == '8' }
+    # application configuration
+    -  { role: elasticsearch_centos8, when: ansible_distribution == "CentOS" and ansible_distribution_major_version == '8' }
+    -  { role: postgres_11_centos8, when: ansible_distribution == "CentOS" and ansible_distribution_major_version == '8' }
+    -  { role: minio_centos8, when: ansible_distribution == "CentOS" and ansible_distribution_major_version == '8' }
+    -  { role: tomcat_centos8, when: ansible_distribution == "CentOS" and ansible_distribution_major_version == '8' }
+    -  { role: molgenis_centos8, when: ansible_distribution == "CentOS" and ansible_distribution_major_version == '8' }
+    -  { role: httpd_centos8, when: ansible_distribution == "CentOS" and ansible_distribution_major_version == '8' }
+    # additional configuration
+    -  { role: python_centos8, when: ansible_distribution == "CentOS" and ansible_distribution_major_version == '8' }
+    - postinstall

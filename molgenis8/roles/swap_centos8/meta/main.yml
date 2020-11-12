@@ -1,0 +1,21 @@
+galaxy_info:
+  role_name: swap_centos8
+  author: Erik Schaberg
+  description: this role is part of the Molgenis installation of CentOS
+  company: UMCG/RUG
+
+  license: license (GPLv3)
+
+  min_ansible_version: 2.7.9
+
+  platforms:
+  - name: CentOS
+    versions:
+    - 8
+  - name: RHEL
+    versions:
+    - 8
+
+  galaxy_tags: molgenis
+
+dependencies: []

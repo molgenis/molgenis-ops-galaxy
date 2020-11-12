@@ -1,0 +1,15 @@
+---
+
+- name: Install HTTPD virtualhost configuration with SSL
+  template:
+    src: vhost_ssl.j2
+    dest: /etc/httpd/conf.d/{{ inventory_hostname }}.conf
+  when: not ci|bool and httpd.setup|bool and httpd.ssl|bool
+  notify: "restart web services"
+
+- name: Install HTTPD virtualhost configuration without SSL
+  template:
+    src: vhost.j2
+    dest: /etc/httpd/conf.d/{{ inventory_hostname }}.conf
+  when: not ci|bool and httpd.setup|bool and not httpd.ssl|bool
+  notify: "restart web services"

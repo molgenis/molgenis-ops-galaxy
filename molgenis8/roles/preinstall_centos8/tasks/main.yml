@@ -1,0 +1,58 @@
+---
+- include_role:
+    name: swap_centos8
+
+- name: Install packages which are used by the default installation on centos8
+  yum:
+    state: present
+    name:
+      - redhat-lsb-core
+      - selinux-policy
+      - selinux-policy-targeted
+      - epel-release
+      - nano
+      - sudo
+      - rsync
+      - lsof
+      - wget
+      - chrony
+      - openssh-server
+      - yum-plugin-versionlock
+      - audit
+      - glibc-langpack-en
+      - which
+      - net-tools
+      - bind-utils
+
+- name: Gathering package facts
+  package_facts:
+    manager: auto
+
+- name: Create the releases repository for MOLGENIS
+  copy:
+    src: molgenis-releases.repo
+    dest: /etc/yum.repos.d/molgenis-releases.repo
+
+- name: Clear versionlocks
+  command: yum versionlock clear
+  args:
+    warn: false # set warn=false to prevent warning about better using yum module
+  changed_when: false
+
+- name: Install Java JDK 11
+  yum:
+    state: present
+    name:
+      - java-11-openjdk-devel
+
+- name: Make sure a ntpd/chronyd is running
+  systemd:
+    state: started
+    enabled: yes
+    name: chronyd
+
+- name: Initial sync of NTP/chronyc
+  shell: chronyc -a makestep
+  changed_when: false
+  when: not ci|bool
+

@@ -1,0 +1,88 @@
+---
+- name: Create the repository for postgres
+  copy:
+    src: postgres.repo
+    dest: /etc/yum.repos.d/postgres.repo
+
+- name: Install psycopg2
+  dnf:
+    state: present
+    name:
+      - python3-psycopg2
+      - libicu
+
+- name: Install PostgreSQL
+  dnf:
+    state: present
+    name: postgresql11-server
+    disablerepo: '*'
+    enablerepo: pgdg11
+  notify: "restart postgresql"
+
+
+
+# Be adviced: this check fails on MOLGENIS instances with extra storage
+# Data directory is mounted in /data instead of /var/lib/pgsql/11/data
+- name: Check if /var/lib/pgsql/11/data/global exists, if not initdb
+  stat:
+    path: /var/lib/pgsql/11/data/global
+  register: postgresql_data_folder
+
+- name: Initialise postgresql if first install
+  command: /usr/pgsql-11/bin/postgresql-11-setup initdb
+  args:
+    warn: false
+  when: not postgresql_data_folder.stat.exists
+
+- name: Copy pg_hba.conf configuration
+  copy:
+    src: pg_hba.conf
+    owner: postgres
+    group: postgres
+    dest: /var/lib/pgsql/11/data/pg_hba.conf
+  notify: "restart postgresql"
+
+- name: Copy postgresql.conf configuration
+  copy:
+    src: postgresql.conf
+    owner: postgres
+    group: postgres
+    dest: /var/lib/pgsql/11/data/postgresql.conf
+  notify: "restart postgresql"
+
+- name: Start and enable Postgres (at boot time)
+  systemd:
+    name: postgresql-11
+    state: started
+    enabled: yes
+
+- name: Create 'molgenis'-user for PostgreSQL
+  become: true
+  become_user: postgres
+  postgresql_user:
+    name: molgenis
+    password: molgenis
+    encrypted: True
+
+- name: Create database 'molgenis' as PostgreSQL
+  become: true
+  become_user: postgres
+  postgresql_db:
+    name: molgenis
+    owner: molgenis
+    encoding: UTF8
+    lc_collate: 'en_US.UTF-8'
+    lc_ctype: 'en_US.UTF-8'
+  register: new_db
+
+- name: Create 'molgenis'-scheme with PSQL
+  become: true
+  become_user: postgres
+  command: psql -c 'CREATE SCHEMA IF NOT EXISTS molgenis;'
+  when: new_db is changed
+
+- name: Grant rights to 'molgenis'-user on 'molgenis'-scheme with PSQL
+  become: true
+  become_user: postgres
+  command: psql -c 'GRANT ALL PRIVILEGES ON SCHEMA molgenis TO molgenis;'
+  when: new_db is changed

@@ -1,0 +1,17 @@
+---
+- name: Install Python3.6 and pip3.6
+  dnf:
+    name:
+      - python3
+      - python3-pip
+    state: present
+
+- name: Install packages python-setuptools for python 3 # do we still need this
+  yum:
+    state: present
+    name: python3-setuptools
+
+- name: Install molgenis-py-client
+  pip:
+    executable: /usr/bin/pip3
+    name: molgenis-py-client
