@@ -133,5 +133,5 @@ frontend:
       - 'search-all@0.1.5'
       - 'security@0.4.2'
       - 'settings@4.0.2'
-      - 'data-explorer@0.36.0'
+      - 'data-explorer@1.2.0'
 
