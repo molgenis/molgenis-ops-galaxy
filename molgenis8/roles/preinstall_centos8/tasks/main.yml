@@ -28,22 +28,11 @@
   package_facts:
     manager: auto
 
-- name: Create the releases repository for MOLGENIS
-  copy:
-    src: molgenis-releases.repo
-    dest: /etc/yum.repos.d/molgenis-releases.repo
-
 - name: Clear versionlocks
   command: yum versionlock clear
   args:
     warn: false # set warn=false to prevent warning about better using yum module
   changed_when: false
-
-- name: Install Java JDK 11
-  yum:
-    state: present
-    name:
-      - java-11-openjdk-devel
 
 - name: Make sure a ntpd/chronyd is running
   systemd:
