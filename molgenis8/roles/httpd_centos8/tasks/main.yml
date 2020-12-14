@@ -87,44 +87,12 @@
   when: httpd.setup|bool
   notify: "restart web services"
 
-#- name: Ammend /etc/hosts to include hostname
-#  lineinfile:
-#    dest: /etc/hosts
-#    line: "{{ ansible_default_ipv4.address }} {{ inventory_hostname }}"
-#    state: present
-#  when: httpd.setup|bool
-
-- name: Create certificate-directories for SSL
-  file:
-    path: /etc/pki/tls/certs/{{ inventory_hostname }}/
-    state: directory
-  when: httpd.setup|bool and httpd.ssl|bool
-
-#    - name: Install SSL certs
-#      copy:
-#        content: "{{ lookup('hashi_vault',
-#        'secret=secret/ops/certificate/ssl/wildcard/gcc.rug.nl:{{ item }}
-#        token={{ vault.token }} url=http://localhost:8200') }}"
-#        dest: "/etc/pki/tls/certs/{{ inventory_hostname }}/{{ item }}"
-#      with_items:
-#        - certificate.crt
-#        - private.key
-#        - serverchain.crt
-#      when: not ci|bool and httpd.setup|bool and httpd.ssl|bool
-
 - name: Copy SSL config file
   template:
     src: options-ssl-httpd.j2
     dest: /etc/httpd/conf.d/options-ssl-httpd.conf
   when: not ci|bool and httpd.setup|bool
   notify: "restart web services"
-
-#    - name: Stop connection to Vault
-#      command: pkill kubectl -9
-#      delegate_to: localhost
-#      changed_when: false
-#      run_once: true
-#      when: not ci|bool and httpd.setup|bool and httpd.ssl|bool
 
 - include_role:
     name: httpd_virtualhost

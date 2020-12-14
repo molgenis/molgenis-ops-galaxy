@@ -1,5 +1,11 @@
 ---
 
+- name: Create certificate-directories for SSL
+  file:
+    path: /etc/pki/tls/certs/{{ inventory_hostname }}/
+    state: directory
+  when: httpd.setup|bool and httpd.ssl|bool
+
 - name: Install HTTPD virtualhost configuration with SSL
   template:
     src: vhost_ssl.j2
