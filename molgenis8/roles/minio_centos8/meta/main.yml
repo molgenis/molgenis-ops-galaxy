@@ -1,6 +1,6 @@
 ---
 galaxy_info:
-  role_name: minio
+  role_name: minio_centos8
   author: 
   - name: Erik Schaberg
   - name: Sido Haakma

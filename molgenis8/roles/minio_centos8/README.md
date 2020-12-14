@@ -2,7 +2,7 @@ Minio
 =========
 This installs the Minio file storage on your system. This allows you to store data on the federation service.
 
-[![Ansible Galaxy](https://img.shields.io/badge/ansible--galaxy-minio-blue.svg)](https://galaxy.ansible.com/molgenis/armadillo/)
+[![Ansible Galaxy](https://img.shields.io/badge/ansible--galaxy-minio-blue.svg)](https://galaxy.ansible.com/molgenis/molgenis8/)
 
 Requirements
 ------------
