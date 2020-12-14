@@ -1,6 +1,6 @@
 ---
 - name: Use versionlock plugin for tools, Tomcat, Java and Elasticsearch
-  command: yum versionlock tomcat molgenis-ops-tools elasticsearch molgenis filebeat molgenis-ops-tomcat
+  command: yum versionlock tomcat elasticsearch filebeat
   args:
     warn: false # set warn=false to prevent warning about better using yum module
   changed_when: false
