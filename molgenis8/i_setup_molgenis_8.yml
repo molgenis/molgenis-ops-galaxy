@@ -2,25 +2,26 @@
 - name: Deployment for MOLGENIS - operational development
   hosts: "{{ host_group }}"
   gather_facts: true
+  become: true
   vars:
-    host_group: "backend-molgenis"
+    host_group: "all"
     experimental: false
     ci: false
-    vault:
-      token: xxxx
-    setup_python: true
     httpd:
       setup: true
       ssl: false
+      hostname: molgenis.local
     molgenis:
       setup: true
       version: 8.5.1
       ssh: true
+      homedir: /usr/local/share/molgenis/
+      
   roles:
     # system configuration
-    -  { role: swap_centos8, when: ansible_distribution == "CentOS" and ansible_distribution_major_version == '8' }
     -  { role: preinstall_centos8, when: ansible_distribution == "CentOS" and ansible_distribution_major_version == '8' }
     # application configuration
+    -  { role: java_centos8, when: ansible_distribution == "CentOS" and ansible_distribution_major_version == '8' }
     -  { role: elasticsearch_centos8, when: ansible_distribution == "CentOS" and ansible_distribution_major_version == '8' }
     -  { role: postgres_11_centos8, when: ansible_distribution == "CentOS" and ansible_distribution_major_version == '8' }
     -  { role: minio_centos8, when: ansible_distribution == "CentOS" and ansible_distribution_major_version == '8' }
