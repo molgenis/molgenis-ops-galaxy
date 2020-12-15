@@ -3,7 +3,7 @@
   copy:
     src: minio.service
     dest: /etc/systemd/system/minio.service
-    mode: '755'
+    mode: '0644'
 
 - name: add Minio group
   group:

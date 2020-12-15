@@ -56,20 +56,19 @@
   file:
     src:  /usr/share/apache-tomcat-9.0.39
     dest: /usr/share/tomcat
-    mode: '0700'
     state: link
 
 - name: Install molgenis server.xml file for tomcat
   copy:
     src: server.xml
     dest: /usr/share/apache-tomcat-9.0.39/conf/server.xml
-    mode: '0700'
+    group: molgenis
+    owner: tomcat
 
 - name: Install systemctl services file for tomcat
   template:
     src: tomcat.j2
     dest: /etc/systemd/system/tomcat.service
-    mode: '0700'
 
 - name: Start and enable Tomcat (at boot time)
   systemd:
