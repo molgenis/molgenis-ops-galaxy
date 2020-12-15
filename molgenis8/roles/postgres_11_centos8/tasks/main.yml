@@ -3,6 +3,7 @@
   copy:
     src: postgres.repo
     dest: /etc/yum.repos.d/postgres.repo
+    mode: '755'
 
 - name: Install psycopg2
   dnf:
@@ -40,6 +41,7 @@
     owner: postgres
     group: postgres
     dest: /var/lib/pgsql/11/data/pg_hba.conf
+    mode: '755'
   notify: "restart postgresql"
 
 - name: Copy postgresql.conf configuration
@@ -48,6 +50,7 @@
     owner: postgres
     group: postgres
     dest: /var/lib/pgsql/11/data/postgresql.conf
+    mode: '755'
   notify: "restart postgresql"
 
 - name: Start and enable Postgres (at boot time)

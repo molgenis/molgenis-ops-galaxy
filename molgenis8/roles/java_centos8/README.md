@@ -6,7 +6,7 @@ This installs the Java JDK environment on your system. This allows you to tun ap
 
 Requirements
 ------------
-The only requirement you need a clean base image of CentOS => 7.
+The only requirement you need a clean base image of CentOS => 8.
 
 Role Variables
 --------------

@@ -15,7 +15,6 @@
       setup: true
       version: 8.5.1
       ssh: true
-      homedir: /usr/local/share/molgenis/
       
   roles:
     # system configuration

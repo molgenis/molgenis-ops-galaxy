@@ -41,7 +41,6 @@
     name: chronyd
 
 - name: Initial sync of NTP/chronyc
-  shell: chronyc -a makestep
+  command: chronyc -a makestep
   changed_when: false
   when: not ci|bool
-

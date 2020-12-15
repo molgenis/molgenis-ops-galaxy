@@ -95,4 +95,3 @@
         name: tomcat
         state: started
       when: war_version.isreg is not defined
-

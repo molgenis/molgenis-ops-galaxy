@@ -44,12 +44,14 @@
   file:
     path: /etc/httpd/conf.modules.d/
     state: directory
+    mode: '0755'
   when: httpd.setup|bool
 
 - name: Add robots.txt file
   copy:
     src: robots.txt
     dest: /var/www/robots.txt
+    mode: '0755'
   when: not ci|bool and httpd.setup|bool
 
 - name: Insert/Update robots.txt configuration stanza in /etc/httpd/conf/httpd.conf
@@ -73,6 +75,7 @@
   copy:
     src: "{{ item }}"
     dest: /etc/httpd/conf.modules.d/
+    mode: '0755'
   with_items:
     - 99-molgenis.conf
     - 98-compression.conf
@@ -91,6 +94,7 @@
   template:
     src: options-ssl-httpd.j2
     dest: /etc/httpd/conf.d/options-ssl-httpd.conf
+    mode: '0755'
   when: not ci|bool and httpd.setup|bool
   notify: "restart web services"
 

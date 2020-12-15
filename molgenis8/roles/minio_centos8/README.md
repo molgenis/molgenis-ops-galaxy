@@ -6,7 +6,7 @@ This installs the Minio file storage on your system. This allows you to store da
 
 Requirements
 ------------
-The only requirement you need a clean base image of CentOS => 7.
+The only requirement you need a clean base image of CentOS => 8.
 
 Role Variables
 --------------

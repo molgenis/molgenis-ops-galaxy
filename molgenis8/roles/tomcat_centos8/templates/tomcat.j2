@@ -11,7 +11,7 @@ Environment="JAVA_OPTS=-Djava.awt.headless=true -Djava.security.egd=file:///dev/
 Environment="CATALINA_PID=/usr/share/tomcat/temp/tomcat.pid"
 Environment="CATALINA_HOME=/usr/share/tomcat"
 Environment="CATALINA_BASE=/usr/share/tomcat"
-Environment="CATALINA_OPTS=-Xms{{ tomcat.memory.xms }} -Xmx{{ tomcat.memory.xmx }} -server -XX:+UseParallelGC -XX:+CMSClassUnloadingEnabled -Dmolgenis.home={{ molgenis.homedir }}"
+Environment="CATALINA_OPTS=-Xms{{ tomcat.memory.xms }} -Xmx{{ tomcat.memory.xmx }} -server -XX:+UseParallelGC -XX:+CMSClassUnloadingEnabled -Dmolgenis.home=/usr/local/share/molgenis/"
 
 ExecStart=/usr/share/tomcat/bin/startup.sh
 ExecStop=/usr/share/tomcat/bin/shutdown.sh
