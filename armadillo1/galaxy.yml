@@ -1,7 +1,7 @@
 # required
-namespace: sidohaakma
+namespace: molgenis
 name: armadillo
-version: 1.0.3
+version: 1.0.5
 readme: README.md
 authors:
 - Sido Haakma <s.haakma@rug.nl>
