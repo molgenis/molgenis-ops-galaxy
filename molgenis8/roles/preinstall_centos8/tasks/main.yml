@@ -1,7 +1,4 @@
 ---
-- include_role:
-    name: swap_centos8
-
 - name: Install packages which are used by the default installation on centos8
   yum:
     state: present

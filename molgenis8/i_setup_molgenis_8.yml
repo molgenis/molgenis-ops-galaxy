@@ -18,6 +18,7 @@
       
   roles:
     # system configuration
+    -  { role: swap_centos8, when: ansible_distribution == "CentOS" and ansible_distribution_major_version == '8' }
     -  { role: preinstall_centos8, when: ansible_distribution == "CentOS" and ansible_distribution_major_version == '8' }
     # application configuration
     -  { role: java_centos8, when: ansible_distribution == "CentOS" and ansible_distribution_major_version == '8' }
