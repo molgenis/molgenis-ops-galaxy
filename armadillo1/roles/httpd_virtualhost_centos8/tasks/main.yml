@@ -28,3 +28,4 @@
   when: not ci|bool and enabled|bool and not ssl.enabled|bool
   notify:
     - "restart web service"
+  

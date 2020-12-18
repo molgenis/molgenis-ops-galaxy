@@ -146,4 +146,3 @@
 
 - include_role:
     name: httpd_virtualhost_centos8
-
