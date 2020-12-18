@@ -19,6 +19,8 @@ Role Variables
 | armadillo.version     | yes      | 0.0.15                            | na       | Version of the Armadillo service. Newer versions can be found on the MOLGENIS registry.   |
 | oauth.issuer_uri      | yes      | https://auth.example.org          | na       | The plain url of the authentication server (can be FusionAuth or Keycloack for example    |
 | oauth.client_id       | yes      | xxxxx.xxxxxxx.xxxxxxx             | na       | The client ID of the authentication server                                                |
+| memory.xmx            | yes      | 1024mb                            | na       | Maximum of memory claimed by the Armadillo                                                |
+| memory.xms            | yes      | 512mb                             | na       | Reserved memory claimed by the Armadillo                                                |
 
 Dependencies
 ------------

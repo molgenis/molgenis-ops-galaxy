@@ -5,3 +5,6 @@ storage:
   secret_key: molgenis
   host: http://localhost
   port: 9000
+memory:
+  xmx: 1024mb
+  xms: 512mb
