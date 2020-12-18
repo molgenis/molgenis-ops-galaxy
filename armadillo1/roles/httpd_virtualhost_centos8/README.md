@@ -2,7 +2,7 @@ Apache HTTPD virtualhosts
 =========
 The virtualhost configuration proxypasses the Armadillo service and Minio file storage through virtualhosts.
 
-[![Ansible Galaxy](https://img.shields.io/badge/ansible--galaxy-httpd_virtualhosts-blue.svg)](https://galaxy.ansible.com/molgenis/armadillo/)
+[![Ansible Galaxy](https://img.shields.io/badge/ansible--galaxy-httpd_virtualhosts-blue.svg)](https://galaxy.ansible.com/molgenis/armadillo1/)
 
 
 Requirements

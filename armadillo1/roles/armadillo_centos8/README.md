@@ -2,7 +2,7 @@ Armadillo
 =========
 This installs the Armadillo service on your system. It installs Java and creates a systemd service wrapper around the application.
 
-[![Ansible Galaxy](https://img.shields.io/badge/ansible--galaxy-armadillo-blue.svg)](https://galaxy.ansible.com/molgenis/armadillo/)
+[![Ansible Galaxy](https://img.shields.io/badge/ansible--galaxy-armadillo-blue.svg)](https://galaxy.ansible.com/molgenis/armadillo1/)
 
 Requirements
 ------------

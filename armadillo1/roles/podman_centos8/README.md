@@ -2,7 +2,7 @@ Podman
 =========
 This installs the Podman (a sort of Kubernetes agent for CentOS / Redhat) on your system. This allows you to run Rserver on the system.
 
-[![Ansible Galaxy](https://img.shields.io/badge/ansible--galaxy-podman-blue.svg)](https://galaxy.ansible.com/molgenis/armadillo/)
+[![Ansible Galaxy](https://img.shields.io/badge/ansible--galaxy-podman-blue.svg)](https://galaxy.ansible.com/molgenis/armadillo1/)
 
 Requirements
 ------------

@@ -2,7 +2,7 @@ RServer
 =========
 
 
-[![Ansible Galaxy](https://img.shields.io/badge/ansible--galaxy-rserver-blue.svg)](https://galaxy.ansible.com/molgenis/armadillo/)
+[![Ansible Galaxy](https://img.shields.io/badge/ansible--galaxy-rserver-blue.svg)](https://galaxy.ansible.com/molgenis/armadillo1/)
 
 Requirements
 ------------
