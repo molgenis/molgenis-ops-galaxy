@@ -2,16 +2,12 @@
 - name: Upgrade molgenis to 8.x.y on centos 8
   hosts: "{{ host_group }}"
   gather_facts: true
+  become: true
   vars:
-    host_group: "backend-molgenis"
-    experimental: false
-    ci: false
+    host_group: "all"
     molgenis:
       setup: true
       version: 8.5.1
-    httpd:
-      setup: true
-      ssl: false
 
   tasks:
     - name: Gathering package facts
@@ -99,4 +95,3 @@
         name: tomcat
         state: started
       when: war_version.isreg is not defined
-

@@ -62,10 +62,12 @@
   copy:
     src: server.xml
     dest: /usr/share/apache-tomcat-9.0.39/conf/server.xml
+    group: molgenis
+    owner: tomcat
 
 - name: Install systemctl services file for tomcat
-  copy:
-    src: tomcat.service
+  template:
+    src: tomcat.j2
     dest: /etc/systemd/system/tomcat.service
 
 - name: Start and enable Tomcat (at boot time)

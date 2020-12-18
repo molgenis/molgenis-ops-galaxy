@@ -6,7 +6,7 @@ After=network-online.target
 AssertFileIsExecutable=/usr/bin/minio
 
 [Service]
-WorkingDirectory=/opt/minio/
+WorkingDirectory=/usr/share/minio
 
 User=minio
 Group=minio

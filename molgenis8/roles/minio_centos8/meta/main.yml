@@ -1,21 +1,24 @@
+---
 galaxy_info:
   role_name: minio_centos8
-  author: Erik Schaberg
-  description: this role is part of the Molgenis installation of CentOS
-  company: UMCG/RUG
+  author: Sido Haakma
+  description: Minio file storage, used to get data into the federated platform
+  company: MOLGENIS
 
-  license: license (GPLv3)
+  license: LGPL
 
-  min_ansible_version: 2.7.9
+  min_ansible_version: 1.2
+
+  github_branch: master
 
   platforms:
-  - name: CentOS
-    versions:
-    - 8
-  - name: RHEL
-    versions:
-    - 8
+   - name: CentOS
+     versions:
+     - 8
+   - name: RHEL
+     versions:
+     - 8
 
-  galaxy_tags: molgenis
+  galaxy_tags: [federation, molgenis]
 
 dependencies: []

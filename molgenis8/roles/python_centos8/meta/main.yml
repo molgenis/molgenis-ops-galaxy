@@ -16,6 +16,6 @@ galaxy_info:
     versions:
     - 8
 
-  galaxy_tags: molgenis
+  galaxy_tags: [molgenis]
 
 dependencies: []

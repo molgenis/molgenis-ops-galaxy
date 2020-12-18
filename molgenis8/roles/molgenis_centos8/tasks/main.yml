@@ -27,6 +27,7 @@
     owner: molgenis
     group: molgenis
     state: link
+    mode: '0755'
 
 - name: check if molgenis-server.properties exists
   stat:
@@ -37,6 +38,7 @@
   copy:
     src: molgenis-server.properties
     dest: /usr/local/share/molgenis/molgenis-server.properties
+    mode: '0755'
   when: existing_properties.stat.isreg is not defined
 
 - name: Install extra molgenis crossrestore tools
@@ -51,8 +53,10 @@
     - molgenis_chown_data.bash
     - utils.bash
     - molgenis_cleanup.bash
+
 - name: Install molgenis sudoers file
   copy:
     src: molgenis
     dest: /etc/sudoers.d/
+    mode: '0440'
 

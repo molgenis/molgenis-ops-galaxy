@@ -1,0 +1,24 @@
+---
+galaxy_info:
+  role_name: java_centos8
+  author: Sido Haakma
+  description: Java installation for java-based applications, such as tomcat, elasticsearch and the armadillo
+  company: MOLGENIS
+
+  license: LGPL
+
+  min_ansible_version: 1.2
+
+  github_branch: master
+
+  platforms:
+  - name: CentOS
+    versions:
+    - 8
+  - name: RHEL
+    versions:
+    - 8
+
+  galaxy_tags: [federation, molgenis]
+
+dependencies: []

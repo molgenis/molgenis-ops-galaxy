@@ -1,32 +1,50 @@
 ---
-- name: install minio service file
+- name: install Minio service file
   copy:
     src: minio.service
     dest: /etc/systemd/system/minio.service
+    mode: '0644'
 
-- name: Install Minio
-  yum:
-    state: present
-    name:
-      - minio-19.4.0-1
-  when: '"minio-19.4.0-1" not in ansible_facts.packages'
+- name: add Minio group
+  group:
+    name: minio
 
-- name: Ensure that all minio folders have been created
+- name: add Minio user
+  user:
+    name: minio
+    group: minio
+
+- name: create Minio directories
   file:
-    path: "{{ item.path }}"
-    state: "{{ item.state }}"
-    owner: "{{ item.owner }}"
-    group: "{{ item.group }}"
-    mode: 0755
+    path: "{{ item }}"
+    owner: minio
+    group: minio
+    state: directory
+    mode: '755'
   with_items:
-    - { path: /var/log/minio/minio.err, state: touch, owner: minio, group: minio }
-    - { path: /var/log/minio/minio.log, state: touch, owner: minio, group: minio }
-    - { path: /opt/minio,               state: directory, owner: minio, group: minio }
+    - /etc/minio
+    - /usr/share/minio
+    - /var/lib/minio
+    - /var/lib/minio/data
+    - /var/log/minio
 
-- name: install minio config file
-  copy:
-    src: minio.conf
+- name: install Minio
+  get_url:
+    url: https://dl.min.io/server/minio/release/linux-amd64/archive/minio.RELEASE.{{ version }}
+    dest: /usr/bin/minio
+    mode: '0755'
+    owner: minio
+    group: minio
+
+- name: install Minio config file
+  template:
+    src: minio.j2
     dest: /etc/minio/minio.conf
+    owner: minio
+    group: minio
+    mode: '755'
+  notify:
+    - "restart Minio service"
 
 - name: Start and enable Minio (at boot time)
   systemd:
