@@ -3,9 +3,7 @@
   template:
     src: armadillo.j2
     dest: /etc/systemd/system/armadillo.service
-    owner: armadillo
-    group: armadillo
-    mode: '644'
+    mode: '755'
 
 - name: add Armadillo group
   group:

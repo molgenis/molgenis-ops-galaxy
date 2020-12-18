@@ -14,6 +14,8 @@ Role Variables
 |-------------------------|----------|---------|----------|---------------------------------------------------|
 | debug                   | yes      | false   | na       | Determines wether the RServer runs in debug-mode. |
 | version                 | yes      | 0.0.15  | na       | Version of the RServer service.                   |
+| resources.memory        | yes      | 6g      | na       | Maximum memory claim on the host                  |
+| resources.cpu           | yes      | 2       | na       | Maximum CPU claim on the host                     |
 
 Dependencies
 ------------
