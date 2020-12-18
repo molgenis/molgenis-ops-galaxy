@@ -30,9 +30,9 @@ This file needs to contain the following content.
 ```yaml
 collections:
   - name: molgenis.molgenis8
-    version: 1.1.1
+    version: 1.1.0
   - name: molgenis.armadillo1
-    version: 1.0.3
+    version: 1.0.5
 ```
 #### Creating inventory.ini
 Your target host needs to be defined here.
