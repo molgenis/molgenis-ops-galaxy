@@ -70,8 +70,8 @@ The playbook is the base of the rollout for the Armadillo. The contents of the p
       vars:
         access_key: "{{ minio.access_key }}"
         secret_key: "{{ minio.secret_key }}"
-    - role: molgenis.armadillo.podman_centos8
-    - role: molgenis.armadillo.httpd_centos8
+    - role: molgenis.armadillo1.podman_centos8
+    - role: molgenis.armadillo1.httpd_centos8
       vars:
         enabled: true
         ssl: 
@@ -86,10 +86,10 @@ The playbook is the base of the rollout for the Armadillo. The contents of the p
         ports:
           armadillo: 8080
           storage: "{{ minio.port }}"
-    - role: molgenis.armadillo.rserver
+    - role: molgenis.armadillo1.rserver
       vars: 
         debug: true
-    - role: molgenis.armadillo.armadillo
+    - role: molgenis.armadillo1.armadillo
       vars:
         version: 0.0.15
         storage:
