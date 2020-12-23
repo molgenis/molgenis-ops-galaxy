@@ -1,0 +1,6 @@
+---
+debug: false
+version: 1.8.0
+resources:
+  memory: 6g
+  cpu: 2
