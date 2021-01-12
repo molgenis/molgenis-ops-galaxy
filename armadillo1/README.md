@@ -1,10 +1,16 @@
 # Armadillo service
 We are using Vagrant and Ansible
 ## Usage 
-To test the deployment we are Vagrant to deploy the ansible playbook locally oin your machine.
-If you navigate to the `deployment/ansible` directory you can execute `vagrant up` and the VM will start with the necessary services.
+To test the deployment we are using Vagrant to deploy the ansible playbook locally on your machine. You will need some prerequisites to deploy locally.
 
-The vagrant box will bind on port 80 to the host. If you add this block to the `etc/hosts` file the domains 
+* [Vagrant](https://www.vagrantup.com/downloads)
+* [Virtualbox](https://www.virtualbox.org/wiki/Downloads)
+* [git](https://git-scm.com/downloads)
+
+You need to clone the repository of galaxy by executing `git clone https://github.com/molgenis/molgenis-ops-galaxy`. This will create a directory `molgenis-ops-galaxy` in your current directory. 
+If you navigate to the `armadillo1/deployment/ansible` directory you can execute `vagrant up` and the VM will start with the necessary services.
+
+The vagrant box will bind on port 80 to the host. If you add this block to the `etc/hosts`-file, the domains 
 in Apache HTTPD will resolve.
 
 ```
@@ -13,6 +19,20 @@ in Apache HTTPD will resolve.
 127.0.0.1 armadillo.local
 # End section
 ``` 
+
+You are done. You can reach both services on:
+
+* Armadillo service to wok with DataSHIELD
+  http://armadillo.local
+* Armadillo storage service to store you files on
+  http://armadillo-storage.local
+
+Login with:
+
+username: admin
+password: admin
+
+Only the storage server has a user interface. The DataSHIELD service works with R only.
 ## Ansible
 To use the Ansible to deploy the stack you need to binaries on your system. You can install Ansible following this [user guide](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html).
 ### Setup
