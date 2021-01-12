@@ -7,8 +7,24 @@ To test the deployment we are using Vagrant to deploy the ansible playbook local
 * [Virtualbox](https://www.virtualbox.org/wiki/Downloads)
 * [git](https://git-scm.com/downloads)
 
-You need to clone the repository of galaxy by executing `git clone https://github.com/molgenis/molgenis-ops-galaxy`. This will create a directory `molgenis-ops-galaxy` in your current directory. 
-If you navigate to the `armadillo1/deployment/ansible` directory you can execute `vagrant up` and the VM will start with the necessary services.
+
+Create a file called: `Vagrant` looking like this:
+
+```yml
+Vagrant.configure("2") do |config|
+  config.vm.box = "centos/8"
+  config.vm.box_version = "1905.1"
+  config.vm.network "forwarded_port", guest: 80, host: 80
+
+  config.vm.provision "ansible" do |ansible|
+    ansible.limit = "all"
+    ansible.playbook = "i_setup_armadillo_1.yml"
+  end
+end
+```
+
+
+
 
 The vagrant box will bind on port 80 to the host. If you add this block to the `etc/hosts`-file, the domains 
 in Apache HTTPD will resolve.
