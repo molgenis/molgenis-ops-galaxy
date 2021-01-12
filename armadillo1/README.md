@@ -29,8 +29,8 @@ You are done. You can reach both services on:
 
 Login with:
 
-username: admin
-password: admin
+* username: admin
+* password: admin
 
 Only the storage server has a user interface. The DataSHIELD service works with R only.
 ## Ansible
