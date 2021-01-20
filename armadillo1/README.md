@@ -199,6 +199,7 @@ Make sure the following domains are whitlisted in on your deploy environment.
 * registry.molgenis.org
 * registry.access.redhat.com
 * galaxy.ansible.com
+* ansible-galaxy.s3.amazonaws.com
 
 First get your collections installed.
 
