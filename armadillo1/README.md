@@ -1,10 +1,35 @@
 # Armadillo service
 We are using Vagrant and Ansible
 ## Usage 
-To test the deployment we are Vagrant to deploy the ansible playbook locally oin your machine.
-If you navigate to the `deployment/ansible` directory you can execute `vagrant up` and the VM will start with the necessary services.
+To test the deployment we are using Vagrant to deploy the ansible playbook locally on your machine. You will need some prerequisites to deploy locally.
 
-The vagrant box will bind on port 80 to the host. If you add this block to the `etc/hosts` file the domains 
+* [Vagrant](https://www.vagrantup.com/downloads)
+* [Virtualbox](https://www.virtualbox.org/wiki/Downloads)
+* [git](https://git-scm.com/downloads)
+
+Create a file called: `Vagrant` looking like this:
+
+```javascript
+Vagrant.configure("2") do |config|
+  config.vm.box = "centos/8"
+  config.vm.box_version = "1905.1"
+  config.vm.network "forwarded_port", guest: 80, host: 80
+
+  config.vm.provision "ansible" do |ansible|
+    ansible.limit = "all"
+    ansible.playbook = "i_setup_armadillo_1.yml"
+  end
+end
+```
+
+Create an file called `i_setup_armadillo_1.yml` with the content from here: [ansible galaxy content](#creating-playbook.yml).
+
+Run:
+
+- `vagrant init`
+- `vagrant up`
+
+The vagrant box will bind on port 80 to the host. If you add this block to the `etc/hosts`-file, the domains 
 in Apache HTTPD will resolve.
 
 ```
@@ -13,6 +38,20 @@ in Apache HTTPD will resolve.
 127.0.0.1 armadillo.local
 # End section
 ``` 
+
+You are done. You can reach both services on:
+
+* Armadillo service to wok with DataSHIELD
+  http://armadillo.local
+* Armadillo storage service to store you files on
+  http://armadillo-storage.local
+
+Login with:
+
+* username: admin
+* password: admin
+
+Only the storage server has a user interface. The DataSHIELD service works with R only.
 ## Ansible
 To use the Ansible to deploy the stack you need to binaries on your system. You can install Ansible following this [user guide](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html).
 ### Setup
@@ -148,9 +187,17 @@ The general variables in the playbook.yml need to be amended to set the configur
       client_id: xxxxxxx-xxxxxx-xxxxxxx
 ...
 ```
-
 #### Usage
 When you created the correct files and filled in the right variables you need to perform a series of commands to bootstrap the server with the Armadillo.
+
+Make sure the following domains are whitlisted in on your deploy environment.
+
+* dl.minio.io
+* auth.molgenis.org
+* registry-1.docker.io
+* production.cloudflare.docker.com
+* registry.molgenis.org
+* registry.access.redhat.com
 
 First get your collections installed.
 
