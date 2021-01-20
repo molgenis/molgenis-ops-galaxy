@@ -198,6 +198,7 @@ Make sure the following domains are whitlisted in on your deploy environment.
 * production.cloudflare.docker.com
 * registry.molgenis.org
 * registry.access.redhat.com
+* galaxy.ansible.com
 
 First get your collections installed.
 
