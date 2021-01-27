@@ -13,9 +13,9 @@ Role Variables
 | Variable        | Required | Default         | Choices  | Comments                                           |
 |-----------------|----------|-----------------|----------|----------------------------------------------------|
 | host            | yes      | armadillo.local | na       | Domain on which the services are exposed           |
-| ports.armadillo | yes      | 8080            | na       | Port on which the Armadillo service is served      |
-| ports.storage   | yes      | 9000            | na       | Port on which the file storage is served           |
-| ports.auth      | yes      | 4000            | na       | Port on which the authentication manager is served |                 
+| ports.armadillo | no       | 8080            | na       | Port on which the Armadillo service is served      |
+| ports.storage   | no       | 9000            | na       | Port on which the file storage is served           |
+| ports.auth      | no       | 4000            | na       | Port on which the authentication manager is served |                 
 
 Dependencies
 ------------
