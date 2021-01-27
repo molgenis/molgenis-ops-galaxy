@@ -1,6 +1,9 @@
 ---
 debug: false
-version: 1.8.0
+image:
+  version: 1.8.0
+  repo: molgenis
+  name: rserver
 resources:
   memory: 6g
   cpu: 2
