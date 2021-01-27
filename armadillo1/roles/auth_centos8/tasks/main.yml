@@ -5,6 +5,7 @@
     state: directory
     mode: '755'
   with_items:
+    - /usr/share/armadillo/auth
     - /var/log/armadillo/auth
     - /etc/armadillo/auth
 

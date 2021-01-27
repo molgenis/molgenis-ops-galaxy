@@ -1,11 +1,7 @@
 ---
-baes_url: http://localhost:4000
-oauth: 
-  issuer_uri: https://auth.local
-  client_id: xxxxxx-xxxxx-xxxx
-  client_secret: xxxxx-xxxxx-xxxxxx
-  api_token: xxxxxx-xxxxx-xxxxxx
-  redirect_uri: http://localhost:4000/oauth-callback
+base_url: http://localhost:4000
+redirect_uri: http://localhost:4000/oauth-callback
+api_token: xxxxxx-xxxxxx-xxxx
 image:
   version: 0.2.0
   repo: molgenis
@@ -13,4 +9,5 @@ image:
 resources:
   memory: 1g
   cpu: 1
+
 
