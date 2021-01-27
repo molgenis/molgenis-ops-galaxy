@@ -9,7 +9,6 @@ in Apache HTTPD will resolve.
 
 ```
 # To allow vagrant httpd to bind to the internal domains
-127.0.0.1 armadillo-storage.local
 127.0.0.1 armadillo.local
 # End section
 ``` 
@@ -73,19 +72,11 @@ The playbook is the base of the rollout for the Armadillo. The contents of the p
     - role: molgenis.armadillo1.podman_centos8
     - role: molgenis.armadillo1.httpd_centos8
       vars:
-        enabled: true
-        ssl: 
-          enabled: true
-          paths:
-            server_crt: /tmp/server.crt
-            private_key: /tmp/server.crt
-            chain_crt: /tmp/chain.crt
-        hostnames:
-          armadillo: armadillo.internal
-          storage: armadillo-storage.internal
+        host: armadillo.local
         ports:
           armadillo: 8080
           storage: "{{ minio.port }}"
+          auth: 4000
     - role: molgenis.armadillo1.rserver
       vars: 
         debug: true
@@ -97,43 +88,22 @@ The playbook is the base of the rollout for the Armadillo. The contents of the p
           secret_key: "{{ minio.secret_key }}"
           host: "{{ minio.host }}"
           port: "{{ minio.port }}"
+    - role: molgenis.armadillo1.auth_centos8
+      vars:
+        image: 
+          version: 0.2.0
+        oauth:
+          issuer_uri: "{{ oauth.issuer_uri }}"
+          client_id: "{{ oauth.client_id }}"
+          client_secret: xxxxx-xxxxx-xxxxx
+          api_token: xxxx-xxxxx-xxxxx
+      
 ```
 
 There are a few prerequisites that we need. 
 
 ##### "become" needs to work
 When you login to a VM you are hopefully yourself as in a useraccount that is recognisable as your account. After you logged in you need to be able to perform `sudo su` without entering a password. Get that in place and you will be able to run the playbook.
-##### Domains and SSL certificates
-We asume you have 2 domains registered at the moment. 
-
-- A domain for the storage backend which is a replacement for: **armadillo-storage.internal**
-- A domain that will be accessed by the researchers which is a replacement for: **armadillo.internal**
-
-We urge you to use SSL certificates for production. The port 80 exposure is ONLY meant for development.
-We assume you have a wildcard certificate for both subdomains:
-- armadillo-storage.exmaple.org
-- armadillo.example.org
-
-You need to specify the paths to three files.
-- certificate.crt (public certificate)
-- private.key (private key bound to the public certificate)
-- chain.crt (the certificate chain)
-
-The following variables need to be amended.
-
-```yaml
-...
-        ssl: 
-          enabled: true
-          paths:
-            server_crt: /tmp/server.crt
-            private_key: /tmp/server.crt
-            chain_crt: /tmp/chain.crt
-        hostnames:
-          armadillo: armadillo.internal
-          storage: armadillo-storage.internal
-...
-```
 
 ##### Authentication and authorisation
 Before you deploy you need to register your application on the DataSHIELD authentication server. This allows you to delegate the authentication and usermanagement. The authorisation will still be under your control.
