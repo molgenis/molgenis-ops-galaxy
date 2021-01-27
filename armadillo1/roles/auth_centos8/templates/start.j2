@@ -1,0 +1,9 @@
+podman run -p 127.0.0.1:4000 \
+--restart on-failure \
+--name=armadillo-auth \
+--env-file /etc/armadillo/auth/env.list \
+--memory {{ resources.memory }} \
+-–cpus {{ resources.cpu }}
+--detach \
+{{ image.repo }}/{{ image.name }}:{{ image.version }}
+
