@@ -23,7 +23,7 @@
         access_key: "{{ minio.access_key }}"
         secret_key: "{{ minio.secret_key }}"
     - role: podman_centos8
-    - role: httpd_centos8
+    - role: nginx_centos8
       vars:
         host: armadillo.local
         ports:
@@ -41,3 +41,12 @@
           secret_key: "{{ minio.secret_key }}"
           host: "{{ minio.host }}"
           port: "{{ minio.port }}"
+    - role: auth_centos8
+      vars:
+        image: 
+          version: 0.2.0
+        oauth:
+          issuer_uri: "{{ oauth.issuer_uri }}"
+          client_id: "{{ oauth.client_id }}"
+          client_secret: xxxxx-xxxxx-xxxxx
+          api_token: xxxx-xxxxx-xxxxx
