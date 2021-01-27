@@ -4,6 +4,5 @@ podman run -p 127.0.0.1:6311:6311 -p 127.0.0.1:6312:6312 \
 --env-file /etc/rserver/env.list \
 --memory {{ resources.memory }} \
 -–cpus {{ resources.cpu }}
---detach \
-{{ image.repo }}/{{ image.name }}:{{ image.version }}
+--detach {{ image.repo }}/{{ image.name }}:{{ image.version }}
 
