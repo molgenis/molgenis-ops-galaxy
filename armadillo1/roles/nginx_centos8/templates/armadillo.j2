@@ -1,0 +1,24 @@
+location / {
+    proxy_pass http://localhost:{{ ports.armadillo }};
+    proxy_read_timeout 600s;
+    proxy_redirect http://localhost:{{ ports.armadillo }}/ $scheme://$host/;
+    proxy_set_header Host $host;
+    proxy_http_version 1.1;
+}
+
+location /authentication {
+    proxy_pass http://localhost:{{ ports.auth }};
+    proxy_read_timeout 600s;
+    proxy_redirect http://localhost:{{ ports.auth }}/ $scheme://$host/;
+    proxy_set_header Host $host;
+    proxy_http_version 1.1;
+}
+
+location /storage {
+    proxy_pass http://localhost:{{ ports.storage }};
+    client_max_body_size 0;
+    proxy_read_timeout 600s;
+    proxy_redirect http://localhost:{{ ports.storage }}/ $scheme://$host/;
+    proxy_set_header Host $host;
+    proxy_http_version 1.1;
+}

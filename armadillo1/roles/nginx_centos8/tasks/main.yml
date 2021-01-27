@@ -1,0 +1,43 @@
+---
+- name: Install NginX
+  dnf:
+    state: present
+    name:
+      - nginx
+
+- name: Start and enable nginx (at boot time)
+  systemd:
+    name: nginx
+    enabled: yes
+    state: started
+
+- name: Set httpd_can_network_connect flag in SELINUX
+  seboolean:
+    name: httpd_can_network_connect
+    state: yes
+    persistent: yes
+  when: not ci|bool
+
+- name: Customize nginx.conf
+  copy:
+    src: nginx.conf
+    dest: /etc/nginx/nginx.conf
+  notify: "restart nginx"
+
+- name: Add in memory robots.txt to nginx
+  copy:
+    src: robots.conf
+    dest: /etc/nginx/default.d/robots.conf
+  notify: "restart nginx"
+
+- name: Ammend /etc/hosts to include hostname
+  lineinfile:
+    dest: /etc/hosts
+    line: "{{ ansible_default_ipv4.address }} {{ host }}"
+    state: present
+
+- name: Install molgenis frontend config
+  template:
+    src: armadillo.j2
+    dest: /etc/nginx/default.d/armadillo.conf
+  notify: "restart nginx"

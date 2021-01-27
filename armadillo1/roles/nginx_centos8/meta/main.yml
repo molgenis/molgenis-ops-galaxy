@@ -1,8 +1,8 @@
 ---
 galaxy_info:
-  role_name: httpd
+  role_name: nginx
   author: Sido Haakma
-  description: Apache HTTPD ensures the exposure of the Armadillo service and storage backend to be able to access the federation service in a secure way.
+  description: A webserver to proxy the different services on the Armadillo deployment
   company: MOLGENIS
 
   license: LGPL
