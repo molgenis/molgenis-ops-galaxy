@@ -4,6 +4,7 @@
     state: present
     name:
       - nginx
+      - python3-libsemanage
 
 - name: Start and enable nginx (at boot time)
   systemd:
