@@ -45,7 +45,5 @@
     - role: auth_centos8
       vars:
         image: 
-          version: 0.2.0
+          version: latest
         api_token: xxxxxx-xxxxx-xxxxx 
-
-  

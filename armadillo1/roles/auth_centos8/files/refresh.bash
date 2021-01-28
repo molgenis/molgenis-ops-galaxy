@@ -11,7 +11,7 @@ then
 fi
 
 /usr/share/armadillo/auth/start.bash
-podman generate systemd --name rserver > /etc/systemd/system/armadillo-auth.service
+podman generate systemd --name armadillo-auth > /etc/systemd/system/armadillo-auth.service
 podman stop armadillo-auth
 systemctl daemon-reload
 systemctl enable armadillo-auth

@@ -6,5 +6,5 @@ storage:
   host: http://localhost
   port: 9000
 memory:
-  xmx: 1024mb
-  xms: 512mb
+  xmx: 1024m
+  xms: 512m
