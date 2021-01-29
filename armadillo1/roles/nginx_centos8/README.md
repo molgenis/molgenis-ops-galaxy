@@ -10,18 +10,17 @@ The nginx-role is based upon a clean CentOS 8.x image. It's dependencies are des
 
 Role Variables
 --------------
-| Variable        | Required | Default         | Choices  | Comments                                           |
-|-----------------|----------|-----------------|----------|----------------------------------------------------|
-| host            | yes      | armadillo.local | na       | Domain on which the services are exposed           |
-| ports.armadillo | no       | 8080            | na       | Port on which the Armadillo service is served      |
-| ports.storage   | no       | 9000            | na       | Port on which the file storage is served           |
-| ports.auth      | no       | 4000            | na       | Port on which the authentication manager is served |                 
+| Variable          | Required | Default                 | Choices | Comments                                           |
+|-------------------|----------|-------------------------|---------|----------------------------------------------------|
+| domains.armadillo | yes      | armadillo.local         | na      | Domain on which the Armadillo is served            |
+| domains.storage   | yes      | armadillo-storage.local | na      | Port on which the storage service is served        |
+| domains.auth      | yes      | armadillo-minio.local   | na      | Port on which the authentication manager is served |
 
 Dependencies
 ------------
 This is dependant on the following list of roles:
 - minio
-- httpd
+- armadillo
 - rserver
 
 Example Playbook
@@ -32,11 +31,10 @@ You can include the armadillo-role by adding the yaml block below.
       roles:
        - role: nginx
          vars:
-           host: armadillo.local
-           ports:
-             minio: 9000
-             auth: 4000
-             armadillo: 8080
+           domains: 
+             armadillo: armadillo.local
+             storage: armadillo-storage.local
+             auth: armadillo-auth.local
            
 License
 -------

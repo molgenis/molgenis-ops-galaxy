@@ -26,11 +26,10 @@
     - role: podman_centos8
     - role: nginx_centos8
       vars:
-        host: armadillo.local
-        ports:
-          armadillo: 8080
-          storage: "{{ minio.port }}"
-          auth: 4000
+        domains: 
+          armadillo: armadillo.local
+          storage: armadillo-storage.local
+          auth: armadillo-auth.local
     - role: rserver_centos8
       vars:
         debug: true

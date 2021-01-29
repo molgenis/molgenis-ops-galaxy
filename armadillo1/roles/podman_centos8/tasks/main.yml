@@ -5,3 +5,5 @@
     name:
       - podman
       - podman-docker
+      - container-selinux
+

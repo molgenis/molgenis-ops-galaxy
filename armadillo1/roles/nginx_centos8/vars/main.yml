@@ -1,6 +1,5 @@
 ---
-host: armadillo.local
-ports:
-  armadillo: 8080
-  storage: 9000
-  auth: 4000
+domains:
+  armadillo: armadillo.local
+  storage: armadillo-storage.local
+  auth: armadillo-auth.local

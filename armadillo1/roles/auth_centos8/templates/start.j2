@@ -1,4 +1,4 @@
-podman run -p 127.0.0.1:4000:4000 \
+podman run --network=host \
 --restart on-failure \
 --name=armadillo-auth \
 --env-file /etc/armadillo/auth/env.list \

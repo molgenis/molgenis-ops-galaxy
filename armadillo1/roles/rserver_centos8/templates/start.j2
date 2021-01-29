@@ -1,4 +1,4 @@
-podman run -p 127.0.0.1:6311:6311 -p 127.0.0.1:6312:6312 \
+podman run --network=host \
 --restart on-failure \
 --name=rserver \
 --env-file /etc/rserver/env.list \

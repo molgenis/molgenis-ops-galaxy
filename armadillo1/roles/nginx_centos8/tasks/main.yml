@@ -19,26 +19,48 @@
     persistent: yes
   when: not ci|bool
 
+- name: add robots configuration directory
+  file:
+    path: "{{ item }}"
+    owner: nginx
+    group: nginx
+    state: directory
+    mode: '755'
+  with_items:
+    - /etc/nginx/robots.d
+
+- name: Add in memory robots.conf to nginx
+  copy:
+    src: robots.conf
+    dest: /etc/nginx/robots.d/robots.conf
+  notify: "restart nginx"
+
 - name: Customize nginx.conf
   copy:
     src: nginx.conf
     dest: /etc/nginx/nginx.conf
   notify: "restart nginx"
 
-- name: Add in memory robots.txt to nginx
-  copy:
-    src: robots.conf
-    dest: /etc/nginx/default.d/robots.conf
-  notify: "restart nginx"
-
 - name: Ammend /etc/hosts to include hostname
   lineinfile:
     dest: /etc/hosts
-    line: "{{ ansible_default_ipv4.address }} {{ host }}"
+    line: "{{ ansible_default_ipv4.address }}"
     state: present
 
-- name: Install molgenis frontend config
+- name: install Armadillo config
   template:
     src: armadillo.j2
     dest: /etc/nginx/default.d/armadillo.conf
+  notify: "restart nginx"
+
+- name: install storage config
+  template:
+    src: storage.j2
+    dest: /etc/nginx/default.d/storage.conf
+  notify: "restart nginx"
+
+- name: install Armadillo config
+  template:
+    src: auth.j2
+    dest: /etc/nginx/default.d/auth.conf
   notify: "restart nginx"
