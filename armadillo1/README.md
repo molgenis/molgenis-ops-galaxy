@@ -9,7 +9,7 @@ in Apache HTTPD will resolve.
 
 ```
 # To allow vagrant httpd to bind to the internal domains
-127.0.0.1 armadillo.local
+127.0.0.1 armadillo.local armadillo-storage.local armadillo-auth.local
 # End section
 ``` 
 ## Ansible

@@ -5,7 +5,7 @@ api_token: xxxxxx-xxxxxx-xxxx
 image:
   version: latest
   repo: molgenis
-  name: armadillo-auth
+  name: molgenis-auth
 resources:
   memory: 1g
   cpu: 1
