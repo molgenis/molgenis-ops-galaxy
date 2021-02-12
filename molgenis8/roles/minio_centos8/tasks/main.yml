@@ -36,7 +36,7 @@
     owner: minio
     group: minio
 
-- name: install Minio config file
+- name: install Minio configuration
   template:
     src: minio.j2
     dest: /etc/minio/minio.conf
@@ -46,7 +46,7 @@
   notify:
     - "restart Minio service"
 
-- name: Start and enable Minio (at boot time)
+- name: start and enable Minio (at boot time)
   systemd:
     name: minio
     enabled: yes
