@@ -16,6 +16,7 @@ Role Variables
 | access_key            | yes      | xxxxxx-xxxxxxx-xxxxxxx            | na       | The access key to access Minio API and webinterface                                               |
 | secret_key            | yes      | xxxxxx-xxxxxxx-xxxxxxx            | na       | The secret key to access Minio API and webinterface                                               |
 | data                  | yes      | /var/lib/minio/data               | na       | The path on the host system where the of the Minio file storage is stored                         |
+| domain                | yes      | armadillo-storage.local           | na       | The domain the minio server is running on                                                         |
 | oauth.issuer_uri      | yes      | https://auth.example.org          | na       | The plain url of the authentication server (can be FusionAuth or Keycloack for example            |
 | oauth.discovery_path  | yes      | /.well-known/openid-configuration | na       | Discovery path to extract information like the endpoints and other relevant details of the server |
 | oauth.client_id       | yes      | xxxxx.xxxxxxx.xxxxxxx             | na       | The client ID of the authentication server                                                        |
