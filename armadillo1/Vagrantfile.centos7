@@ -2,8 +2,8 @@ Vagrant.configure("2") do |config|
   config.vm.define "armadillo" do |udef|
     udef.vm.hostname = "armadillo-storage.local"
   end
-  config.vm.box = "centos/8"
-  config.vm.box_version = "2011.0"
+  config.vm.box = "centos/7"
+  config.vm.box_version = "2004.01"
   config.vm.network "forwarded_port", guest: 80, host: 8080
   config.vm.provider "virtualbox" do |vb|
     vb.gui = false
