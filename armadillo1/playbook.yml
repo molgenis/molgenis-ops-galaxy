@@ -11,20 +11,21 @@
       port: 9000
       host: http://localhost
     oauth:
-      issuer_uri: https://auth.molgenis.org/
+      issuer_uri: https://auth.molgenis.org
       discovery_path: .well-known/openid-configuration
-      client_id: b396233b-cdb2-449e-ac5c-a0d28b38f791
-      client_secret: nRO_t1_cIpdzRzr-cWBeZg4ckBsMHmX2MlA9SaSg4P8
+      client_id: xxxxxx-xxxxxxxxx-xxxxxxx
+      client_secret: xxxxxxx-xxxxxxxxx-xxxxxxxx
 
   roles:
-    - role: molgenis.molgenis8.preinstall_centos8
-    - role: molgenis.molgenis8.java_centos8
+    - role: preinstall_centos8
+    - role: java_centos8
       vars:
         version: 11
-    - role: molgenis.molgenis8.minio_centos8
+    - role: minio_centos8
       vars:
         version: 2020-07-02T00-15-09Z
         data: /var/lib/minio/data
+        domain: armadillo-storage.local:8080
         access_key: "{{ minio.access_key }}"
         secret_key: "{{ minio.secret_key }}"
     - role: podman_centos8
@@ -55,13 +56,15 @@
         memory:
           xmx: 1024m
           xms: 512m
+        username: admin
+        password: admin
     - role: auth_centos8
       vars:
         image: 
           version: latest
           repo: molgenis
           name: molgenis-auth
-        api_token: 11UtsQhiQFF88o4p3BZPtbbzAUgbddOZ-TnAxCUw8F0
+        api_token: xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
         base_url: http://armadillo-auth.local:8080
         resources:
           memory: 512m

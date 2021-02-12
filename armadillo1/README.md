@@ -151,7 +151,7 @@ The playbook is the base of the rollout for the Armadillo. The contents of the p
     - role: nginx_centos8
       vars:
         domains: 
-          armadillo: sido.local
+          armadillo: armadillo.local
           storage: armadillo-storage.local
           auth: armadillo-auth.local
     - role: rserver_centos8
@@ -181,7 +181,7 @@ The playbook is the base of the rollout for the Armadillo. The contents of the p
           version: latest
           repo: molgenis
           name: molgenis-auth
-        api_token: 11UtsQhiQFF88o4p3BZPtbbzAUgbddOZ-TnAxCUw8F0
+        api_token: xxxxxxxxxxxxxxxxx
         base_url: armadillo-auth.local
         resources:
           memory: 1g
