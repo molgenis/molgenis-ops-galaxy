@@ -1,0 +1,29 @@
+---
+- name: create folder for RServer logs
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: '755'
+  with_items:
+    - /var/log/rserver
+    - /etc/rserver
+
+- name: generate systemd file
+  template:
+    src: rserver.j2
+    dest: /etc/systemd/system/rserver.service
+    mode: '640'
+  notify: "refresh Rserver service"
+
+- name: generate env.list for rserver
+  template:
+    src: env.j2
+    dest: /etc/rserver/env.list
+    mode: '640'
+  notify: "refresh Rserver service"
+
+- name: enable rserver service
+  systemd:
+    name: rserver
+    enabled: yes
+    masked: no
