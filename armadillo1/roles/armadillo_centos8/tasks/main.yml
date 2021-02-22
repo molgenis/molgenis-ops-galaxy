@@ -35,7 +35,7 @@
 - name: install Armadillo configuration
   template:
     src: application.j2
-    dest: /etc/armadillo/application.properties
+    dest: /etc/armadillo/application.yml
     owner: armadillo
     group: armadillo
     mode: '755'
