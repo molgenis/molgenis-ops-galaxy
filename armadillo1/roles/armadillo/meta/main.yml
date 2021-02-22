@@ -15,10 +15,18 @@ galaxy_info:
    - name: CentOS
      versions:
      - 8
+     - 7
    - name: RHEL
      versions:
      - 8
-
+     - 7
+   - name: Ubuntu
+     versions:
+     - 20
+   - name: Debian
+     versions:
+     - 10
+     
   galaxy_tags: [federation]
 
 dependencies: []
