@@ -10,26 +10,12 @@
     enabled: yes
     state: started
 
-- name: add robots configuration directory
-  file:
-    path: /etc/nginx/robots.d
-    owner: root
-    group: root
-    state: directory
-    mode: '755'
-
 - name: add in memory robots.conf to nginx
   copy:
     src: robots.conf
-    dest: /etc/nginx/robots.d/robots.conf
+    dest: /etc/nginx/conf.d/robots.conf
     owner: root
     group: root
-  notify: "restart nginx"
-
-- name: customize nginx.conf
-  copy:
-    src: nginx.conf
-    dest: /etc/nginx/nginx.conf
   notify: "restart nginx"
 
 - name: ammend /etc/hosts to include hostname
@@ -37,6 +23,20 @@
     dest: /etc/hosts
     line: "{{ ansible_default_ipv4.address }}"
     state: present
+
+- name: add robots configuration directory
+  file:
+    path: /etc/nginx/global.d
+    owner: www-data
+    group: www-data
+    state: directory
+    mode: '755'
+
+- name: add in memory robots.conf to nginx
+  copy:
+    src: robots.conf
+    dest: /etc/nginx/global.d/robots.conf
+  notify: "restart nginx"
 
 - name: install Armadillo configuration
   template:

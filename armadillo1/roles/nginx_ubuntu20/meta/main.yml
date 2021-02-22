@@ -12,13 +12,10 @@ galaxy_info:
   github_branch: master
 
   platforms:
-   - name: CentOS
+   - name: Ubuntu
      versions:
-     - 8
-   - name: RHEL
-     versions:
-     - 8
-
+     - 20.04
+   
   galaxy_tags: [federation]
 
 dependencies: []

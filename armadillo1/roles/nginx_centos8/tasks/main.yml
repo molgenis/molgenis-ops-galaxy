@@ -35,7 +35,7 @@
 
 - name: add robots configuration directory
   file:
-    path: /etc/nginx/robots.d
+    path: /etc/nginx/global.d
     owner: nginx
     group: nginx
     state: directory
@@ -44,7 +44,7 @@
 - name: add in memory robots.conf to nginx
   copy:
     src: robots.conf
-    dest: /etc/nginx/robots.d/robots.conf
+    dest: /etc/nginx/global.d/robots.conf
   notify: "restart nginx"
 
 - name: customize nginx.conf
