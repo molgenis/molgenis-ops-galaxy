@@ -8,8 +8,8 @@ TimeoutStartSec=0
 Restart=always
 ExecStartPre=-/usr/bin/docker stop %n
 ExecStartPre=-/usr/bin/docker rm %n
-ExecStartPre=/usr/bin/docker pull molgenis/rserver:{{ version }}
-ExecStart=/usr/bin/docker run --rm --name %n rserver
+ExecStartPre=/usr/bin/docker pull molgenis/rserver:{{ image.version }}
+ExecStart=/usr/bin/docker run --rm --name %n molgenis/rserver:{{ image.version }}
 
 [Install]
 WantedBy=multi-user.target

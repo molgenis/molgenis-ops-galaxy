@@ -27,7 +27,7 @@ Role Variables
 Dependencies
 ------------
 This is dependant on the following list of roles:
-- docker_ubuntu20
+- auth_ubuntu20
 
 Example Playbook
 ----------------
@@ -45,6 +45,9 @@ You can include the rserver-role by adding the yaml block below.
              issuer_uri: https://auth.local
              api_token: xxxx-xxxxx
            base_url: armadillo-auth.local
+           resources:
+             memory: 512m
+             cpu: 1
            
 License
 -------

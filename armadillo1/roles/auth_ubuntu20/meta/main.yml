@@ -12,13 +12,13 @@ galaxy_info:
   github_branch: master
 
   platforms:
-   - name: Ubuntu
+   - name: Debian
      versions:
-     - 20.04
+     - 10.04
   
   galaxy_tags: [federation]
 
 allow_duplicates: true
 
 dependencies:
-  - { role: docker_ubuntu20 }
+  - { role: docker_debian10 }

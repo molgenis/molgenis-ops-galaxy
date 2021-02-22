@@ -22,7 +22,7 @@ Role Variables
 Dependencies
 ------------
 This is dependant on the following list of roles:
-- docker_ubuntu20
+- rserver_ubuntu20
 
 Example Playbook
 ----------------
