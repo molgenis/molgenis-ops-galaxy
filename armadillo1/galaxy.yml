@@ -1,7 +1,7 @@
 # required
 namespace: molgenis
 name: armadillo
-version: 1.1.0
+version: 1.2.0
 readme: README.md
 authors:
 - Sido Haakma <s.haakma@rug.nl>
