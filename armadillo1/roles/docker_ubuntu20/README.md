@@ -22,7 +22,7 @@ You can include the podman-role by adding the yaml block below.
 
     - hosts: all
       roles:
-       - role: docker
+       - role: docker_ubuntu10
                    
 License
 -------
