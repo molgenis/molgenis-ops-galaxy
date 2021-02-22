@@ -8,36 +8,22 @@
     - /var/log/rserver
     - /etc/rserver
 
-- name: copy refresh script for RServer
-  copy:
-    src: refresh.bash
-    dest: /usr/share/rserver/
-    mode: '750'
-
-- name: add logfiles for RServer
-  file:
-    path: /var/log/rserver/rserver-combined.log
-    state: touch
-    mode: '0644'
-    modification_time: preserve
-    access_time: preserve
-
-- name: generate install.bash for RServer
+- name: generate systemd file
   template:
-    src: install.j2
-    dest: /usr/share/rserver/install.bash
-    mode: '0750'
+    src: rserver.j2
+    dest: /etc/systemd/system/rserver.service
+    mode: '640'
+  notify: "restart Rserver service"
 
-- name: generate start.bash for RServer
-  template:
-    src: start.j2
-    dest: /usr/share/rserver/start.bash
-    mode: '0750'
-  notify: "refresh Rserver service"
-
-- name: generate env.list for RServer
+- name: generate env.list for rserver
   template:
     src: env.j2
     dest: /etc/rserver/env.list
     mode: '640'
-  notify: "refresh Rserver service"
+  notify: "restart Rserver service"
+
+- name: enable rserver service
+  systemd:
+    name: rserver
+    enabled: yes
+    masked: no

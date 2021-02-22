@@ -15,9 +15,11 @@ galaxy_info:
    - name: CentOS
      versions:
      - 8
+     - 7
    - name: RHEL
      versions:
      - 8
+     - 7
 
   galaxy_tags: [federation]
 

@@ -6,7 +6,7 @@ Installs the authentication manager on the Armadillo server
 
 Requirements
 ------------
-This role requires Podman on the CentOS 8.x base image. Then the rserver will run out of the box.
+This role requires Podman on the CentOS 7.x or 8.x base image. Then the rserver will run out of the box.
 
 Role Variables
 --------------

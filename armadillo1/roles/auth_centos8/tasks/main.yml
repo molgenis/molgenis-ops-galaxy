@@ -17,28 +17,22 @@
     modification_time: preserve
     access_time: preserve
 
-- name: copy refresh script for Armadillo auth
-  copy:
-    src: refresh.bash
-    dest: /usr/share/armadillo/auth
-    mode: '750'
-
-- name: generate start.bash for Armadillo auth
+- name: generate systemd file
   template:
-    src: start.j2
-    dest: /usr/share/armadillo/auth/start.bash
-    mode: '0750'
-
-- name: generate install.bash for Armadillo auth
-  template:
-    src: install.j2
-    dest: /usr/share/armadillo/auth/install.bash
-    mode: '0750'
-  notify: "refresh Armadillo auth service"
+    src: armadillo-auth.j2
+    dest: /etc/systemd/system/armadillo-auth.service
+    mode: '640'
+  notify: "restart Armadillo auth service"
 
 - name: generate env.list for Armadillo auth
   template:
     src: env.j2
     dest: /etc/armadillo/auth/env.list
     mode: '640'
-  notify: "refresh Armadillo auth service"
+  notify: "restart Armadillo auth service"
+
+- name: enable armadillo auth service
+  systemd:
+    name: armadillo-auth
+    enabled: yes
+    masked: no

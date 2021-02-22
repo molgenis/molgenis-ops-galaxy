@@ -1,4 +1,4 @@
 ---
-- name: refresh RServer
+- name: restart RServer
   command: /usr/share/rserver/refresh.bash
-  listen: "refresh Rserver service"
+  listen: "restart Rserver service"

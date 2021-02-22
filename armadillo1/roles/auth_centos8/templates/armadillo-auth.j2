@@ -1,0 +1,16 @@
+[Unit]
+Description=Armadillo Authentication Container
+After=podman.service
+Requires=podman.service
+
+[Service]
+TimeoutStartSec=0
+Restart=always
+ExecStartPre=-/usr/bin/podman stop %n
+ExecStartPre=-/usr/bin/podman rm %n
+ExecStartPre=/usr/bin/podman pull molgenis/molgenis-auth:{{ image.version }}
+ExecStart=/usr/bin/podman run --rm --name %n --env-file /etc/armadillo/auth/env.list --network host molgenis/molgenis-auth:{{ image.version }}
+
+[Install]
+WantedBy=multi-user.target
+

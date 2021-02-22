@@ -22,14 +22,14 @@
     src: armadillo-auth.j2
     dest: /etc/systemd/system/armadillo-auth.service
     mode: '640'
-  notify: "refresh Armadillo auth service"
+  notify: "restart Armadillo auth service"
 
 - name: generate env.list for Armadillo auth
   template:
     src: env.j2
     dest: /etc/armadillo/auth/env.list
     mode: '640'
-  notify: "refresh Armadillo auth service"
+  notify: "restart Armadillo auth service"
 
 - name: enable armadillo auth service
   systemd:
