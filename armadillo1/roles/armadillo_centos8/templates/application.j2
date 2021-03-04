@@ -8,13 +8,10 @@ spring:
     oauth2:
       resourceserver:
         jwt: 
-          issuer-uri: '{{ oauth.issuer_uri }}'
+          issuer-uri: {{ oauth.issuer_uri }}
         opaquetoken:
-          client-id: '{{ oauth.client_id }}'
+          client-id: {{ oauth.client_id }}
     user:
-      roles: 
-       - SU
-      name: {{ username }}
       password: {{ password }}
 
 datashield:

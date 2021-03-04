@@ -4,8 +4,8 @@ After=syslog.target
 
 [Service]
 User=armadillo
-Workingdirectory=/usr/share/armadillo
-ExecStart=/bin/java -jar -Xmx{{ memory.xmx }} -Xms{{ memory.xms }} /usr/share/armadillo/armadillo.jar --logging.file.name=/var/log/armadillo/armadillo.log --spring.config.location=file:/etc/armadillo/application.yml
+WorkingDirectory=/usr/share/armadillo
+ExecStart=/bin/java -jar -Xmx{{ memory.xmx }} -Xms{{ memory.xms }} /usr/share/armadillo/armadillo.jar --logging.file.name=/var/log/armadillo/armadillo.log --spring.config.additional-location=file:/etc/armadillo/application.yml
 SuccessExitStatus=143
 Restart=always
 RestartSec=5
