@@ -21,4 +21,4 @@ galaxy_info:
 allow_duplicates: true
 
 dependencies:
-  - { role: docker_debian10 }
+  - { role: docker_ubuntu20 }
