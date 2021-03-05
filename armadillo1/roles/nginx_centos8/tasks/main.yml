@@ -64,19 +64,19 @@
     line: "{{ ansible_default_ipv4.address }}"
     state: present
 
-- name: install Armadillo config
+- name: install Armadillo configuration
   template:
     src: armadillo.j2
     dest: /etc/nginx/default.d/armadillo.conf
   notify: "restart nginx"
 
-- name: install storage config
+- name: install storage configuration
   template:
     src: storage.j2
     dest: /etc/nginx/default.d/storage.conf
   notify: "restart nginx"
 
-- name: install Armadillo config
+- name: install Armadillo authentication configuration
   template:
     src: auth.j2
     dest: /etc/nginx/default.d/auth.conf
