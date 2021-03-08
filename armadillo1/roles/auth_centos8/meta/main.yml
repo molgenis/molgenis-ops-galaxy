@@ -1,8 +1,8 @@
 ---
 galaxy_info:
-  role_name: rserver
+  role_name: auth
   author: Sido Haakma
-  description: RServer implementation used to perform local analysis and send aggregated results to the Aramdillo
+  description: Armadillo authentication implementation used allow people to use the Armadillo suite
   company: MOLGENIS
 
   license: LGPL
@@ -25,4 +25,3 @@ allow_duplicates: true
 
 dependencies:
   - { role: podman_centos8 }
-    

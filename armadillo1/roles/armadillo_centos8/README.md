@@ -21,6 +21,8 @@ Role Variables
 | oauth.client_id       | yes      | xxxxx.xxxxxxx.xxxxxxx             | na       | The client ID of the authentication server                                                |
 | memory.xmx            | yes      | 1024mb                            | na       | Maximum of memory claimed by the Armadillo                                                |
 | memory.xms            | yes      | 512mb                             | na       | Reserved memory claimed by the Armadillo                                                |
+| username              | yes      | admin                             | na       | Root username of the application (using basic-auth)                                              |
+| password              | yes      | admin                             | na       | Root password of the application (using basic-auth)                                              |
 
 Dependencies
 ------------
@@ -41,8 +43,18 @@ You can include the armadillo-role by adding the yaml block below.
       roles:
        - role: armadillo
          vars:
-           armadillo:
-             version: 0.0.15
+           version: 0.0.15
+             storage:
+               access_key: "{{ minio.access_key }}"
+               secret_key: "{{ minio.secret_key }}"
+               host: "{{ minio.host }}"
+               port: "{{ minio.port }}"
+             memory:
+               xmx: 1024m
+               xms: 512m
+            username: admin
+            password: admin
+            
            
 License
 -------

@@ -1,8 +1,9 @@
+MINIO_DOMAIN={{ domain }}
 MINIO_VOLUMES={{ data }}
 MINIO_ACCESS_KEY={{ access_key }}
 MINIO_SECRET_KEY={{ secret_key }}
 {% if oauth is defined %}  
-MINIO_IDENTITY_OPENID_CONFIG_URL={{ oauth.issuer_uri }}{{ oauth.discovery_path }}
+MINIO_IDENTITY_OPENID_CONFIG_URL={{ oauth.issuer_uri }}/{{ oauth.discovery_path }}
 MINIO_IDENTITY_OPENID_CLIENT_ID={{ oauth.client_id }}
 MINIO_BROWSER=on
 {%endif %}

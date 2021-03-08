@@ -14,18 +14,6 @@
     dest: /usr/share/rserver/
     mode: '750'
 
-- name: generate start.bash for RServer
-  template:
-    src: start.j2
-    dest: /usr/share/rserver/start.bash
-    mode: '0750'
-
-- name: generate install.bash for RServer
-  template:
-    src: install.j2
-    dest: /usr/share/rserver/install.bash
-    mode: '0750'
-
 - name: add logfiles for RServer
   file:
     path: /var/log/rserver/rserver-combined.log
@@ -34,10 +22,22 @@
     modification_time: preserve
     access_time: preserve
 
+- name: generate install.bash for RServer
+  template:
+    src: install.j2
+    dest: /usr/share/rserver/install.bash
+    mode: '0750'
+
+- name: generate start.bash for RServer
+  template:
+    src: start.j2
+    dest: /usr/share/rserver/start.bash
+    mode: '0750'
+  notify: "refresh Rserver service"
+
 - name: generate env.list for RServer
   template:
     src: env.j2
     dest: /etc/rserver/env.list
     mode: '640'
-  notify:
-    - "refresh Rserver service"
+  notify: "refresh Rserver service"

@@ -1,0 +1,4 @@
+---
+- name: refresh Armadillo auth
+  command: /usr/share/armadillo/auth/refresh.bash
+  listen: "refresh Armadillo auth service"

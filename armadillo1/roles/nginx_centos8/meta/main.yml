@@ -1,8 +1,8 @@
 ---
 galaxy_info:
-  role_name: rserver
+  role_name: nginx
   author: Sido Haakma
-  description: RServer implementation used to perform local analysis and send aggregated results to the Aramdillo
+  description: A webserver to proxy the different services on the Armadillo deployment
   company: MOLGENIS
 
   license: LGPL
@@ -21,8 +21,4 @@ galaxy_info:
 
   galaxy_tags: [federation]
 
-allow_duplicates: true
-
-dependencies:
-  - { role: podman_centos8 }
-    
+dependencies: []
