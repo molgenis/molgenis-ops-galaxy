@@ -1,4 +1,9 @@
 ---
+- name: install epel-release (includes nginx)
+  dnf:
+    state: present
+    name: epel-release
+
 - name: install nginx
   dnf:
     state: present
@@ -35,18 +40,16 @@
 
 - name: add robots configuration directory
   file:
-    path: "{{ item }}"
+    path: /etc/nginx/global.d
     owner: nginx
     group: nginx
     state: directory
     mode: '755'
-  with_items:
-    - /etc/nginx/robots.d
 
 - name: add in memory robots.conf to nginx
   copy:
     src: robots.conf
-    dest: /etc/nginx/robots.d/robots.conf
+    dest: /etc/nginx/global.d/robots.conf
   notify: "restart nginx"
 
 - name: customize nginx.conf
@@ -61,19 +64,19 @@
     line: "{{ ansible_default_ipv4.address }}"
     state: present
 
-- name: install Armadillo config
+- name: install Armadillo configuration
   template:
     src: armadillo.j2
     dest: /etc/nginx/default.d/armadillo.conf
   notify: "restart nginx"
 
-- name: install storage config
+- name: install storage configuration
   template:
     src: storage.j2
     dest: /etc/nginx/default.d/storage.conf
   notify: "restart nginx"
 
-- name: install Armadillo config
+- name: install Armadillo authentication configuration
   template:
     src: auth.j2
     dest: /etc/nginx/default.d/auth.conf

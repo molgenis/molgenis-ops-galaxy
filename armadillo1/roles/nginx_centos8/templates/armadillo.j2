@@ -1,6 +1,8 @@
 server {
     listen 80;
     server_name {{ domains.armadillo }};
+    
+    include /etc/nginx/global.d/*.conf;
 
     location / {
         proxy_set_header X-Real-IP $remote_addr;
@@ -16,6 +18,4 @@ server {
 
         proxy_pass http://localhost:8080;
     }
-
-    include /etc/nginx/robots.d/*.conf;
 }
