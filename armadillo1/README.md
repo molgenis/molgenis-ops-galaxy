@@ -207,6 +207,11 @@ The general variables in the playbook.yml need to be amended to set the configur
       client_secret: xxxxxxx-xxxxxx-xxxxxxx
 ...
 ```
+
+#### Domains to expose
+There are three domains that need to be opened up for the cohort.
+
+
 #### Usage
 When you created the correct files and filled in the right variables you need to perform a series of commands to bootstrap the server with the Armadillo.
 
@@ -214,10 +219,11 @@ Make sure the following domains are whitlisted in on your deploy environment.
 
 * dl.minio.io
 * auth.molgenis.org
-* registry-1.docker.io
+* *.docker.io
+* *.redhat.io
+* *.access.redhat.com
 * production.cloudflare.docker.com
 * registry.molgenis.org
-* registry.access.redhat.com
 * galaxy.ansible.com
 * ansible-galaxy.s3.amazonaws.com
 * raw.githubusercontent.com

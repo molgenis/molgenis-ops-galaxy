@@ -1,0 +1,21 @@
+---
+galaxy_info:
+  role_name: java_ubuntu20
+  author: Sido Haakma
+  description: Java installation for java-based applications, such as tomcat, elasticsearch and the armadillo
+  company: MOLGENIS
+
+  license: LGPL
+
+  min_ansible_version: 1.2
+
+  github_branch: master
+
+  platforms:
+  - name: Ubuntu
+    versions:
+    - 20.04
+
+  galaxy_tags: [federation, molgenis]
+
+dependencies: []

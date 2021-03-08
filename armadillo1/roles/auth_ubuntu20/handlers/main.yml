@@ -1,0 +1,4 @@
+---
+- name: refresh Armadillo auth
+  command: systemctl restart armadillo-auth
+  listen: "refresh Armadillo auth service"

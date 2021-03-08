@@ -35,13 +35,11 @@
 
 - name: add robots configuration directory
   file:
-    path: "{{ item }}"
+    path: /etc/nginx/robots.d
     owner: nginx
     group: nginx
     state: directory
     mode: '755'
-  with_items:
-    - /etc/nginx/robots.d
 
 - name: add in memory robots.conf to nginx
   copy:
