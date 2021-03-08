@@ -1,6 +1,0 @@
----
-- name: restart Minio
-  systemd:
-    name: minio
-    state: restarted
-  listen: "restart Minio service"
