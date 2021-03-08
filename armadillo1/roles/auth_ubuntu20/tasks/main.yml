@@ -3,7 +3,7 @@
   file:
     path: "{{ item }}"
     state: directory
-    mode: '0644'
+    mode: '0755'
   with_items:
     - /usr/share/armadillo/auth
     - /var/log/armadillo/auth
@@ -36,3 +36,4 @@
     name: armadillo-auth
     enabled: yes
     masked: no
+

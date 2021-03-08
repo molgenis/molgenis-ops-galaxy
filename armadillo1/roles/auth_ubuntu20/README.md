@@ -6,7 +6,7 @@ Installs the authentication manager on the Armadillo server
 
 Requirements
 ------------
-This role requires Podman on the CentOS 7.x or 8.x base image. Then the rserver will run out of the box.
+This role requires Podman on the Ubuntu 20.x base image. Then the rserver will run out of the box.
 
 Role Variables
 --------------
@@ -27,7 +27,7 @@ Role Variables
 Dependencies
 ------------
 This is dependant on the following list of roles:
-- podman_centos8
+- auth_ubuntu20
 
 Example Playbook
 ----------------
@@ -45,6 +45,9 @@ You can include the rserver-role by adding the yaml block below.
              issuer_uri: https://auth.local
              api_token: xxxx-xxxxx
            base_url: armadillo-auth.local
+           resources:
+             memory: 512m
+             cpu: 1
            
 License
 -------
