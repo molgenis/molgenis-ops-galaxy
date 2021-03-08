@@ -6,7 +6,7 @@ This installs the Minio file storage on your system. This allows you to store da
 
 Requirements
 ------------
-The only requirement you need a clean base image of CentOS => 8.
+The only requirement you need a clean base image of CentOS 7 or 8, Ubuntu 20 or Debian 10.
 
 Role Variables
 --------------
@@ -20,14 +20,6 @@ Role Variables
 | oauth.issuer_uri      | yes      | https://auth.example.org          | na       | The plain url of the authentication server (can be FusionAuth or Keycloack for example            |
 | oauth.discovery_path  | yes      | /.well-known/openid-configuration | na       | Discovery path to extract information like the endpoints and other relevant details of the server |
 | oauth.client_id       | yes      | xxxxx.xxxxxxx.xxxxxxx             | na       | The client ID of the authentication server                                                        |
-
-Dependencies
-------------
-
-This is dependant on the following list of roles:
-- minio
-- httpd
-- httpd_virtualhost
 
 Example Playbook
 ----------------
