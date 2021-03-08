@@ -141,30 +141,27 @@ The playbook is the base of the rollout for the Armadillo. The contents of the p
       client_secret: xxxxxxx-xxxxxxxxx-xxxxxxxxxx
 
   roles:
-    - role: molgenis.molgenis8.preinstall_centos8
-    - role: molgenis.molgenis8.java_centos8
-    - role: molgenis.molgenis8.minio_centos8
+    - role: molgenis.molgenis8.java_#os#
+    - role: molgenis.molgenis8.minio
       vars:
         access_key: "{{ minio.access_key }}"
         secret_key: "{{ minio.secret_key }}"
-    - role: podman_centos8
-    - role: nginx_centos8
+    - role: podman_#os#
+    - role: nginx_#os#
       vars:
         domains: 
           armadillo: armadillo.local
           storage: armadillo-storage.local
           auth: armadillo-auth.local
-    - role: rserver_centos8
+    - role: rserver_#os#
       vars:
         debug: true
         image:
           version: 1.8.0
-          repo: molgenis
-          name: rserver
         resources:
           memory: 6g
           cpu: 2
-    - role: armadillo_centos8
+    - role: armadillo
       vars:
         version: 0.0.15
         storage:
@@ -175,12 +172,10 @@ The playbook is the base of the rollout for the Armadillo. The contents of the p
         memory:
           xmx: 1024m
           xms: 512m
-    - role: auth_centos8
+    - role: auth_#os#
       vars:
         image: 
           version: latest
-          repo: molgenis
-          name: molgenis-auth
         api_token: xxxxxxxxxxxxxxxxx
         base_url: armadillo-auth.local
         resources:
@@ -207,6 +202,11 @@ The general variables in the playbook.yml need to be amended to set the configur
       client_secret: xxxxxxx-xxxxxx-xxxxxxx
 ...
 ```
+
+#### Domains to expose
+There are three domains that need to be opened up for the cohort.
+
+
 #### Usage
 When you created the correct files and filled in the right variables you need to perform a series of commands to bootstrap the server with the Armadillo.
 
@@ -214,10 +214,11 @@ Make sure the following domains are whitlisted in on your deploy environment.
 
 * dl.minio.io
 * auth.molgenis.org
-* registry-1.docker.io
+* *.docker.io
+* *.redhat.io
+* *.access.redhat.com
 * production.cloudflare.docker.com
 * registry.molgenis.org
-* registry.access.redhat.com
 * galaxy.ansible.com
 * ansible-galaxy.s3.amazonaws.com
 * raw.githubusercontent.com
