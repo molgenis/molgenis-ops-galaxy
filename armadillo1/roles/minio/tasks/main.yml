@@ -26,7 +26,7 @@
     owner: minio
     group: minio
     state: directory
-    mode: '755'
+    mode: '0755'
   with_items:
     - /var/lib/minio
     - /var/lib/minio/data
@@ -45,7 +45,7 @@
     dest: /etc/default/minio
     owner: minio
     group: minio
-    mode: '755'
+    mode: '0755'
   notify:
     - "restart Minio service"
 

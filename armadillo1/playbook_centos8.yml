@@ -39,8 +39,6 @@
         debug: false
         image:
           version: 1.8.0
-          repo: molgenis
-          name: rserver
         resources:
           memory: 6g
           cpu: 2
@@ -63,7 +61,7 @@
           version: latest
           repo: molgenis
           name: molgenis-auth
-        api_token: xxxxxxxxxxxxxxxxxxxx
+        api_token: xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
         base_url: http://armadillo-auth.local:8080
         resources:
           memory: 512m

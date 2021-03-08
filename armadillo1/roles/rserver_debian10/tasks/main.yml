@@ -3,7 +3,7 @@
   file:
     path: "{{ item }}"
     state: directory
-    mode: '755'
+    mode: '0644'
   with_items:
     - /var/log/rserver
     - /etc/rserver
@@ -12,14 +12,14 @@
   template:
     src: rserver.j2
     dest: /etc/systemd/system/rserver.service
-    mode: '640'
+    mode: '0644'
   notify: "restart Rserver service"
 
 - name: generate env.list for rserver
   template:
     src: env.j2
     dest: /etc/rserver/env.list
-    mode: '640'
+    mode: '0644'
   notify: "restart Rserver service"
 
 - name: enable rserver service

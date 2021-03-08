@@ -1,4 +1,9 @@
 ---
+- name: install epel-release (includes nginx)
+  dnf:
+    state: present
+    name: epel-release
+
 - name: install nginx
   dnf:
     state: present

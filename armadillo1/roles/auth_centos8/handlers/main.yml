@@ -1,4 +1,4 @@
 ---
 - name: restart Armadillo auth
-  command: /usr/share/armadillo/auth/refresh.bash
+  command: systemctl restart armadillo-auth
   listen: "restart Armadillo auth service"
