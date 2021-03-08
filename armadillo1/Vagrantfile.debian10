@@ -2,8 +2,8 @@ Vagrant.configure("2") do |config|
   config.vm.define "armadillo" do |udef|
     udef.vm.hostname = "armadillo-storage.local"
   end
-  config.vm.box = "centos/8"
-  config.vm.box_version = "2011.0"
+  config.vm.box = "debian/buster64"
+  config.vm.box_version = "10.4.0"
   config.vm.network "forwarded_port", guest: 80, host: 8080
   config.vm.provider "virtualbox" do |vb|
     vb.gui = false
@@ -12,7 +12,7 @@ Vagrant.configure("2") do |config|
   end
   config.vm.provision "ansible" do |ansible|
     ansible.limit = "all"
-    ansible.playbook = "playbook_centos8.yml"
+    ansible.playbook = "playbook_debian10.yml"
     ansible.verbose = false
   end
 end
