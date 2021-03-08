@@ -6,7 +6,7 @@ This installs the Java JDK environment on your system. This allows you to tun ap
 
 Requirements
 ------------
-The only requirement you need a clean base image of CentOS => 8.
+The only requirement you need a clean base image of Debian => 10.
 
 Role Variables
 --------------
@@ -23,7 +23,7 @@ You can include the minio-role by adding the yaml block below.
 
     - hosts: all
       roles:
-       - role: java_centos8
+       - role: java_debian10
          vars:
            version: 11
                    

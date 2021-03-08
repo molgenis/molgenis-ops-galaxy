@@ -2,11 +2,11 @@ Java
 =========
 This installs the Java JDK environment on your system. This allows you to tun applications like MOLGENIS and the Armadillo.
 
-[![Ansible Galaxy](https://img.shields.io/badge/ansible-galaxy-java-blue.svg)](https://galaxy.ansible.com/molgenis/molgenis8/)
+[![Ansible Galaxy](https://img.shields.io/badge/ansible--galaxy-java-blue.svg)](https://galaxy.ansible.com/molgenis/molgenis8/)
 
 Requirements
 ------------
-The only requirement you need a clean base image of CentOS => 8.
+The only requirement you need a clean base image of Ubuntu => 20.
 
 Role Variables
 --------------
@@ -23,7 +23,7 @@ You can include the minio-role by adding the yaml block below.
 
     - hosts: all
       roles:
-       - role: java_centos8
+       - role: java_ubuntu20
          vars:
            version: 11
                    
