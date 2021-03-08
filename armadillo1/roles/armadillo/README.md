@@ -6,7 +6,7 @@ This installs the Armadillo service on your system. It installs Java and creates
 
 Requirements
 ------------
-The armadillo-role is based upon a clean CentOS 8.x image. It's dependencies are described below.
+The armadillo-role is based upon a clean CentOS 8.x, Ubuntu 20.x or Debian 10.x image. It's dependencies are described below.
 
 Role Variables
 --------------
@@ -27,9 +27,10 @@ Role Variables
 Dependencies
 ------------
 This is dependant on the following list of roles:
-- minio
-- httpd
-- rserver
+- minio_#os#
+- nginx_#os#
+- rserver_#os#
+- java_#os#
 
 Example Playbook
 ----------------
