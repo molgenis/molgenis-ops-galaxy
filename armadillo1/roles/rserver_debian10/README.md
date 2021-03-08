@@ -6,7 +6,7 @@ Installs the RServer which does the actual analysis.
 
 Requirements
 ------------
-This role requires Podman on the CentOS base image. Then the rserver will run out of the box.
+This role requires Podman on the Debian 10.x base image. Then the rserver will run out of the box.
 
 Role Variables
 --------------
@@ -22,7 +22,7 @@ Role Variables
 Dependencies
 ------------
 This is dependant on the following list of roles:
-- podman_centos8
+- rserver_debian10
 
 Example Playbook
 ----------------
