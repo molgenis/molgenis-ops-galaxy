@@ -1,8 +1,8 @@
 ---
 galaxy_info:
-  role_name: podman
+  role_name: docker_ubuntu20
   author: Sido Haakma
-  description: Podman used to run docker images on a Redhat/CentOS system
+  description: Docker used to run containers on the OS
   company: MOLGENIS
 
   license: LGPL
@@ -12,12 +12,9 @@ galaxy_info:
   github_branch: master
 
   platforms:
-   - name: CentOS
+   - name: Ubuntu
      versions:
-     - 8
-   - name: RHEL
-     versions:
-     - 8
+     - 20.04
 
   galaxy_tags: [federation]
 

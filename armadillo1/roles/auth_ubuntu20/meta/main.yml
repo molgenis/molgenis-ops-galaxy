@@ -1,6 +1,6 @@
 ---
 galaxy_info:
-  role_name: auth
+  role_name: auth_ubuntu20
   author: Sido Haakma
   description: Armadillo authentication implementation used allow people to use the Armadillo suite
   company: MOLGENIS
@@ -12,9 +12,9 @@ galaxy_info:
   github_branch: master
 
   platforms:
-   - name: Debian
+   - name: Ubuntu
      versions:
-     - 10.04
+     - 20.04
   
   galaxy_tags: [federation]
 

@@ -2,7 +2,7 @@ Authentication manager
 =========
 Installs the authentication manager on the Armadillo server
 
-[![Ansible Galaxy](https://img.shields.io/badge/ansible--galaxy-auth-blue.svg)](https://galaxy.ansible.com/molgenis/armadillo1/)
+[![Ansible Galaxy](https://img.shields.io/badge/ansible-galaxy-auth-blue.svg)](https://galaxy.ansible.com/molgenis/armadillo1/)
 
 Requirements
 ------------
@@ -35,7 +35,7 @@ You can include the rserver-role by adding the yaml block below.
 
     - hosts: all
       roles:
-       - role: auth
+       - role: auth_ubuntu20
          vars:
            image:
              version: 0.2.0
@@ -43,7 +43,7 @@ You can include the rserver-role by adding the yaml block below.
              client_id: xxxxx-xxxxx
              client_secret: xxxx-xxxxx
              issuer_uri: https://auth.local
-             api_token: xxxx-xxxxx
+           api_token: xxxx-xxxxx
            base_url: armadillo-auth.local
            resources:
              memory: 512m

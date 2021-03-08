@@ -2,7 +2,7 @@ RServer
 =========
 Installs the RServer which does the actual analysis. 
 
-[![Ansible Galaxy](https://img.shields.io/badge/ansible--galaxy-rserver-blue.svg)](https://galaxy.ansible.com/molgenis/armadillo1/)
+[![Ansible Galaxy](https://img.shields.io/badge/ansible-galaxy-rserver-blue.svg)](https://galaxy.ansible.com/molgenis/armadillo1/)
 
 Requirements
 ------------
@@ -30,11 +30,11 @@ You can include the rserver-role by adding the yaml block below.
 
     - hosts: all
       roles:
-       - role: rserver
+       - role: rserver_debian10
          vars:
            debug: false
            image:
-             version: 1.8.0
+             version: 1.9.0
              repo: rserver
              
            

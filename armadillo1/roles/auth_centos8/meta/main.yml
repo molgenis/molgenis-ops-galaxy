@@ -1,6 +1,6 @@
 ---
 galaxy_info:
-  role_name: auth
+  role_name: auth_centos8
   author: Sido Haakma
   description: Armadillo authentication implementation used allow people to use the Armadillo suite
   company: MOLGENIS

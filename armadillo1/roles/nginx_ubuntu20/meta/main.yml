@@ -1,6 +1,6 @@
 ---
 galaxy_info:
-  role_name: nginx
+  role_name: nginx_ubuntu20
   author: Sido Haakma
   description: A webserver to proxy the different services on the Armadillo deployment
   company: MOLGENIS

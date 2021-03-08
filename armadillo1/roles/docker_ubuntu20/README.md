@@ -2,7 +2,7 @@ Docker
 =========
 This installs the Docker on your system. This allows you to run Rserver on the system.
 
-[![Ansible Galaxy](https://img.shields.io/badge/ansible--galaxy-docker-blue.svg)](https://galaxy.ansible.com/molgenis/armadillo1/)
+[![Ansible Galaxy](https://img.shields.io/badge/ansible-galaxy-docker-blue.svg)](https://galaxy.ansible.com/molgenis/armadillo1/)
 
 Requirements
 ------------
@@ -14,7 +14,7 @@ No variables are needed for this role.
 
 Dependencies
 ------------
-No direct dependencies for this role
+No direct dependencies for this role.
 
 Example Playbook
 ----------------
@@ -22,7 +22,7 @@ You can include the podman-role by adding the yaml block below.
 
     - hosts: all
       roles:
-       - role: docker_ubuntu10
+       - role: docker_ubuntu20
                    
 License
 -------

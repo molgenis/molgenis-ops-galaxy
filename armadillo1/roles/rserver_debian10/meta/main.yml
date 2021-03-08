@@ -1,6 +1,6 @@
 ---
 galaxy_info:
-  role_name: rserver
+  role_name: rserver_debian10
   author: Sido Haakma
   description: RServer implementation used to perform local analysis and send aggregated results to the Aramdillo
   company: MOLGENIS

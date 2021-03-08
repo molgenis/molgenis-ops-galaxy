@@ -1,6 +1,6 @@
 ---
 galaxy_info:
-  role_name: podman
+  role_name: podman_centos8
   author: Sido Haakma
   description: Podman used to run docker images on a Redhat/CentOS system
   company: MOLGENIS
@@ -15,9 +15,11 @@ galaxy_info:
    - name: CentOS
      versions:
      - 8
+     - 7
    - name: RHEL
      versions:
      - 8
+     - 7
 
   galaxy_tags: [federation]
 

@@ -2,11 +2,11 @@ Nginx
 =========
 This installs the NGINX webserver to proxy the file storage, the armadillo and the authentication manager.
 
-[![Ansible Galaxy](https://img.shields.io/badge/ansible--galaxy-nginx-blue.svg)](https://galaxy.ansible.com/molgenis/armadillo1/)
+[![Ansible Galaxy](https://img.shields.io/badge/ansible-galaxy-nginx-blue.svg)](https://galaxy.ansible.com/molgenis/armadillo1/)
 
 Requirements
 ------------
-The nginx-role is based upon a clean Ubuntu 20.x image. It's dependencies are described below.
+The nginx-role is based upon a clean Debbian 10.x image. It's dependencies are described below.
 
 Role Variables
 --------------
@@ -21,7 +21,7 @@ Dependencies
 This is dependant on the following list of roles:
 - minio
 - armadillo
-- rserver
+- rserver_debian10
 
 Example Playbook
 ----------------
@@ -29,7 +29,7 @@ You can include the armadillo-role by adding the yaml block below.
 
     - hosts: all
       roles:
-       - role: nginx
+       - role: nginx_debian10
          vars:
            domains: 
              armadillo: armadillo.local

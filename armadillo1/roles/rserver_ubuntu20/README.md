@@ -30,7 +30,7 @@ You can include the rserver-role by adding the yaml block below.
 
     - hosts: all
       roles:
-       - role: rserver
+       - role: rserver_ubuntu20
          vars:
            debug: false
            image:

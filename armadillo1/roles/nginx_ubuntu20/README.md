@@ -21,7 +21,7 @@ Dependencies
 This is dependant on the following list of roles:
 - minio
 - armadillo
-- rserver
+- rserver_ubuntu20
 
 Example Playbook
 ----------------
@@ -29,7 +29,7 @@ You can include the armadillo-role by adding the yaml block below.
 
     - hosts: all
       roles:
-       - role: nginx
+       - role: nginx_ubuntu20
          vars:
            domains: 
              armadillo: armadillo.local

@@ -35,7 +35,7 @@ You can include the rserver-role by adding the yaml block below.
 
     - hosts: all
       roles:
-       - role: auth
+       - role: auth_centos8
          vars:
            image:
              version: 0.2.0
@@ -43,8 +43,11 @@ You can include the rserver-role by adding the yaml block below.
              client_id: xxxxx-xxxxx
              client_secret: xxxx-xxxxx
              issuer_uri: https://auth.local
-             api_token: xxxx-xxxxx
+           api_token: xxxx-xxxxx
            base_url: armadillo-auth.local
+           resources:
+             memory: 512m
+             cpu: 1
            
 License
 -------

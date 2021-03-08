@@ -1,6 +1,6 @@
 ---
 galaxy_info:
-  role_name: rserver
+  role_name: rserver_centos8
   author: Sido Haakma
   description: RServer implementation used to perform local analysis and send aggregated results to the Aramdillo
   company: MOLGENIS
@@ -15,9 +15,11 @@ galaxy_info:
    - name: CentOS
      versions:
      - 8
+     - 7
    - name: RHEL
      versions:
      - 8
+     - 7
 
   galaxy_tags: [federation]
 
