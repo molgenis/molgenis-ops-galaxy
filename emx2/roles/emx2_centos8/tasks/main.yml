@@ -1,0 +1,47 @@
+---
+- name: Create molgenis uid
+  user:
+    name: molgenis
+    group: molgenis
+
+- name: setup molgenis folders
+  file:
+    path: /usr/local/share/molgenis/
+    state: directory
+    mode: u=rwx,g=rwx,o=rx
+    owner: molgenis
+    group: molgenis
+
+- name: install jar MOLGENIS EMX2
+  get_url:
+    url: https://github.com/molgenis/molgenis-emx2/releases/download/v{{ molgenis.version }}/molgenis-emx2-{{ molgenis.version }}-all.jar
+    mode: '0660'
+    owner: molgenis
+    group: molgenis
+    dest: /usr/local/share/molgenis/molgenis.jar
+
+- name: Install extra molgenis crossrestore tools
+  copy:
+    src:  "{{ item }}"
+    dest: /usr/local/share/molgenis/tools/
+    owner: root
+    group: root
+    mode: '0700'
+  with_items:
+    - molgenis_crossrestore_cleanup.bash
+    - molgenis_chown_data.bash
+    - utils.bash
+    - molgenis_cleanup.bash
+
+- name: Install molgenis sudoers file
+  copy:
+    src: molgenis
+    dest: /etc/sudoers.d/
+    mode: '0440'
+
+- name: start and enable Armadillo (at boot time)
+  systemd:
+    name: armadillo
+    enabled: yes
+    state: started
+

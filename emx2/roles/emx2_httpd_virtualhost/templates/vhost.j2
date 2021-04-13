@@ -1,0 +1,14 @@
+<VirtualHost {{ ansible_default_ipv4.address }}:80>
+   ServerAdmin admin@molgenis.org
+
+   ServerName {{ inventory_hostname }}
+   ServerAlias {{ inventory_hostname }}
+
+   SSLProxyEngine on
+   RewriteEngine on
+
+   # proxy to molgenis emx2
+   ProxyPass / http://localhost:8080/
+   ProxyPassReverse / http://localhost:8080/
+
+</VirtualHost>

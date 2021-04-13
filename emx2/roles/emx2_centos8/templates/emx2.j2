@@ -1,0 +1,14 @@
+[Unit]
+Description=MOLGENIS EMX2 data platform
+After=syslog.target
+
+[Service]
+User=molgenis
+WorkingDirectory=/usr/share/molgenis
+ExecStart=/bin/java -jar -Xmx{{ memory.xmx }} -Xms{{ memory.xms }} /usr/share/molgenis/molgenis.jar --logging.file.name=/var/log/molgenis/molgenis.log
+SuccessExitStatus=143
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,14 @@
+---
+- name: restart apache httpd
+  service:
+    name: httpd
+    state: restarted
+  when: ansible_distribution == "CentOS" and ansible_distribution_major_version == '6'
+  listen: "restart web services"
+
+- name: restart apache httpd with systemctl
+  systemd:
+    name: httpd
+    state: restarted
+  when: ansible_distribution == "CentOS" and ansible_distribution_major_version > '6'
+  listen: "restart web services"
