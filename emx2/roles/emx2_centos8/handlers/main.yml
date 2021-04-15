@@ -1,6 +1,6 @@
 ---
-- name: restart molgenis-emx2
+- name: restart molgenis
   systemd:
-    name: molgenis-emx2
+    name: molgenis
     state: restarted
   listen: "restart molgenis-emx2 service"

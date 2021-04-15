@@ -39,9 +39,9 @@
     dest: /etc/sudoers.d/
     mode: '0440'
 
-- name: start and enable Armadillo (at boot time)
+- name: start and enable MOLGENIS EMX2 (at boot time)
   systemd:
-    name: armadillo
+    name: molgenis
     enabled: yes
     state: started
 

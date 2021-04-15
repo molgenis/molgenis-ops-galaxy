@@ -2,9 +2,7 @@
 
 This ansible script
 * installs postgresql13 including molgenis database setup
-* installs httpd
 * downloads molgenis-emx2-x.y.z.jar file & configures start/stop as a service on port 8080
-* sets up virtual host 
 
 ## Usage
 You can use Vagrant to boot up the image. Please execute (from the `emx2` directory):
