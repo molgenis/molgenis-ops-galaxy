@@ -1,0 +1,56 @@
+---
+- name: install Minio service file
+  get_url:
+    url: https://raw.githubusercontent.com/minio/minio-service/master/linux-systemd/minio.service
+    dest: /etc/systemd/system/minio.service
+    mode: '0644'
+
+- name: replace minio-user in service
+  replace:
+    path: /etc/systemd/system/minio.service
+    regexp: 'minio-user'
+    replace: "minio"
+
+- name: add Minio group
+  group:
+    name: minio
+
+- name: add Minio user
+  user:
+    name: minio
+    group: minio
+
+- name: create Minio directories
+  file:
+    path: "{{ item }}"
+    owner: minio
+    group: minio
+    state: directory
+    mode: '0755'
+  with_items:
+    - /var/lib/minio
+    - /var/lib/minio/data
+
+- name: install Minio
+  get_url:
+    url: https://dl.min.io/server/minio/release/linux-amd64/archive/minio.RELEASE.{{ version }}
+    dest: /usr/local/bin/minio
+    mode: '0755'
+    owner: minio
+    group: minio
+
+- name: install Minio configuration
+  template:
+    src: minio.j2
+    dest: /etc/default/minio
+    owner: minio
+    group: minio
+    mode: '0755'
+  notify:
+    - "restart Minio service"
+
+- name: start and enable Minio (at boot time)
+  systemd:
+    name: minio
+    enabled: yes
+    state: started

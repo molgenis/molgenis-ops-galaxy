@@ -1,0 +1,13 @@
+---
+- name: Install Java for Debian and Ubuntu
+  apt:
+    state: present
+    name: openjdk-{{ version }}-jre-headless
+  when: ansible_os_family == "Debian" or ansible_os_family == "Ubuntu"
+
+- name: Install Java for CentOS and RedHat
+  yum:
+    state: present
+    name:
+      - java-{{ version }}-openjdk-devel
+  when: ansible_os_family == "RedHat" or ansible_os_family == "CentOS"

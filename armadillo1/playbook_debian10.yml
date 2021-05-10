@@ -17,24 +17,24 @@
       client_secret: xxxxxxx-xxxxxxxxx-xxxxxxxx
 
   roles:
-    - role: molgenis.molgenis8.java_debian10
+    - role: java
       vars:
         version: 11
-    - role: molgenis.molgenis8.minio
+    - role: minio
       vars:
         version: 2021-02-19T04-38-02Z
         data: /var/lib/minio/data
         domain: armadillo-storage.local:8080
         access_key: "{{ minio.access_key }}"
         secret_key: "{{ minio.secret_key }}"
-    - role: docker_debian10
+    - role: docker
     - role: nginx_debian10
       vars:
         domains: 
           armadillo: armadillo.local
           storage: armadillo-storage.local
           auth: armadillo-auth.local
-    - role: rserver_debian10
+    - role: rserver
       vars:
         debug: true
         image:
@@ -55,7 +55,7 @@
           xms: 512m
         username: admin
         password: admin
-    - role: auth_debian10
+    - role: auth
       vars:
         image: 
           version: latest
