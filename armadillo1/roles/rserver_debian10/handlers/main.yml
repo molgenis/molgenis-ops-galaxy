@@ -1,4 +1,0 @@
----
-- name: restart RServer
-  command: systemctl restart rserver
-  listen: "restart Rserver service"

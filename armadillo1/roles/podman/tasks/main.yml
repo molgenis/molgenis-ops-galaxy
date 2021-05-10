@@ -1,0 +1,16 @@
+---
+- name: install dnf package manager
+  yum:
+    state: present
+    name: dnf
+  when:
+    - ansible_distribution == "CentOS" or - ansible_distribution == "RedHat"
+    - ansible_facts['distribution_major_version'] == "7"
+
+- name: install Podman (docker for CentOS or RedHat)
+  dnf:
+    state: present
+    name:
+      - podman
+      - podman-docker
+      - container-selinux

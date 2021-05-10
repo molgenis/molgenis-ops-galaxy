@@ -1,0 +1,16 @@
+[Unit]
+Description=Armadillo Authentication Container
+After={{ docker.service }}
+Requires={{ docker.service }}
+
+[Service]
+TimeoutStartSec=0
+Restart=always
+ExecStartPre=-/usr/bin/{{ docker.service }} stop %n
+ExecStartPre=-/usr/bin/{{ docker.service }} rm %n
+ExecStartPre=/usr/bin/{{ docker.service }} pull molgenis/molgenis-auth:{{ image.version }}
+ExecStart=/usr/bin/{{ docker.service }} run --rm --name %n --env-file /etc/armadillo/auth/env.list --network host molgenis/molgenis-auth:{{ image.version }}
+
+[Install]
+WantedBy=multi-user.target
+
