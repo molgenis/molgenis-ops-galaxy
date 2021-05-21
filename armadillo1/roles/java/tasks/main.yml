@@ -1,14 +1,23 @@
 ---
-- name: Install Java for Debian and Ubuntu
+- name: Install Java for Debian family
   apt:
     state: present
     name: openjdk-{{ version }}-jre-headless
     update_cache: yes
-  when: ansible_os_family == "Debian" or ansible_os_family == "Ubuntu"
+  when: ansible_os_family == "Debian"
 
-- name: Install Java for CentOS and RedHat
+- name: Install dnf and epel for RedHat family
   yum:
     state: present
-    name:
-      - java-{{ version }}-openjdk-devel
-  when: ansible_os_family == "RedHat" or ansible_os_family == "CentOS"
+    name: 
+      - dnf
+      - epel-release
+    update_cache: yes
+  when: ansible_os_family == "RedHat"
+
+- name: Install Java for RedHat family
+  dnf:
+    state: present
+    name: java-{{ version }}-openjdk-devel
+    update_cache: yes
+  when: ansible_os_family == "RedHat"  

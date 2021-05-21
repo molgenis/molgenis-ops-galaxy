@@ -1,15 +1,22 @@
 ---
+- name: check if Minio service file exists
+  stat: 
+    path: /etc/systemd/system/minio.service
+  register: minio_service
+
 - name: install Minio service file
   get_url:
     url: https://raw.githubusercontent.com/minio/minio-service/master/linux-systemd/minio.service
     dest: /etc/systemd/system/minio.service
     mode: '0644'
+  when: not minio_service.stat.exists
 
 - name: replace minio-user in service
   replace:
     path: /etc/systemd/system/minio.service
     regexp: 'minio-user'
     replace: "minio"
+  when: not minio_service.stat.exists
 
 - name: add Minio group
   group:

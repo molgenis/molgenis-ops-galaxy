@@ -11,7 +11,7 @@ RestartSec=90
 Restart=always
 ExecStop=-/usr/bin/{{ docker_service }} stop %n
 ExecStop=-/usr/bin/{{ docker_service }} rm %n
-ExecStart=/usr/bin/{{ docker_service }} run --rm --name %n --env-file /etc/rserver/env.list --network host molgenis/rserver:{{ image.version }}
+ExecStart=/usr/bin/{{ docker_service }} run --rm --name %n --env-file /etc/rserver/env.list --network host {{ image.repo }}/{{ image.name }}:{{ image.version }}
 
 [Install]
 WantedBy=multi-user.target

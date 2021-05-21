@@ -1,7 +1,7 @@
 ---
 - name: determine docker service based upon OS
   set_fact:
-    docker_service: "{% if ansible_os_family == 'Ubuntu' or ansible_os_family == 'Debian'%}docker{% endif %}{% if ansible_os_family == 'CentOS' or ansible_os_family == 'RedHat'%}podman{% endif %}"
+    docker_service: "{% if ansible_os_family == 'Debian'%}docker{% endif %}{% if ansible_os_family == 'RedHat'%}podman{% endif %}"
 
 - name: create folder for Armadillo auth logs
   file:
@@ -34,6 +34,20 @@
     dest: /etc/armadillo/auth/env.list
     mode: '0644'
   notify: "restart Armadillo-auth service"
+
+- name: log into DockerHub
+  docker_login:
+    username: "{{ dockerhub.username }}"
+    password: "{{ dockerhub.password }}"
+  when: dockerhub.enabled and ansible_os_family == 'Debian'
+
+- name: pull Armadillo auth image
+  docker_image:
+    name: "{{ image.repo }}/{{ image.name }}"
+    tag: "{{ image.version }}"
+    state: present 
+    source: pull
+  when: ansible_os_family == 'Debian'
 
 - name: enable armadillo auth service
   systemd:

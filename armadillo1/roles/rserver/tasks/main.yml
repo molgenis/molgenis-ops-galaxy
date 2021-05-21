@@ -1,7 +1,7 @@
 ---
 - name: determine docker service based upon OS
   set_fact:
-    docker_service: "{% if ansible_os_family == 'Ubuntu' or ansible_os_family == 'Debian'%}docker{% endif %}{% if ansible_os_family == 'CentOS' or ansible_os_family == 'RedHat'%}podman{% endif %}"
+    docker_service: "{% if ansible_os_family == 'Debian'%}docker{% endif %}{% if ansible_os_family == 'RedHat'%}podman{% endif %}"
 
 - name: create folder for RServer logs
   file:
@@ -12,21 +12,35 @@
     - /var/log/rserver
     - /etc/rserver
 
-- name: generate systemd file
+- name: generate systemd file for RServer
   template:
     src: rserver.j2
     dest: /etc/systemd/system/rserver.service
     mode: '0644'
   notify: "restart Rserver service"
 
-- name: generate env.list for rserver
+- name: generate env.list for RServer
   template:
     src: env.j2
     dest: /etc/rserver/env.list
     mode: '0644'
   notify: "restart Rserver service"
 
-- name: enable rserver service
+- name: log into DockerHub
+  docker_login:
+    username: "{{ dockerhub.username }}"
+    password: "{{ dockerhub.password }}"
+  when: dockerhub.enabled and ansible_os_family == 'Debian'
+
+- name: pull RServer image
+  docker_image:
+    name: "{{ image.repo }}/{{ image.name }}"
+    tag: "{{ image.version }}"
+    state: present 
+    source: pull
+  when: ansible_os_family == 'Debian'
+
+- name: enable RServer service
   systemd:
     name: rserver
     enabled: yes
