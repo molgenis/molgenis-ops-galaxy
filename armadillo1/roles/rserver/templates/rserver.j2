@@ -1,15 +1,17 @@
 [Unit]
 Description=Armadillo RServer Container
-After={{ docker.service }}
-Requires={{ docker.service }}
+After={{ docker_service }}
+Requires={{ docker_service }}
+StartLimitIntervalSec=120
+StartLimitBurst=3
 
 [Service]
-TimeoutStartSec=0
+TimeoutStartSec=120
+RestartSec=90
 Restart=always
-ExecStartPre=-/usr/bin/{{ docker.service }} stop %n
-ExecStartPre=-/usr/bin/{{ docker.service }} rm %n
-ExecStartPre=/usr/bin/{{ docker.service }} pull molgenis/rserver:{{ image.version }}
-ExecStart=/usr/bin/{{ docker.service }} run --rm --name %n --env-file /etc/rserver/env.list --network host molgenis/rserver:{{ image.version }}
+ExecStop=-/usr/bin/{{ docker_service }} stop %n
+ExecStop=-/usr/bin/{{ docker_service }} rm %n
+ExecStart=/usr/bin/{{ docker_service }} run --rm --name %n --env-file /etc/rserver/env.list --network host molgenis/rserver:{{ image.version }}
 
 [Install]
 WantedBy=multi-user.target

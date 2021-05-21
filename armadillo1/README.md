@@ -1,9 +1,7 @@
 # Armadillo suite
 Deploy the Armadillo suite.
 
-
 ## Usage 
-
 
 ### Development and testing
 To test the deployment we are using Vagrant to deploy the ansible playbook locally on your machine. You will need some prerequisites to deploy locally.
@@ -126,12 +124,14 @@ The playbook is the base of the rollout for the Armadillo. The contents of the p
 - hosts: all
   become: true
   become_user: root
+  # if installing on local machine
+  # connection: local
   gather_facts: true
   vars:
     ci: false
     minio:
-      access_key: molgenis
-      secret_key: molgenis
+      access_key: xxxxxxx
+      secret_key: xxxxxxx
       port: 9000
       host: http://localhost
     oauth:
@@ -141,29 +141,32 @@ The playbook is the base of the rollout for the Armadillo. The contents of the p
       client_secret: xxxxxxx-xxxxxxxxx-xxxxxxxxxx
 
   roles:
-    - role: molgenis.molgenis8.java_#os#
-    - role: molgenis.molgenis8.minio
+    - role: java
+    - role: minio
       vars:
         access_key: "{{ minio.access_key }}"
         secret_key: "{{ minio.secret_key }}"
-    - role: podman_#os#
+    - role: podman
+      when: ansible_distribution == "CentOS" or ansible_distribution == "RedHat"
+    - role: docker
+      when: ansible_distribution == "Debian" or ansible_distribution == "Ubuntu"
     - role: nginx_#os#
       vars:
         domains: 
           armadillo: armadillo.local
           storage: armadillo-storage.local
           auth: armadillo-auth.local
-    - role: rserver_#os#
+    - role: rserver
       vars:
         debug: true
         image:
-          version: 1.8.0
+          version: 2.0.0
         resources:
           memory: 6g
           cpu: 2
     - role: armadillo
       vars:
-        version: 0.0.15
+        version: 0.0.17
         storage:
           access_key: "{{ minio.access_key }}"
           secret_key: "{{ minio.secret_key }}"
@@ -172,7 +175,9 @@ The playbook is the base of the rollout for the Armadillo. The contents of the p
         memory:
           xmx: 1024m
           xms: 512m
-    - role: auth_#os#
+        username: xxxxx
+        password: xxxxx
+    - role: auth
       vars:
         image: 
           version: latest
@@ -196,12 +201,20 @@ The general variables in the playbook.yml need to be amended to set the configur
 ```yaml
 ...
  oauth:
-      issuer_uri: https://auth.molgenis.org
-      discovery_path: /.well-known/openid-configuration
-      client_id: xxxxxxx-xxxxxx-xxxxxxx
-      client_secret: xxxxxxx-xxxxxx-xxxxxxx
+  issuer_uri: https://auth.molgenis.org
+  discovery_path: /.well-known/openid-configuration
+  client_id: xxxxxxx-xxxxxx-xxxxxxx
+  client_secret: xxxxxxx-xxxxxx-xxxxxxx
 ...
+
+ - role: auth
+      vars:
+        ...
+        api_token: xxxxxxxxxxxxxxxxx
+        ...
 ```
+
+
 
 #### Domains to expose
 There are three domains that need to be opened up for the cohort.

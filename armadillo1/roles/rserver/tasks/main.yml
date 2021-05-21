@@ -1,7 +1,7 @@
 ---
 - name: determine docker service based upon OS
   set_fact:
-    docker.service: "{% if ansible_os_family == 'Ubuntu' or ansible_os_family == 'Debian'%}docker{% endif %}{% if ansible_os_family == 'CentOS' or ansible_os_family == 'RedHat'%}podman{% endif %}"
+    docker_service: "{% if ansible_os_family == 'Ubuntu' or ansible_os_family == 'Debian'%}docker{% endif %}{% if ansible_os_family == 'CentOS' or ansible_os_family == 'RedHat'%}podman{% endif %}"
 
 - name: create folder for RServer logs
   file:

@@ -30,7 +30,4 @@ galaxy_info:
   galaxy_tags: [federation]
 
 allow_duplicates: true
-
-dependencies:
-  - { role: podman_centos8 }
     

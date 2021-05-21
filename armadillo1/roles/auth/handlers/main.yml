@@ -1,4 +1,11 @@
 ---
+- name: restart systemd daemon
+  ansible.builtin.systemd:
+    daemon_reload: yes
+  listen: "restart Armadillo-auth service"
+
 - name: restart Armadillo auth
-  command: systemctl restart armadillo-auth
-  listen: "restart Armadillo auth service"
+  ansible.builtin.systemd:
+    name: armadillo-auth
+    state: restarted
+  listen: "restart Armadillo-auth service"

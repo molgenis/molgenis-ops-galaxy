@@ -1,5 +1,4 @@
 ---
-
 - name: remove old versions of docker
   apt:
     state: absent

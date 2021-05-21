@@ -1,5 +1,3 @@
 collections:
-  - name: molgenis.molgenis8
-    version: 1.2.0
   - name: molgenis.armadillo
     version: 1.3.0

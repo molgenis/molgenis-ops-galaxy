@@ -1,7 +1,7 @@
 ---
-- name: determine docker service for Ubuntu and Debian
+- name: determine docker service based upon OS
   set_fact:
-    docker.service: "{% if ansible_os_family == 'Ubuntu' or ansible_os_family == 'Debian'%}docker{% endif %}{% if ansible_os_family == 'CentOS' or ansible_os_family == 'RedHat'%}podman{% endif %}"
+    docker_service: "{% if ansible_os_family == 'Ubuntu' or ansible_os_family == 'Debian'%}docker{% endif %}{% if ansible_os_family == 'CentOS' or ansible_os_family == 'RedHat'%}podman{% endif %}"
 
 - name: create folder for Armadillo auth logs
   file:
@@ -26,14 +26,14 @@
     src: armadillo-auth.j2
     dest: /etc/systemd/system/armadillo-auth.service
     mode: '0644'
-  notify: "restart Armadillo auth service"
+  notify: "restart Armadillo-auth service"
 
 - name: generate env.list for Armadillo auth
   template:
     src: env.j2
     dest: /etc/armadillo/auth/env.list
     mode: '0644'
-  notify: "restart Armadillo auth service"
+  notify: "restart Armadillo-auth service"
 
 - name: enable armadillo auth service
   systemd:

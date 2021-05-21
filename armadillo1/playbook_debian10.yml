@@ -6,8 +6,8 @@
   vars:
     ci: false
     minio:
-      access_key: molgenis
-      secret_key: molgenis
+      access_key: xxxxxxx
+      secret_key: xxxxxxx
       port: 9000
       host: http://localhost
     oauth:
@@ -27,7 +27,10 @@
         domain: armadillo-storage.local:8080
         access_key: "{{ minio.access_key }}"
         secret_key: "{{ minio.secret_key }}"
+    - role: podman
+      when: ansible_distribution == "CentOS" or ansible_distribution == "RedHat"
     - role: docker
+      when: ansible_distribution == "Debian" or ansible_distribution == "Ubuntu"
     - role: nginx_debian10
       vars:
         domains: 
@@ -36,15 +39,15 @@
           auth: armadillo-auth.local
     - role: rserver
       vars:
-        debug: true
+        debug: false
         image:
-          version: 1.8.0
+          version: 2.0.1
         resources:
           memory: 6g
           cpu: 2
     - role: armadillo
       vars:
-        version: 0.0.15
+        version: 0.0.17
         storage:
           access_key: "{{ minio.access_key }}"
           secret_key: "{{ minio.secret_key }}"
@@ -53,8 +56,8 @@
         memory:
           xmx: 1024m
           xms: 512m
-        username: admin
-        password: admin
+        username: xxxxxxx
+        password: xxxxxxx
     - role: auth
       vars:
         image: 

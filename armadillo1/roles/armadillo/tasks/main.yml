@@ -39,7 +39,7 @@
     owner: armadillo
     group: armadillo
     mode: '755'
-  notify: "restart armadillo service"
+  notify: "restart Armadillo service"
 
 - name: start and enable Armadillo (at boot time)
   systemd:

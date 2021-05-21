@@ -28,6 +28,9 @@
         access_key: "{{ minio.access_key }}"
         secret_key: "{{ minio.secret_key }}"
     - role: podman
+      when: ansible_distribution == "CentOS" or ansible_distribution == "RedHat"
+    - role: docker
+      when: ansible_distribution == "Debian" or ansible_distribution == "Ubuntu"
     - role: nginx_centos8
       vars:
         domains: 
@@ -38,7 +41,7 @@
       vars:
         debug: false
         image:
-          version: 1.8.0
+          version: 2.0.1
         resources:
           memory: 6g
           cpu: 2
@@ -53,8 +56,8 @@
         memory:
           xmx: 1024m
           xms: 512m
-        username: admin
-        password: admin
+        username: xxxxxxx
+        password: xxxxxxx
     - role: auth
       vars:
         image: 
