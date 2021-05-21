@@ -219,6 +219,33 @@ The general variables in the playbook.yml need to be amended to set the configur
 #### Domains to expose
 There are three domains that need to be opened up for the cohort.
 
+*For researchers*
+
+- cohort.armadillo.domain.org
+
+*For datamanagers*
+
+- cohort-auth.armadillo.domain.org
+- cohort-storage.armadillo.domain.org
+
+The top one needs to be opened up to this ip-address: `129.125.243.25/32` with port number `443`.
+
+##### Setup SSL
+Below you can find an exmaple configuration for NGINX. The **bold** blocks show what you need to change. NGINX expects the fullchain. So PEM format in short.
+<pre>
+server {
+    <b>listen 443 ssl;</b>
+    server_name domain.org;
+
+    <b>ssl_certificate /etc/ssl/certs/star.domain.org.crt;</b>
+    <b>ssl_certificate_key /etc/ssl/certs/star.domain.org.key;</b>
+
+    include /etc/nginx/globals.d/*.conf;
+    
+    ...
+
+}
+</pre>
 
 #### Usage
 When you created the correct files and filled in the right variables you need to perform a series of commands to bootstrap the server with the Armadillo.
