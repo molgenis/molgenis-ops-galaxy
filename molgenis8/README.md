@@ -1,6 +1,17 @@
 # Ansible Collection - molgenis.molgenis8
 
 ## Usage
+
+### Usage to image remote server through ssh and ansible
+'ansible-galaxy collection install molgenis.molgenis8'
+You can use ansible to setup up a basic molgenis server on a remote CentOS8 machine. iFirst create an inventory.ini file withh the FQDNs of your target hosts. Then execute the next command (from the `molgenis8` directory):
+'ansible-playbook playbook.yml' 
+
+To upgrade an remote hoste to a newer molgenis verion, you can run:
+'ansible-playbook playbook_upgrade.yml' 
+
+
+### Usage locally
 You can use Vagrant to boot up the image. Please execute (from the `molgenis8` directory):
 
 `vagrant up`
