@@ -20,8 +20,6 @@
     enablerepo: pgdg11
   notify: "restart postgresql"
 
-
-
 # Be adviced: this check fails on MOLGENIS instances with extra storage
 # Data directory is mounted in /data instead of /var/lib/pgsql/11/data
 - name: Check if /var/lib/pgsql/11/data/global exists, if not initdb

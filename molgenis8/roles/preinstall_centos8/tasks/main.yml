@@ -29,7 +29,7 @@
 - name: clear versionlocks
   command: yum versionlock clear
   args:
-    warn: false # set warn=false to prevent warning about better using yum module
+    warn: false        # set warn=false to prevent warning about better using yum module
   changed_when: false
 
 - name: install a ntpd/chronyd when needed
@@ -43,7 +43,7 @@
   changed_when: false
   when: not ci|bool
 
-- name: enable selinux 
+- name: enable selinux
   selinux:
     policy: targeted
     state: enforcing

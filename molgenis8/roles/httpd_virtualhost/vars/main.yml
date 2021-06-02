@@ -54,7 +54,7 @@ frontend:
       - 'search-all@0.1.4'
       - 'security@0.2.0'
       - 'settings@2.0.2'
-    '8.3.10': 
+    '8.3.10':
       - 'app-manager@0.1.4'
       - 'core-ui@0.3.1'
       - 'legacy-lib@1.1.2'
@@ -67,7 +67,7 @@ frontend:
       - 'search-all@0.1.4'
       - 'security@0.2.0'
       - 'settings@2.0.2'
-    '8.3.11': 
+    '8.3.11':
       - 'app-manager@0.1.4'
       - 'core-ui@0.3.1'
       - 'legacy-lib@1.1.2'
@@ -80,7 +80,7 @@ frontend:
       - 'search-all@0.1.4'
       - 'security@0.2.0'
       - 'settings@2.0.2'
-    '8.4.1': 
+    '8.4.1':
       - 'app-manager@0.1.4'
       - 'core-ui@0.3.1'
       - 'legacy-lib@1.1.2'
@@ -93,7 +93,7 @@ frontend:
       - 'search-all@0.1.4'
       - 'security@0.2.0'
       - 'settings@2.0.2'
-    '8.4.2': 
+    '8.4.2':
       - 'app-manager@0.1.4'
       - 'core-ui@0.3.1'
       - 'legacy-lib@1.1.2'
@@ -105,8 +105,8 @@ frontend:
       - 'scripts@2.0.2'
       - 'search-all@0.1.4'
       - 'security@0.2.0'
-      - 'settings@2.0.2'      
-    '8.4.5': 
+      - 'settings@2.0.2'   
+    '8.4.5':
       - 'app-manager@0.1.4'
       - 'core-ui@0.3.1'
       - 'legacy-lib@1.1.2'
@@ -120,7 +120,7 @@ frontend:
       - 'security@0.2.0'
       - 'settings@2.0.2'
       - 'data-explorer@0.35.0'
-    '8.5.1': 
+    '8.5.1':
       - 'app-manager@1.0.0'
       - 'core-ui@0.3.2'
       - 'legacy-lib@1.1.2'
@@ -164,4 +164,3 @@ frontend:
       - 'data-explorer@3.10.4'
       - 'molgenis-theme@2.1.1'
       - 'navigator@0.3.0'
-

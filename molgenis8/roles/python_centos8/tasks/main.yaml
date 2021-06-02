@@ -6,7 +6,7 @@
       - python3-pip
     state: present
 
-- name: Install packages python-setuptools for python 3 # do we still need this
+- name: Install packages python-setuptools for python 3
   yum:
     state: present
     name: python3-setuptools
