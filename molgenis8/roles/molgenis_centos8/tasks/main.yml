@@ -43,7 +43,7 @@
 
 - name: Install extra molgenis crossrestore tools
   copy:
-    src:  "{{ item }}"
+    src: "{{ item }}"
     dest: /usr/local/share/molgenis/tools/
     owner: root
     group: root
@@ -59,4 +59,3 @@
     src: molgenis
     dest: /etc/sudoers.d/
     mode: '0440'
-

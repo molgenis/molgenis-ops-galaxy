@@ -42,19 +42,19 @@
 
 - name: create softlink to tomcat logs
   file:
-    src:  /usr/share/apache-tomcat-9.0.39/logs
+    src: /usr/share/apache-tomcat-9.0.39/logs
     dest: /var/log/tomcat
     state: link
 
 - name: create softlink to tomcat conf
   file:
-    src:  /usr/share/apache-tomcat-9.0.39/conf
+    src: /usr/share/apache-tomcat-9.0.39/conf
     dest: /etc/tomcat
     state: link
 
 - name: create softlink to tomcat shortname
   file:
-    src:  /usr/share/apache-tomcat-9.0.39
+    src: /usr/share/apache-tomcat-9.0.39
     dest: /usr/share/tomcat
     state: link
 
@@ -64,11 +64,13 @@
     dest: /usr/share/apache-tomcat-9.0.39/conf/server.xml
     group: molgenis
     owner: tomcat
+    mode: '0644'
 
 - name: Install systemctl services file for tomcat
   template:
     src: tomcat.j2
     dest: /etc/systemd/system/tomcat.service
+    mode: '0644'
 
 - name: Start and enable Tomcat (at boot time)
   systemd:

@@ -4,21 +4,14 @@ galaxy_info:
   author: Sido Haakma
   description: Minio file storage, used to get data into the federated platform
   company: MOLGENIS
-
   license: LGPL
-
   min_ansible_version: 1.2
-
-  github_branch: master
-
   platforms:
-   - name: CentOS
-     versions:
-     - 8
-   - name: RHEL
-     versions:
-     - 8
-
-  galaxy_tags: [federation, molgenis]
-
+    - name: CentOS
+      versions:
+        - 8
+    - name: RHEL
+      versions:
+        - 8
+  galaxy_tags: [molgenis]
 dependencies: []

@@ -2,5 +2,5 @@
 - name: Use versionlock plugin for tools, Tomcat, Java and Elasticsearch
   command: yum versionlock elasticsearch filebeat
   args:
-    warn: false # set warn=false to prevent warning about better using yum module
+    warn: false        # set warn=false to prevent warning about better using yum module
   changed_when: false

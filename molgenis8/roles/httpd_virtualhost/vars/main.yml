@@ -54,7 +54,7 @@ frontend:
       - 'search-all@0.1.4'
       - 'security@0.2.0'
       - 'settings@2.0.2'
-    '8.3.10': 
+    '8.3.10':
       - 'app-manager@0.1.4'
       - 'core-ui@0.3.1'
       - 'legacy-lib@1.1.2'
@@ -67,7 +67,7 @@ frontend:
       - 'search-all@0.1.4'
       - 'security@0.2.0'
       - 'settings@2.0.2'
-    '8.3.11': 
+    '8.3.11':
       - 'app-manager@0.1.4'
       - 'core-ui@0.3.1'
       - 'legacy-lib@1.1.2'
@@ -80,7 +80,7 @@ frontend:
       - 'search-all@0.1.4'
       - 'security@0.2.0'
       - 'settings@2.0.2'
-    '8.4.1': 
+    '8.4.1':
       - 'app-manager@0.1.4'
       - 'core-ui@0.3.1'
       - 'legacy-lib@1.1.2'
@@ -93,7 +93,7 @@ frontend:
       - 'search-all@0.1.4'
       - 'security@0.2.0'
       - 'settings@2.0.2'
-    '8.4.2': 
+    '8.4.2':
       - 'app-manager@0.1.4'
       - 'core-ui@0.3.1'
       - 'legacy-lib@1.1.2'
@@ -105,8 +105,8 @@ frontend:
       - 'scripts@2.0.2'
       - 'search-all@0.1.4'
       - 'security@0.2.0'
-      - 'settings@2.0.2'      
-    '8.4.5': 
+      - 'settings@2.0.2'
+    '8.4.5':
       - 'app-manager@0.1.4'
       - 'core-ui@0.3.1'
       - 'legacy-lib@1.1.2'
@@ -120,7 +120,7 @@ frontend:
       - 'security@0.2.0'
       - 'settings@2.0.2'
       - 'data-explorer@0.35.0'
-    '8.5.1': 
+    '8.5.1':
       - 'app-manager@1.0.0'
       - 'core-ui@0.3.2'
       - 'legacy-lib@1.1.2'
@@ -134,4 +134,33 @@ frontend:
       - 'security@0.4.2'
       - 'settings@4.0.2'
       - 'data-explorer@0.35.0'
-
+    '8.6.3':
+      - 'app-manager@1.0.0'
+      - 'core-ui@0.3.2'
+      - 'legacy-lib@1.1.3'
+      - 'data-row-edit@5.1.1'
+      - 'metadata-manager@0.1.8'
+      - 'navigator@0.2.1'
+      - 'one-click-importer@0.1.4'
+      - 'questionnaires@3.1.0'
+      - 'scripts@3.1.2'
+      - 'searchall@0.1.5'
+      - 'security@0.4.3'
+      - 'settings@4.1.2'
+      - 'data-explorer@2.1.2'
+      - 'molgenis-theme@1.11.1'
+    '8.7.2':
+      - 'app-manager@1.0.1'
+      - 'core-ui@0.3.3'
+      - 'legacy-lib@1.1.4'
+      - 'data-row-edit@5.3.1'
+      - 'metadata-manager@0.1.10'
+      - 'one-click-importer@0.1.6'
+      - 'questionnaires@3.3.2'
+      - 'scripts@3.3.2'
+      - 'searchall@0.1.7'
+      - 'security@0.5.0'
+      - 'settings@4.3.2'
+      - 'data-explorer@3.10.4'
+      - 'molgenis-theme@2.1.1'
+      - 'navigator@0.3.0'

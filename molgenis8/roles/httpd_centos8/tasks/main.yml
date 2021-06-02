@@ -98,5 +98,6 @@
   when: not ci|bool and httpd.setup|bool
   notify: "restart web services"
 
-- include_role:
+- name: virtualhostsetup
+  include_role:
     name: httpd_virtualhost
