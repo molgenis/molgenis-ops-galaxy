@@ -105,7 +105,7 @@ frontend:
       - 'scripts@2.0.2'
       - 'search-all@0.1.4'
       - 'security@0.2.0'
-      - 'settings@2.0.2'   
+      - 'settings@2.0.2'
     '8.4.5':
       - 'app-manager@0.1.4'
       - 'core-ui@0.3.1'
