@@ -12,17 +12,21 @@ galaxy_info:
   github_branch: master
 
   platforms:
-   - name: CentOS
-     versions:
-     - 8
-   - name: RHEL
-     versions:
-     - 8
+    - name: Ubuntu
+      versions:
+        - 20
+    - name: Debian
+      versions:
+        - 10
+    - name: CentOS
+      versions:
+        - 8
+        - 7
+    - name: RedHat
+      versions:
+        - 8
+        - 7
 
   galaxy_tags: [federation]
 
 allow_duplicates: true
-
-dependencies:
-  - { role: podman_centos8 }
-    

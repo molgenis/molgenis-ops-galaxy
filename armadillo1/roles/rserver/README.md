@@ -2,11 +2,11 @@ RServer
 =========
 Installs the RServer which does the actual analysis. 
 
-[![Ansible Galaxy](https://img.shields.io/badge/ansible--galaxy-rserver-blue.svg)](https://galaxy.ansible.com/molgenis/armadillo1/)
+[![Ansible Galaxy](https://img.shields.io/badge/ansible-galaxy-rserver-blue.svg)](https://galaxy.ansible.com/molgenis/armadillo1/)
 
 Requirements
 ------------
-This role requires Podman on the CentOS base image. Then the rserver will run out of the box.
+This role requires Podman on the CentOS or RedHat >= 7.x, Ubuntu >= 20 or Debian >= 10 base image. Then the rserver will run out of the box.
 
 Role Variables
 --------------
@@ -19,11 +19,6 @@ Role Variables
 | resources.memory        | no       | 6g       | na       | Maximum memory claim on the host                  |
 | resources.cpu           | no       | 2        | na       | Maximum CPU claim on the host                     |
 
-Dependencies
-------------
-This is dependant on the following list of roles:
-- podman
-
 Example Playbook
 ----------------
 You can include the rserver-role by adding the yaml block below.
@@ -34,7 +29,7 @@ You can include the rserver-role by adding the yaml block below.
          vars:
            debug: false
            image:
-             version: 1.8.0
+             version: 1.9.0
              repo: rserver
              
            
