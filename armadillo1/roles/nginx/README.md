@@ -2,11 +2,11 @@ Nginx
 =========
 This installs the NGINX webserver to proxy the file storage, the armadillo and the authentication manager.
 
-[![Ansible Galaxy](https://img.shields.io/badge/ansible--galaxy-nginx-blue.svg)](https://galaxy.ansible.com/molgenis/armadillo1/)
+[![Ansible Galaxy](https://img.shields.io/badge/ansible-galaxy-nginx-blue.svg)](https://galaxy.ansible.com/molgenis/armadillo1/)
 
 Requirements
 ------------
-The nginx-role is based upon a clean CentOS 8.x image. It's dependencies are described below.
+The nginx-role is based upon a clean Redhat >= 7.x, Centos >= 7.x, Debian >= 10.x image or Ubuntu >= 20.x. It's dependencies are described below.
 
 Role Variables
 --------------
