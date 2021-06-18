@@ -45,6 +45,7 @@
     state: present
     name: "{{ image.repo }}/{{ image.name }}"
     tag: "{{ image.version }}"
+    source: pull
 
 - name: enable armadillo-auth | Configuration
   systemd:

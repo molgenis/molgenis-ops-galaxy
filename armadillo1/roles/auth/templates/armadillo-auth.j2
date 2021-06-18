@@ -11,7 +11,7 @@ RestartSec=60
 Restart=always
 ExecStop=-/usr/bin/{{ docker_service }} stop %n
 ExecStop=-/usr/bin/{{ docker_service }} rm %n
-ExecStart=/usr/bin/{{ docker_service }} run --rm --name %n --env-file /etc/armadillo/auth/env.list --network host {{ image.repo }}/{{ image.name }}:{{ image.version }} > /var/log/armadillo/auth/auth.log
+ExecStart=/usr/bin/{{ docker_service }} run --rm --name %n --log-driver=journald --env-file /etc/armadillo/auth/env.list --network host {{ image.repo }}/{{ image.name }}:{{ image.version }}
 
 [Install]
 WantedBy=multi-user.target

@@ -9,7 +9,7 @@ StartLimitBurst=3
 TimeoutStartSec=120
 RestartSec=90
 Restart=always
-ExecStart=/usr/bin/{{ docker_service }} run --rm --name %n --env-file /etc/rserver/env.list --network host {{ image.repo }}/{{ image.name }}:{{ image.version }} > /var/log/rserver/rserver.log
+ExecStart=/usr/bin/{{ docker_service }} run --rm --name %n --log-driver=journald --env-file /etc/rserver/env.list --network host {{ image.repo }}/{{ image.name }}:{{ image.version }}
 ExecStop=-/usr/bin/{{ docker_service }} stop %n
 ExecStop=-/usr/bin/{{ docker_service }} rm %n
 
