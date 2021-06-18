@@ -36,9 +36,9 @@
     mode: '0755'
   with_items:
     - /var/lib/minio
-    - /var/lib/minio/data
+    - "{{ data }}"
 
-- name: minio | Configuration
+- name: minio | Installation
   get_url:
     url: https://dl.min.io/server/minio/release/linux-amd64/archive/minio.RELEASE.{{ version }}
     dest: /usr/local/bin/minio
