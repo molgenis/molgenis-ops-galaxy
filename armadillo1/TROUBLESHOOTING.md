@@ -2,6 +2,9 @@
 
 ## All os's
 
+### Collection could not be installed
+If the following error occurs `collections was NOT installed successfully: Content has no field named 'owner'` you need to upgrade 
+
 ### Running Rserver container results in error code: 127
 You need to stop the rserver service.
 `systemctl stop rserver`

@@ -1,93 +1,21 @@
 # Armadillo suite
 Deploy the Armadillo suite.
 
+
+> Requirements
+>
+> Technical resources needed to run your cohort are here. You need a server / virtual machine (from now on VM) to deploy the 
+> Armadillo. The specifications of the VM are the following depending on the participant size of the cohort you are running.
+>
+> | Participants  | Memory (in GB) | Diskspace (in GB) | CPU cores |
+> | ------------- | -------------- | ----------------- | --------- |
+> | 0-20.000      | 8              | 100               | 4         |
+> | 20.000-70.000 | 16             | 100               | 4         |
+> | 70.000>       | 32             | 150               | 8         |
+
+
 ## Usage 
-
-### Development and testing
-To test the deployment we are using Vagrant to deploy the ansible playbook locally on your machine. You will need some prerequisites to deploy locally.
-
-* [Vagrant](https://www.vagrantup.com/downloads)
-* [Virtualbox](https://www.virtualbox.org/wiki/Downloads)
-* [git](https://git-scm.com/downloads)
-
-
-#### Creating the configuration
-Create a file called: `Vagrant` looking like this:
-
-```javascript
-Vagrant.configure("2") do |config|
-  config.vm.box = "centos/8"
-  config.vm.box_version = "2011.0"
-  config.vm.network "forwarded_port", guest: 80, host: 8080
-  config.vm.provider "virtualbox" do |vb|
-    vb.gui = false
-    vb.customize ['modifyvm', :id, '--graphicscontroller', 'none']
-    vb.customize ['modifyvm', :id, '--audio', 'none']
-  end
-  config.vm.provision "ansible" do |ansible|
-    ansible.limit = "all"
-    ansible.playbook = "i_setup_armadillo_1.yml"
-    ansible.verbose = false
-  end
-end
-```
-
-Create an file called `playbook.yml` with the content from here: [ansible galaxy content](#creating-playbook.yml).
-
-### Running the VM
-> Caveat for mac!
-Vagrant uses Virtualbox which in turn requires an Oracle kernel extension to work.
-If the installation fails, retry after you enable it in:
-  System Preferences → Security & Privacy → General
-For more information, refer to virtualbox vendor documentation or this [Apple Technical Note](https://developer.apple.com/library/content/technotes/tn2459/_index.html).
-
-#### Installing dependencies
-Before you can deploy, you need to install the dependencies by running
-
-```bash
-> ansible-galaxy install -r requirements.yml
-```
-
-#### Configure secrets
-By default, uses the Armadillo Localhost application in auth.molgenis.org.
-You have to fill in OIDC client secret and auth server api key in `playbook.yml`.
-
-Run: `vagrant up`
-
-When you want to provision:
-
-Update playbook: `vagrant up --provision`
-
-To run a specific operating system please run: `VAGRANT_VAGRANTFILE=Vagrantfile.centos7 vagrant up`.
-Make sure you start clean, so remove leftover initialisations of vagrent by executing `rm -rf .vagrant`.
-
-The vagrant box will bind on port 8080 to the host. If you add this block to the `etc/hosts`-file, the domains 
-in NGINX will resolve.
-
-```
-# To allow vagrant httpd to bind to the internal domains
-127.0.0.1 armadillo.local armadillo-storage.local armadillo-auth.local
-# End section
-``` 
-
-You are done. You can reach both services on:
-
-* Armadillo service to wok with DataSHIELD
-  http://armadillo.local:8080
-* Armadillo storage service to store you files on
-  http://armadillo-storage.local:8080
-* Armadillo authentication service to store you files on
-  http://armadillo-auth.local:8080
-
-Login with:
-
-* username: admin
-* password: admin
-
-Only the storage server has a user interface. The DataSHIELD service works with R only.
-
-## Ansible
-To use Ansible to deploy the stack you need to binaries on your system. You can install Ansible following this [user guide](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html).
+To use Ansible to deploy the stack you need to binaries on your system. You can install Ansible following this [user guide](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html). You need to be sure to run Ansible >- 2.9.
 
 ### Setup
 When you installed ansible you need to create 3 files:
@@ -103,10 +31,8 @@ This file needs to contain the following content.
 
 ```yaml
 collections:
-  - name: molgenis.molgenis8
-    version: 1.1.0
-  - name: molgenis.armadillo1
-    version: 1.0.5
+  - name: molgenis.armadillo
+    version: 1.3.0
 ```
 #### Creating inventory.ini
 Your target host needs to be defined here.
@@ -145,38 +71,37 @@ The playbook is the base of the rollout for the Armadillo. The contents of the p
       password: xxxxxxx
 
   roles:
-    - role: java
-    - role: minio
+    - role: molgenis.armadillo.java
       vars:
+        version: 11
+    - role: molgenis.armadillo.minio
+      vars:
+        version: 2021-02-19T04-38-02Z
+        data: /var/lib/minio/data
+        domain: armadillo-storage.local:8080
         access_key: "{{ minio.access_key }}"
         secret_key: "{{ minio.secret_key }}"
-    - role: podman
+    - role: molgenis.armadillo.podman
       when: ansible_distribution == "CentOS" or ansible_distribution == "RedHat"
-    - role: docker
+    - role: molgenis.armadillo.docker
       when: ansible_distribution == "Debian" or ansible_distribution == "Ubuntu"
-     - role: nginx_debian_family
+    - role: molgenis.armadillo.nginx
       vars:
         domains: 
           armadillo: armadillo.local
           storage: armadillo-storage.local
           auth: armadillo-auth.local
-      when: ansible_os_family == "Debian"
-    - role: nginx_redhat_family
+    - role: molgenis.armadillo.rserver
       vars:
-        domains: 
-          armadillo: armadillo.local
-          storage: armadillo-storage.local
-          auth: armadillo-auth.local
-      when: ansible_os_family == "Redhat"
-    - role: rserver
-      vars:
-        debug: true
+        debug: false
         image:
-          version: 2.0.0
+          version: 2.0.1
+          repo: molgenis
+          name: rserver
         resources:
           memory: 6g
           cpu: 2
-    - role: armadillo
+    - role: molgenis.armadillo.armadillo
       vars:
         version: 0.0.17
         storage:
@@ -189,12 +114,14 @@ The playbook is the base of the rollout for the Armadillo. The contents of the p
           xms: 512m
         username: xxxxx
         password: xxxxx
-    - role: auth
+    - role: molgenis.armadillo.auth
       vars:
         image: 
           version: latest
+          repo: molgenis
+          name: molgenis-auth
         api_token: xxxxxxxxxxxxxxxxx
-        base_url: armadillo-auth.local
+        base_url: http://armadillo-auth.local
         resources:
           memory: 1g
           cpu: 1
@@ -284,16 +211,87 @@ Then install the server with Ansible.
 `ansible-playbook -i inventory.ini ./playbook.yml`
 
 After this the server get's deployed with all the needed configuration.
+### Development and testing
+To test the deployment we are using Vagrant to deploy the ansible playbook locally on your machine. You will need some prerequisites to deploy locally.
 
-# Requirements
+* [Vagrant](https://www.vagrantup.com/downloads)
+* [Virtualbox](https://www.virtualbox.org/wiki/Downloads)
+* [git](https://git-scm.com/downloads)
 
-Technical resources needed to run your cohort are here. You need a server / virtual machine (from now on VM) to deploy the Armadillo. The specifications of the VM are the following depending on the participant size of the cohort you are running.
 
-| Participants  | Memory (in GB) | Diskspace (in GB) | CPU cores |
-| ------------- | -------------- | ----------------- | --------- |
-| 0-20.000      | 8              | 100               | 4         |
-| 20.000-70.000 | 16             | 100               | 4         |
-| 70.000>       | 32             | 150               | 8         |
+#### Creating the configuration
+Create a file called: `Vagrant` looking like this:
 
+```javascript
+Vagrant.configure("2") do |config|
+  config.vm.box = "centos/8"
+  config.vm.box_version = "2011.0"
+  config.vm.network "forwarded_port", guest: 80, host: 8080
+  config.vm.provider "virtualbox" do |vb|
+    vb.gui = false
+    vb.customize ['modifyvm', :id, '--graphicscontroller', 'none']
+    vb.customize ['modifyvm', :id, '--audio', 'none']
+  end
+  config.vm.provision "ansible" do |ansible|
+    ansible.limit = "all"
+    ansible.playbook = "i_setup_armadillo_1.yml"
+    ansible.verbose = false
+  end
+end
+```
+
+Create an file called `playbook.yml` with the content from here: [ansible galaxy content](#creating-playbook.yml).
+
+### Running the VM
+> Caveat for mac!
+Vagrant uses Virtualbox which in turn requires an Oracle kernel extension to work.
+If the installation fails, retry after you enable it in:
+  System Preferences → Security & Privacy → General
+For more information, refer to virtualbox vendor documentation or this [Apple Technical Note](https://developer.apple.com/library/content/technotes/tn2459/_index.html).
+
+#### Installing dependencies
+Before you can deploy, you need to install the dependencies by running
+
+```bash
+> ansible-galaxy install -r requirements.yml
+```
+
+#### Configure secrets
+By default, uses the Armadillo Localhost application in auth.molgenis.org.
+You have to fill in OIDC client secret and auth server api key in `playbook.yml`.
+
+Run: `vagrant up`
+
+When you want to provision:
+
+Update playbook: `vagrant up --provision`
+
+To run a specific operating system please run: `VAGRANT_VAGRANTFILE=Vagrantfile.centos7 vagrant up`.
+Make sure you start clean, so remove leftover initialisations of vagrent by executing `rm -rf .vagrant`.
+
+The vagrant box will bind on port 8080 to the host. If you add this block to the `etc/hosts`-file, the domains 
+in NGINX will resolve.
+
+```
+# To allow vagrant httpd to bind to the internal domains
+127.0.0.1 armadillo.local armadillo-storage.local armadillo-auth.local
+# End section
+``` 
+
+You are done. You can reach both services on:
+
+* Armadillo service to wok with DataSHIELD
+  http://armadillo.local:8080
+* Armadillo storage service to store you files on
+  http://armadillo-storage.local:8080
+* Armadillo authentication service to store you files on
+  http://armadillo-auth.local:8080
+
+Login with:
+
+* username: admin
+* password: admin
+
+Only the storage server has a user interface. The DataSHIELD service works with R only.
 
 
