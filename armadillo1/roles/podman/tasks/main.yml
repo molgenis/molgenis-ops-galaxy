@@ -1,0 +1,15 @@
+---
+- name: dnf | Installation
+  yum:
+    state: present
+    name: dnf
+  when:
+    - ansible_facts['distribution_major_version'] == "7"
+
+- name: podman | Installation
+  dnf:
+    state: present
+    name:
+      - podman
+      - podman-docker
+      - container-selinux
