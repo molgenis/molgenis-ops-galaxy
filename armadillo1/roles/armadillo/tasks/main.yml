@@ -5,7 +5,7 @@
     dest: /etc/systemd/system/armadillo.service
     mode: '755'
 
-- name: add Armadillo group
+- name: add Armadillo group | Configuration
   group:
     name: armadillo
 
@@ -39,7 +39,7 @@
     owner: armadillo
     group: armadillo
     mode: '755'
-  notify: "restart armadillo service"
+  notify: "restart Armadillo service"
 
 - name: start and enable Armadillo (at boot time)
   systemd:
