@@ -14,7 +14,8 @@
 
 - name: install war MOLGENIS
   get_url:
-    url: https://registry.molgenis.org/repository/maven-public/org/molgenis/molgenis-app/{{ molgenis.version }}/molgenis-app-{{ molgenis.version }}.war
+    url: "https://registry.molgenis.org/repository/maven-public/org/molgenis/molgenis-app/\
+      {{ molgenis.version }}/molgenis-app-{{ molgenis.version }}.war"
     mode: '0660'
     owner: molgenis
     group: molgenis
