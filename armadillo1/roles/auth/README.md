@@ -6,7 +6,7 @@ Installs the authentication manager on the Armadillo server
 
 Requirements
 ------------
-This role requires Podman on the CentOS base image. Then the rserver will run out of the box.
+This role requires Podman on the CentOS or RedHat => 7.x, Ubuntu and Debian. Then the authentication server will run out of the box.
 
 Role Variables
 --------------
@@ -23,12 +23,6 @@ Role Variables
 | oauth.client_secret | yes      | xxxx-xxxxxxx-xxxxx                   | na      | Client secret of the authentication server                            |
 | oauth.api_token     | yes      | xxxx-xxxxxxx-xxxxx                   | na      | API token that manages the application on the authentication server   |
 
-
-Dependencies
-------------
-This is dependant on the following list of roles:
-- podman
-
 Example Playbook
 ----------------
 You can include the rserver-role by adding the yaml block below.
@@ -43,8 +37,11 @@ You can include the rserver-role by adding the yaml block below.
              client_id: xxxxx-xxxxx
              client_secret: xxxx-xxxxx
              issuer_uri: https://auth.local
-             api_token: xxxx-xxxxx
+           api_token: xxxx-xxxxx
            base_url: armadillo-auth.local
+           resources:
+             memory: 512m
+             cpu: 1
            
 License
 -------
