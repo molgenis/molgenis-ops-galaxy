@@ -1,0 +1,48 @@
+---
+- name: install Armadillo service file
+  template:
+    src: armadillo.j2
+    dest: /etc/systemd/system/armadillo.service
+    mode: '755'
+
+- name: add Armadillo group | Configuration
+  group:
+    name: armadillo
+
+- name: add Armadillo user
+  user:
+    name: armadillo
+    group: armadillo
+
+- name: create Armadillo directories
+  file:
+    path: "{{ item }}"
+    owner: armadillo
+    group: armadillo
+    state: directory
+    mode: '755'
+  with_items:
+    - /etc/armadillo
+    - /usr/share/armadillo
+    - /var/log/armadillo
+
+- name: install Armadillo
+  get_url:
+    url: https://registry.molgenis.org/repository/maven-releases/org/molgenis/armadillo/{{ version }}/armadillo-{{ version }}.jar
+    dest: /usr/share/armadillo/armadillo.jar
+    mode: '755'
+
+- name: install Armadillo configuration
+  template:
+    src: application.j2
+    dest: /etc/armadillo/application.yml
+    owner: armadillo
+    group: armadillo
+    mode: '755'
+  notify: "restart Armadillo service"
+
+- name: start and enable Armadillo (at boot time)
+  systemd:
+    name: armadillo
+    enabled: yes
+    state: started

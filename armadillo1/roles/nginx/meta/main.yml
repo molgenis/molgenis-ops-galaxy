@@ -1,0 +1,32 @@
+---
+galaxy_info:
+  role_name: nginx
+  author: Sido Haakma
+  description: A webserver to proxy the different services on the Armadillo deployment
+  company: MOLGENIS
+
+  license: LGPL
+
+  min_ansible_version: 1.2
+
+  github_branch: master
+
+  platforms:
+    - name: Debian
+      versions:
+        - 10
+    - name: Ubuntu
+      versions:
+        - 20
+    - name: CentOS
+      versions:
+        - 7
+        - 8
+    - name: RedHat
+      versions:
+        - 7
+        - 8
+
+  galaxy_tags: [federation]
+
+dependencies: []

@@ -1,9 +1,7 @@
 # Armadillo suite
 Deploy the Armadillo suite.
 
-
 ## Usage 
-
 
 ### Development and testing
 To test the deployment we are using Vagrant to deploy the ansible playbook locally on your machine. You will need some prerequisites to deploy locally.
@@ -126,12 +124,14 @@ The playbook is the base of the rollout for the Armadillo. The contents of the p
 - hosts: all
   become: true
   become_user: root
+  # if installing on local machine
+  # connection: local
   gather_facts: true
   vars:
     ci: false
     minio:
-      access_key: molgenis
-      secret_key: molgenis
+      access_key: xxxxxxx
+      secret_key: xxxxxxx
       port: 9000
       host: http://localhost
     oauth:
@@ -139,34 +139,46 @@ The playbook is the base of the rollout for the Armadillo. The contents of the p
       discovery_path: /.well-known/openid-configuration
       client_id: xxxxxxx-xxxxxxxxx-xxxxxxxxxx
       client_secret: xxxxxxx-xxxxxxxxx-xxxxxxxxxx
+    dockerhub:
+      enabled: true
+      username: xxxxxxx
+      password: xxxxxxx
 
   roles:
-    - role: molgenis.molgenis8.preinstall_centos8
-    - role: molgenis.molgenis8.java_centos8
-    - role: molgenis.molgenis8.minio_centos8
+    - role: java
+    - role: minio
       vars:
         access_key: "{{ minio.access_key }}"
         secret_key: "{{ minio.secret_key }}"
-    - role: podman_centos8
-    - role: nginx_centos8
+    - role: podman
+      when: ansible_distribution == "CentOS" or ansible_distribution == "RedHat"
+    - role: docker
+      when: ansible_distribution == "Debian" or ansible_distribution == "Ubuntu"
+     - role: nginx_debian_family
       vars:
         domains: 
           armadillo: armadillo.local
           storage: armadillo-storage.local
           auth: armadillo-auth.local
-    - role: rserver_centos8
+      when: ansible_os_family == "Debian"
+    - role: nginx_redhat_family
+      vars:
+        domains: 
+          armadillo: armadillo.local
+          storage: armadillo-storage.local
+          auth: armadillo-auth.local
+      when: ansible_os_family == "Redhat"
+    - role: rserver
       vars:
         debug: true
         image:
-          version: 1.8.0
-          repo: molgenis
-          name: rserver
+          version: 2.0.0
         resources:
           memory: 6g
           cpu: 2
-    - role: armadillo_centos8
+    - role: armadillo
       vars:
-        version: 0.0.15
+        version: 0.0.17
         storage:
           access_key: "{{ minio.access_key }}"
           secret_key: "{{ minio.secret_key }}"
@@ -175,12 +187,12 @@ The playbook is the base of the rollout for the Armadillo. The contents of the p
         memory:
           xmx: 1024m
           xms: 512m
-    - role: auth_centos8
+        username: xxxxx
+        password: xxxxx
+    - role: auth
       vars:
         image: 
           version: latest
-          repo: molgenis
-          name: molgenis-auth
         api_token: xxxxxxxxxxxxxxxxx
         base_url: armadillo-auth.local
         resources:
@@ -201,12 +213,52 @@ The general variables in the playbook.yml need to be amended to set the configur
 ```yaml
 ...
  oauth:
-      issuer_uri: https://auth.molgenis.org
-      discovery_path: /.well-known/openid-configuration
-      client_id: xxxxxxx-xxxxxx-xxxxxxx
-      client_secret: xxxxxxx-xxxxxx-xxxxxxx
+  issuer_uri: https://auth.molgenis.org
+  discovery_path: /.well-known/openid-configuration
+  client_id: xxxxxxx-xxxxxx-xxxxxxx
+  client_secret: xxxxxxx-xxxxxx-xxxxxxx
 ...
+
+ - role: auth
+      vars:
+        ...
+        api_token: xxxxxxxxxxxxxxxxx
+        ...
 ```
+
+
+
+#### Domains to expose
+There are three domains that need to be opened up for the cohort.
+
+*For researchers*
+
+- cohort.armadillo.domain.org
+
+*For datamanagers*
+
+- cohort-auth.armadillo.domain.org
+- cohort-storage.armadillo.domain.org
+
+The top one needs to be opened up to this ip-address: `129.125.243.25/32` with port number `443`.
+
+##### Setup SSL
+Below you can find an exmaple configuration for NGINX. The **bold** blocks show what you need to change. NGINX expects the fullchain. So PEM format in short.
+<pre>
+server {
+    <b>listen 443 ssl;</b>
+    server_name domain.org;
+
+    <b>ssl_certificate /etc/ssl/certs/star.domain.org.crt;</b>
+    <b>ssl_certificate_key /etc/ssl/certs/star.domain.org.key;</b>
+
+    include /etc/nginx/globals.d/*.conf;
+    
+    ...
+
+}
+</pre>
+
 #### Usage
 When you created the correct files and filled in the right variables you need to perform a series of commands to bootstrap the server with the Armadillo.
 
@@ -214,10 +266,11 @@ Make sure the following domains are whitlisted in on your deploy environment.
 
 * dl.minio.io
 * auth.molgenis.org
-* registry-1.docker.io
+* *.docker.io
+* *.redhat.io
+* *.access.redhat.com
 * production.cloudflare.docker.com
 * registry.molgenis.org
-* registry.access.redhat.com
 * galaxy.ansible.com
 * ansible-galaxy.s3.amazonaws.com
 * raw.githubusercontent.com

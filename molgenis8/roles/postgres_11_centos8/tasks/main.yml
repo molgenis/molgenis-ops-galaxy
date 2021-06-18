@@ -60,10 +60,11 @@
 - name: Create 'molgenis'-user for PostgreSQL
   become: true
   become_user: postgres
+  no_log: true
   postgresql_user:
     name: molgenis
     password: molgenis
-    encrypted: True
+    encrypted: yes
 
 - name: Create database 'molgenis' as PostgreSQL
   become: true
@@ -81,9 +82,13 @@
   become_user: postgres
   command: psql -c 'CREATE SCHEMA IF NOT EXISTS molgenis;'
   when: new_db is changed
+  tags:
+    - skip_ansible_lint
 
 - name: Grant rights to 'molgenis'-user on 'molgenis'-scheme with PSQL
   become: true
   become_user: postgres
   command: psql -c 'GRANT ALL PRIVILEGES ON SCHEMA molgenis TO molgenis;'
   when: new_db is changed
+  tags:
+    - skip_ansible_lint

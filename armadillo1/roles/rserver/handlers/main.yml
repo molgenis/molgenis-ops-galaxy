@@ -1,0 +1,11 @@
+---
+- name: restart systemd daemon
+  ansible.builtin.systemd:
+    daemon_reload: yes
+  listen: "restart Rserver service"
+
+- name: restart RServer
+  ansible.builtin.systemd:
+    name: rserver
+    state: restarted
+  listen: "restart Rserver service"

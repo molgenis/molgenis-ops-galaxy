@@ -1,7 +1,0 @@
-podman run --network=host \
---restart on-failure \
---name=rserver \
---env-file /etc/rserver/env.list \
---memory {{ resources.memory }} \
---detach {{ image.repo }}/{{ image.name }}:{{ image.version }}
-

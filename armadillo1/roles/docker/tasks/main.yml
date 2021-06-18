@@ -1,0 +1,33 @@
+---
+- name: remove old packages | Cleanup
+  apt:
+    state: absent
+    name:
+      - docker
+      - docker-engine
+      - docker.io
+      - containerd
+      - runc
+
+- name: prerequisites | Installation
+  apt:
+    state: present
+    name:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - gnupg-agent
+      - software-properties-common
+
+- name: docker | Repository configuration
+  include_tasks: "{{ ansible_distribution|lower }}.yml"
+
+- name: docker | Installation
+  apt:
+    update_cache: yes
+    state: present
+    name:
+      - docker-ce
+      - docker-ce-cli
+      - python3-docker
+      - containerd.io

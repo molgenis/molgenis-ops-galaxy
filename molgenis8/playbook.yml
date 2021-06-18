@@ -40,7 +40,6 @@
       vars:
         version: 2020-07-02T00-15-09Z
         data: /var/lib/minio/data
-        domain: molgenis.local:8080
         access_key: "{{ minio.access_key }}"
         secret_key: "{{ minio.secret_key }}"
       when: ansible_distribution == "CentOS" and ansible_distribution_major_version == '8'

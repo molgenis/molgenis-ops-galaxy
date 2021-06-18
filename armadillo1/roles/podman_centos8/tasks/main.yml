@@ -1,8 +1,0 @@
----
-- name: install Podman (docker for CentOS)
-  dnf:
-    state: present
-    name:
-      - podman
-      - podman-docker
-      - container-selinux
