@@ -9,7 +9,6 @@ StartLimitBurst=3
 TimeoutStartSec=90
 RestartSec=60
 Restart=always
-ExecStartPre=/usr/bin/{{ docker_service }} pull {{ image.repo }}/{{ image.name }}:{{ image.version }}
 ExecStop=-/usr/bin/{{ docker_service }} stop %n
 ExecStop=-/usr/bin/{{ docker_service }} rm %n
 ExecStart=/usr/bin/{{ docker_service }} run --rm --name %n --env-file /etc/armadillo/auth/env.list --network host {{ image.repo }}/{{ image.name }}:{{ image.version }} > /var/log/armadillo/auth/auth.log

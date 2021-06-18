@@ -40,6 +40,12 @@
   no_log: true
   when: dockerhub.enabled
 
+- name: pull the image | Installation
+  docker_image:
+    state: present
+    name: "{{ image.repo }}/{{ image.name }}"
+    tag: "{{ image.version }}"
+
 - name: enable armadillo-auth | Configuration
   systemd:
     name: armadillo-auth
