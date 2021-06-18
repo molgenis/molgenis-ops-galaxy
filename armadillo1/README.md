@@ -17,7 +17,7 @@ Deploy the Armadillo suite.
 ## Usage 
 To use Ansible to deploy the stack you need to binaries on your system. You can install Ansible following this [user guide](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html). You need to be sure to run Ansible >- 2.9.
 
-### Setup
+#### Setup
 When you installed ansible you need to create 3 files:
 
 - `requirements.yml`
@@ -186,22 +186,7 @@ server {
 }
 </pre>
 
-#### Usage
-When you created the correct files and filled in the right variables you need to perform a series of commands to bootstrap the server with the Armadillo.
-
-Make sure the following domains are whitlisted in on your deploy environment.
-
-* dl.minio.io
-* auth.molgenis.org
-* *.docker.io
-* *.redhat.io
-* *.access.redhat.com
-* production.cloudflare.docker.com
-* registry.molgenis.org
-* galaxy.ansible.com
-* ansible-galaxy.s3.amazonaws.com
-* raw.githubusercontent.com
-
+#### Deploy
 First get your collections installed.
 
 `ansible-galaxy install -r requirements.yml`
@@ -211,6 +196,76 @@ Then install the server with Ansible.
 `ansible-playbook -i inventory.ini ./playbook.yml`
 
 After this the server get's deployed with all the needed configuration.
+
+#### Upgrade
+You need to create a separate playbook. Name it for example: `upgrade_armadillo.yml`
+
+You can run it by executing: `ansible-playbook -i inventory.ini ./upgrade_armadillo.yml`
+
+```yaml
+- hosts: all
+  become: yes
+  become_user: root
+  gather_facts: yes
+  vars:
+    ci: false
+    minio:
+      access_key: molgenis
+      secret_key: molgenis
+      port: 9000
+      host: http://localhost
+    oauth:
+      issuer_uri: https://auth.molgenis.org
+      discovery_path: .well-known/openid-configuration
+      client_id: xxxxx-xxxxxxxx-xxxxxxx
+      client_secret: xxxxx-xxxxxxxx-xxxxxxx
+    dockerhub:
+      enabled: false
+      username: xxxxxxx
+      password: xxxxxxx
+
+  roles:
+    - role: molgenis.armadillo.minio
+      vars:
+        version: 2021-02-19T04-38-02Z
+        data: /var/lib/minio/data
+        domain: armadillo-storage.local:8080
+        access_key: "{{ minio.access_key }}"
+        secret_key: "{{ minio.secret_key }}"
+    - role: molgenis.armadillo.armadillo
+      vars:
+        version: 0.0.17
+        storage:
+          access_key: "{{ minio.access_key }}"
+          secret_key: "{{ minio.secret_key }}"
+          host: "{{ minio.host }}"
+          port: "{{ minio.port }}"
+        memory:
+          xmx: 1024m
+          xms: 512m
+        username: xxxxxxx
+        password: xxxxxxx
+    - role: auth
+      vars:
+        image: 
+          version: latest
+          repo: molgenis
+          name: molgenis-auth
+        api_token: xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+        base_url: http://armadillo-auth.local:8080
+        resources:
+          memory: 512m
+          cpu: 1
+    - role: rserver
+      vars:
+        debug: false
+        image:
+          version: 2.0.1
+        resources:
+          memory: 6g
+          cpu: 2
+```
+
 ### Development and testing
 To test the deployment we are using Vagrant to deploy the ansible playbook locally on your machine. You will need some prerequisites to deploy locally.
 
