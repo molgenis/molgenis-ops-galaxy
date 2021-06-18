@@ -1,4 +1,3 @@
----
 - hosts: all
   become: yes
   become_user: root
@@ -21,9 +20,6 @@
       password: xxxxxxx
 
   roles:
-    - role: java
-      vars:
-        version: 11
     - role: minio
       vars:
         version: 2021-02-19T04-38-02Z
@@ -31,22 +27,10 @@
         domain: armadillo-storage.local:8080
         access_key: "{{ minio.access_key }}"
         secret_key: "{{ minio.secret_key }}"
-    - role: podman
-      when: ansible_os_family == "Redhat"
-    - role: docker
-      when: ansible_os_family == "Debian"
-    - role: nginx
-      vars:
-        domains: 
-          armadillo: armadillo.local
-          storage: armadillo-storage.local
-          auth: armadillo-auth.local
     - role: rserver
       vars:
         debug: false
         image:
-          repo: molgenis
-          name: rserver
           version: 2.0.1
         resources:
           memory: 6g
@@ -75,4 +59,3 @@
         resources:
           memory: 512m
           cpu: 1
-
