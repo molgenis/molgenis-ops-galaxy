@@ -1,0 +1,6 @@
+---
+- name: java | Installation (Debian)
+  apt:
+    state: present
+    name: openjdk-{{ version }}-jre-headless
+    update_cache: yes
