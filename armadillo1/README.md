@@ -82,9 +82,9 @@ The playbook is the base of the rollout for the Armadillo. The contents of the p
         access_key: "{{ minio.access_key }}"
         secret_key: "{{ minio.secret_key }}"
     - role: molgenis.armadillo.podman
-      when: ansible_distribution == "CentOS" or ansible_distribution == "RedHat"
+      when: ansible_os_family == "RedHat"
     - role: molgenis.armadillo.docker
-      when: ansible_distribution == "Debian" or ansible_distribution == "Ubuntu"
+      when: ansible_os_family == "Debian"
     - role: molgenis.armadillo.nginx
       vars:
         domains: 
