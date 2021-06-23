@@ -7,7 +7,9 @@
 - name: SELinux manage | Installation (RedHat)
   dnf:
     state: present
-    name: libselinux-python
+    name: 
+      - libselinux-python
+      - libsemanage-python
   when:
     - ansible_facts['distribution_major_version'] == "7"
 

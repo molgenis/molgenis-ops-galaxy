@@ -24,19 +24,8 @@
     mode: '0644'
   notify: "restart Rserver service"
 
-- name: dockerhub | Configuration
-  docker_login:
-    username: "{{ dockerhub.username }}"
-    password: "{{ dockerhub.password }}"
-  no_log: true
-  when: dockerhub.enabled
-
-- name: pull the image | Installation
-  docker_image:
-    state: present
-    name: "{{ image.repo }}/{{ image.name }}"
-    tag: "{{ image.version }}"
-    source: pull
+- name: prepare the image | Installation
+  include_tasks: "{{ ansible_os_family|lower }}.yml"
 
 - name: enable service | Configuration
   systemd:
