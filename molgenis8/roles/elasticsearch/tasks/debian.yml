@@ -1,0 +1,5 @@
+---
+- name: Install Elasticsearch latest 5.6.16 directly from package as repo not available for unbuntu 20.04
+  apt:
+    deb: https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-5.6.16.deb
+  notify: "restart elasticsearch"

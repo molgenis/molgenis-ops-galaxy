@@ -1,0 +1,36 @@
+---
+- name: Postgres-11 based on OS
+  include_tasks: "{{ ansible_os_family|lower }}.yml"
+
+- name: Create 'molgenis'-user for PostgreSQL
+  become: true
+  become_user: postgres
+  postgresql_user:
+    name: molgenis
+    password: molgenis
+    encrypted: yes
+  no_log: true
+
+- name: Create database 'molgenis' as PostgreSQL
+  become: true
+  become_user: postgres
+  postgresql_db:
+    name: molgenis
+    owner: molgenis
+    encoding: UTF8
+    lc_collate: 'en_US.UTF-8'
+    lc_ctype: 'en_US.UTF-8'
+    template: template0
+  register: new_db
+
+- name: Create 'molgenis'-scheme with PSQL
+  become: true
+  become_user: postgres
+  command: psql -c 'CREATE SCHEMA IF NOT EXISTS molgenis;'  # noqa no-handler
+  when: new_db is changed
+
+- name: Grant rights to 'molgenis'-user on 'molgenis'-scheme with PSQL
+  become: true
+  become_user: postgres
+  command: psql -c 'GRANT ALL PRIVILEGES ON SCHEMA molgenis TO molgenis;'  # noqa no-handler
+  when: new_db is changed

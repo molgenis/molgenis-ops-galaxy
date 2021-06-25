@@ -1,0 +1,16 @@
+---
+- name: restart postgresql service on Centos
+  service:
+    name: postgresql-11
+    state: restarted
+  listen: "restart postgresql"
+  when:
+    - ansible_distribution == 'CentOS'
+
+- name: restart postgresql service on Ubuntu
+  service:
+    name: postgresql
+    state: restarted
+  listen: "restart postgresql"
+  when:
+    - ansible_distribution == 'Ubuntu'

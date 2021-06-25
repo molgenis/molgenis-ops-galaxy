@@ -1,0 +1,68 @@
+---
+- name: setup molgenis folders
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: u=rwx,g=rwx,o=rx
+    owner: molgenis
+    group: molgenis
+  loop:
+    - /usr/local/share/molgenis/
+    - /usr/local/share/molgenis/war/
+    - /var/log/molgenis-ops-tools/
+
+- name: install war MOLGENIS
+  get_url:
+    url: "https://registry.molgenis.org/repository/maven-public/org/molgenis/molgenis-app/\
+          {{ molgenis.version }}/molgenis-app-{{ molgenis.version }}.war"  # yamllint disable-line rule:line-length
+    mode: '0660'
+    owner: molgenis
+    group: molgenis
+    dest: /usr/local/share/molgenis/war/
+
+- name: create symbolic link
+  file:
+    src: /usr/local/share/molgenis/war/molgenis-app-{{ molgenis.version }}.war
+    dest: /usr/share/tomcat/webapps/ROOT.war
+    owner: molgenis
+    group: molgenis
+    state: link
+
+- name: check if molgenis-server.properties exists
+  stat:
+    path: /usr/local/share/molgenis/molgenis-server.properties
+  register: existing_properties
+
+- name: install new molgenis-server.properties
+  copy:
+    src: molgenis-server.properties
+    dest: /usr/local/share/molgenis/molgenis-server.properties
+    mode: '0644'
+  when: existing_properties.stat.isreg is not defined
+
+- name: Install extra molgenis crossrestore tools
+  copy:
+    src: "{{ item }}"
+    dest: /usr/local/share/molgenis/tools/
+    owner: root
+    group: root
+    mode: '0700'
+  with_items:
+    - molgenis_crossrestore_cleanup.bash
+    - molgenis_chown_data.bash
+    - utils.bash
+    - molgenis_cleanup.bash
+
+- name: Install molgenis sudoers file
+  copy:
+    src: molgenis
+    dest: /etc/sudoers.d/
+    mode: '0644'
+
+- name: Install extra full_restore.sh
+  copy:
+    src: full_restore.sh
+    dest: /root/
+    owner: root
+    group: root
+    mode: '0700'

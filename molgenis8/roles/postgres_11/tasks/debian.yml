@@ -1,0 +1,42 @@
+---
+- name: Add postgres repo key
+  apt_key:
+    url: https://www.postgresql.org/media/keys/ACCC4CF8.asc
+    state: present
+
+- name: Create the repository for postgresql on ubuntu
+  copy:
+    src: pgdg.list
+    dest: /etc/apt/sources.list.d/
+    mode: '0644'
+
+- name: Setup postgresql-11
+  apt:
+    pkg:
+      - postgresql-11     # contrib no longer needed since 10 and higher
+      - python3-psycopg2
+    update_cache: yes
+
+- name: Copy pg_hba.conf configuration
+  copy:
+    src: pg_hba.conf
+    owner: postgres
+    group: postgres
+    dest: /etc/postgresql/11/main/pg_hba.conf
+    mode: '0644'
+  notify: "restart postgresql"
+
+- name: Copy postgresql.conf configuration
+  copy:
+    src: postgresql.conf.debian
+    owner: postgres
+    group: postgres
+    dest: /etc/postgresql/11/main/postgresql.conf
+    mode: '0644'
+  notify: "restart postgresql"
+
+- name: Start and enable Postgres (at boot time)
+  systemd:
+    name: postgresql
+    state: started
+    enabled: yes
