@@ -23,5 +23,5 @@ galaxy_info:
 
   galaxy_tags: [federation]
 
-# dependencies: 
+# dependencies:
 #   - containers.podman
