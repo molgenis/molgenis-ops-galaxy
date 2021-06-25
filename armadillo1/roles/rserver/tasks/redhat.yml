@@ -1,0 +1,13 @@
+---
+- name: podman | Configuration
+  containers.podman.podman_login:
+    username: "{{ dockerhub.username }}"
+    password: "{{ dockerhub.password }}"
+  no_log: true
+  when: dockerhub.enabled
+
+- name: pull the image | Installation
+  containers.podman.podman_image:
+    state: present
+    name: "{{ image.repo }}/{{ image.name }}"
+    tag: "{{ image.version }}"

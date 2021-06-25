@@ -33,12 +33,8 @@
     mode: '0644'
   notify: "restart Armadillo-auth service"
 
-- name: log into DockerHub | Configuration
-  docker_login:
-    username: "{{ dockerhub.username }}"
-    password: "{{ dockerhub.password }}"
-  no_log: true
-  when: dockerhub.enabled
+- name: prepare the image | Installation
+  include_tasks: "{{ ansible_os_family|lower }}.yml"
 
 - name: enable armadillo-auth | Configuration
   systemd:

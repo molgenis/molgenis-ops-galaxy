@@ -32,7 +32,7 @@
         access_key: "{{ minio.access_key }}"
         secret_key: "{{ minio.secret_key }}"
     - role: podman
-      when: ansible_os_family == "Redhat"
+      when: ansible_os_family == "RedHat"
     - role: docker
       when: ansible_os_family == "Debian"
     - role: nginx
@@ -75,4 +75,3 @@
         resources:
           memory: 512m
           cpu: 1
-

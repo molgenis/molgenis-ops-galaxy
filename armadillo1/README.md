@@ -1,7 +1,270 @@
 # Armadillo suite
 Deploy the Armadillo suite.
 
+
+> Requirements
+>
+> Technical resources needed to run your cohort are here. You need a server / virtual machine (from now on VM) to deploy the 
+> Armadillo. The specifications of the VM are the following depending on the participant size of the cohort you are running.
+>
+> | Participants  | Memory (in GB) | Diskspace (in GB) | CPU cores |
+> | ------------- | -------------- | ----------------- | --------- |
+> | 0-20.000      | 8              | 100               | 4         |
+> | 20.000-70.000 | 16             | 100               | 4         |
+> | 70.000>       | 32             | 150               | 8         |
+
+
 ## Usage 
+To use Ansible to deploy the stack you need to binaries on your system. You can install Ansible following this [user guide](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html). You need to be sure to run Ansible >- 2.9.
+
+#### Setup
+When you installed ansible you need to create 3 files:
+
+- `requirements.yml`
+- `inventory.ini`
+- `playbook.yml`
+
+#### Creating requirements.yml
+This file needs to contain the following content. 
+
+> Be advised: the version may differ. Please check the latest version on the galaxy website.
+
+```yaml
+collections:
+  - name: molgenis.armadillo
+    version: 1.3.0
+```
+#### Creating inventory.ini
+Your target host needs to be defined here.
+
+```ini
+# used for initial setup of new empty VMs
+[armadillo]
+x.x.x.x # ip address of the system
+```
+#### Creating playbook.yml
+The playbook is the base of the rollout for the Armadillo. The contents of the playbook is shown below.
+
+```yaml
+---
+- hosts: all
+  become: true
+  become_user: root
+  # if installing on local machine
+  # connection: local
+  gather_facts: true
+  vars:
+    ci: false
+    minio:
+      access_key: xxxxxxx
+      secret_key: xxxxxxx
+      port: 9000
+      host: http://localhost
+    oauth:
+      issuer_uri: https://auth.molgenis.org
+      discovery_path: /.well-known/openid-configuration
+      client_id: xxxxxxx-xxxxxxxxx-xxxxxxxxxx
+      client_secret: xxxxxxx-xxxxxxxxx-xxxxxxxxxx
+    dockerhub:
+      enabled: true
+      username: xxxxxxx
+      password: xxxxxxx
+
+  roles:
+    - role: molgenis.armadillo.java
+      vars:
+        version: 11
+    - role: molgenis.armadillo.minio
+      vars:
+        version: 2021-02-19T04-38-02Z
+        data: /var/lib/minio/data
+        domain: armadillo-storage.local:8080
+        access_key: "{{ minio.access_key }}"
+        secret_key: "{{ minio.secret_key }}"
+    - role: molgenis.armadillo.podman
+      when: ansible_os_family == "RedHat"
+    - role: molgenis.armadillo.docker
+      when: ansible_os_family == "Debian"
+    - role: molgenis.armadillo.nginx
+      vars:
+        domains: 
+          armadillo: armadillo.local
+          storage: armadillo-storage.local
+          auth: armadillo-auth.local
+    - role: molgenis.armadillo.rserver
+      vars:
+        debug: false
+        image:
+          version: 2.0.1
+          repo: molgenis
+          name: rserver
+        resources:
+          memory: 6g
+          cpu: 2
+    - role: molgenis.armadillo.armadillo
+      vars:
+        version: 0.0.17
+        storage:
+          access_key: "{{ minio.access_key }}"
+          secret_key: "{{ minio.secret_key }}"
+          host: "{{ minio.host }}"
+          port: "{{ minio.port }}"
+        memory:
+          xmx: 1024m
+          xms: 512m
+        username: xxxxx
+        password: xxxxx
+    - role: molgenis.armadillo.auth
+      vars:
+        image: 
+          version: latest
+          repo: molgenis
+          name: molgenis-auth
+        api_token: xxxxxxxxxxxxxxxxx
+        base_url: http://armadillo-auth.local
+        resources:
+          memory: 1g
+          cpu: 1
+```
+
+There are a few prerequisites that we need. 
+
+##### "become" needs to work
+When you login to a VM you are hopefully yourself as in a useraccount that is recognisable as your account. After you logged in you need to be able to perform `sudo su` without entering a password. Get that in place and you will be able to run the playbook.
+
+##### Authentication and authorisation
+Before you deploy you need to register your application on the DataSHIELD authentication server. This allows you to delegate the authentication and usermanagement. The authorisation will still be under your control.
+
+The general variables in the playbook.yml need to be amended to set the configuration right:
+
+```yaml
+...
+ oauth:
+  issuer_uri: https://auth.molgenis.org
+  discovery_path: /.well-known/openid-configuration
+  client_id: xxxxxxx-xxxxxx-xxxxxxx
+  client_secret: xxxxxxx-xxxxxx-xxxxxxx
+...
+
+ - role: auth
+      vars:
+        ...
+        api_token: xxxxxxxxxxxxxxxxx
+        ...
+```
+
+
+
+#### Domains to expose
+There are three domains that need to be opened up for the cohort.
+
+*For researchers*
+
+- cohort.armadillo.domain.org
+
+*For datamanagers*
+
+- cohort-auth.armadillo.domain.org
+- cohort-storage.armadillo.domain.org
+
+The top one needs to be opened up to this ip-address: `129.125.243.25/32` with port number `443`.
+
+##### Setup SSL
+Below you can find an exmaple configuration for NGINX. The **bold** blocks show what you need to change. NGINX expects the fullchain. So PEM format in short.
+<pre>
+server {
+    <b>listen 443 ssl;</b>
+    server_name domain.org;
+
+    <b>ssl_certificate /etc/ssl/certs/star.domain.org.crt;</b>
+    <b>ssl_certificate_key /etc/ssl/certs/star.domain.org.key;</b>
+
+    include /etc/nginx/globals.d/*.conf;
+    
+    ...
+
+}
+</pre>
+
+#### Deploy
+First get your collections installed.
+
+`ansible-galaxy install -r requirements.yml`
+
+Then install the server with Ansible.
+
+`ansible-playbook -i inventory.ini ./playbook.yml`
+
+After this the server get's deployed with all the needed configuration.
+
+#### Upgrade
+You need to create a separate playbook. Name it for example: `upgrade_armadillo.yml`
+
+You can run it by executing: `ansible-playbook -i inventory.ini ./upgrade_armadillo.yml`
+
+```yaml
+- hosts: all
+  become: yes
+  become_user: root
+  gather_facts: yes
+  vars:
+    ci: false
+    minio:
+      access_key: molgenis
+      secret_key: molgenis
+      port: 9000
+      host: http://localhost
+    oauth:
+      issuer_uri: https://auth.molgenis.org
+      discovery_path: .well-known/openid-configuration
+      client_id: xxxxx-xxxxxxxx-xxxxxxx
+      client_secret: xxxxx-xxxxxxxx-xxxxxxx
+    dockerhub:
+      enabled: false
+      username: xxxxxxx
+      password: xxxxxxx
+
+  roles:
+    - role: molgenis.armadillo.minio
+      vars:
+        version: 2021-02-19T04-38-02Z
+        data: /var/lib/minio/data
+        domain: armadillo-storage.local:8080
+        access_key: "{{ minio.access_key }}"
+        secret_key: "{{ minio.secret_key }}"
+    - role: molgenis.armadillo.armadillo
+      vars:
+        version: 0.0.17
+        storage:
+          access_key: "{{ minio.access_key }}"
+          secret_key: "{{ minio.secret_key }}"
+          host: "{{ minio.host }}"
+          port: "{{ minio.port }}"
+        memory:
+          xmx: 1024m
+          xms: 512m
+        username: xxxxxxx
+        password: xxxxxxx
+    - role: auth
+      vars:
+        image: 
+          version: latest
+          repo: molgenis
+          name: molgenis-auth
+        api_token: xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+        base_url: http://armadillo-auth.local:8080
+        resources:
+          memory: 512m
+          cpu: 1
+    - role: rserver
+      vars:
+        debug: false
+        image:
+          version: 2.0.1
+        resources:
+          memory: 6g
+          cpu: 2
+```
 
 ### Development and testing
 To test the deployment we are using Vagrant to deploy the ansible playbook locally on your machine. You will need some prerequisites to deploy locally.
@@ -85,215 +348,5 @@ Login with:
 * password: admin
 
 Only the storage server has a user interface. The DataSHIELD service works with R only.
-
-## Ansible
-To use Ansible to deploy the stack you need to binaries on your system. You can install Ansible following this [user guide](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html).
-
-### Setup
-When you installed ansible you need to create 3 files:
-
-- `requirements.yml`
-- `inventory.ini`
-- `playbook.yml`
-
-#### Creating requirements.yml
-This file needs to contain the following content. 
-
-> Be advised: the version may differ. Please check the latest version on the galaxy website.
-
-```yaml
-collections:
-  - name: molgenis.molgenis8
-    version: 1.1.0
-  - name: molgenis.armadillo1
-    version: 1.0.5
-```
-#### Creating inventory.ini
-Your target host needs to be defined here.
-
-```ini
-# used for initial setup of new empty VMs
-[armadillo]
-x.x.x.x # ip address of the system
-```
-#### Creating playbook.yml
-The playbook is the base of the rollout for the Armadillo. The contents of the playbook is shown below.
-
-```yaml
----
-- hosts: all
-  become: true
-  become_user: root
-  # if installing on local machine
-  # connection: local
-  gather_facts: true
-  vars:
-    ci: false
-    minio:
-      access_key: xxxxxxx
-      secret_key: xxxxxxx
-      port: 9000
-      host: http://localhost
-    oauth:
-      issuer_uri: https://auth.molgenis.org
-      discovery_path: /.well-known/openid-configuration
-      client_id: xxxxxxx-xxxxxxxxx-xxxxxxxxxx
-      client_secret: xxxxxxx-xxxxxxxxx-xxxxxxxxxx
-    dockerhub:
-      enabled: true
-      username: xxxxxxx
-      password: xxxxxxx
-
-  roles:
-    - role: java
-    - role: minio
-      vars:
-        access_key: "{{ minio.access_key }}"
-        secret_key: "{{ minio.secret_key }}"
-    - role: podman
-      when: ansible_distribution == "CentOS" or ansible_distribution == "RedHat"
-    - role: docker
-      when: ansible_distribution == "Debian" or ansible_distribution == "Ubuntu"
-     - role: nginx_debian_family
-      vars:
-        domains: 
-          armadillo: armadillo.local
-          storage: armadillo-storage.local
-          auth: armadillo-auth.local
-      when: ansible_os_family == "Debian"
-    - role: nginx_redhat_family
-      vars:
-        domains: 
-          armadillo: armadillo.local
-          storage: armadillo-storage.local
-          auth: armadillo-auth.local
-      when: ansible_os_family == "Redhat"
-    - role: rserver
-      vars:
-        debug: true
-        image:
-          version: 2.0.0
-        resources:
-          memory: 6g
-          cpu: 2
-    - role: armadillo
-      vars:
-        version: 0.0.17
-        storage:
-          access_key: "{{ minio.access_key }}"
-          secret_key: "{{ minio.secret_key }}"
-          host: "{{ minio.host }}"
-          port: "{{ minio.port }}"
-        memory:
-          xmx: 1024m
-          xms: 512m
-        username: xxxxx
-        password: xxxxx
-    - role: auth
-      vars:
-        image: 
-          version: latest
-        api_token: xxxxxxxxxxxxxxxxx
-        base_url: armadillo-auth.local
-        resources:
-          memory: 1g
-          cpu: 1
-```
-
-There are a few prerequisites that we need. 
-
-##### "become" needs to work
-When you login to a VM you are hopefully yourself as in a useraccount that is recognisable as your account. After you logged in you need to be able to perform `sudo su` without entering a password. Get that in place and you will be able to run the playbook.
-
-##### Authentication and authorisation
-Before you deploy you need to register your application on the DataSHIELD authentication server. This allows you to delegate the authentication and usermanagement. The authorisation will still be under your control.
-
-The general variables in the playbook.yml need to be amended to set the configuration right:
-
-```yaml
-...
- oauth:
-  issuer_uri: https://auth.molgenis.org
-  discovery_path: /.well-known/openid-configuration
-  client_id: xxxxxxx-xxxxxx-xxxxxxx
-  client_secret: xxxxxxx-xxxxxx-xxxxxxx
-...
-
- - role: auth
-      vars:
-        ...
-        api_token: xxxxxxxxxxxxxxxxx
-        ...
-```
-
-
-
-#### Domains to expose
-There are three domains that need to be opened up for the cohort.
-
-*For researchers*
-
-- cohort.armadillo.domain.org
-
-*For datamanagers*
-
-- cohort-auth.armadillo.domain.org
-- cohort-storage.armadillo.domain.org
-
-The top one needs to be opened up to this ip-address: `129.125.243.25/32` with port number `443`.
-
-##### Setup SSL
-Below you can find an exmaple configuration for NGINX. The **bold** blocks show what you need to change. NGINX expects the fullchain. So PEM format in short.
-<pre>
-server {
-    <b>listen 443 ssl;</b>
-    server_name domain.org;
-
-    <b>ssl_certificate /etc/ssl/certs/star.domain.org.crt;</b>
-    <b>ssl_certificate_key /etc/ssl/certs/star.domain.org.key;</b>
-
-    include /etc/nginx/globals.d/*.conf;
-    
-    ...
-
-}
-</pre>
-
-#### Usage
-When you created the correct files and filled in the right variables you need to perform a series of commands to bootstrap the server with the Armadillo.
-
-Make sure the following domains are whitlisted in on your deploy environment.
-
-* dl.minio.io
-* auth.molgenis.org
-* *.docker.io
-* *.redhat.io
-* *.access.redhat.com
-* production.cloudflare.docker.com
-* registry.molgenis.org
-* galaxy.ansible.com
-* ansible-galaxy.s3.amazonaws.com
-* raw.githubusercontent.com
-
-First get your collections installed.
-
-`ansible-galaxy install -r requirements.yml`
-
-Then install the server with Ansible.
-
-`ansible-playbook -i inventory.ini ./playbook.yml`
-
-After this the server get's deployed with all the needed configuration.
-
-# Requirements
-
-Technical resources needed to run your cohort are here. You need a server / virtual machine (from now on VM) to deploy the Armadillo. The specifications of the VM are the following depending on the participant size of the cohort you are running.
-
-| Participants  | Memory (in GB) | Diskspace (in GB) | CPU cores |
-| ------------- | -------------- | ----------------- | --------- |
-| 0-20.000      | 8              | 100               | 4         |
-| 20.000-70.000 | 16             | 100               | 4         |
-| 70.000>       | 32             | 150               | 8         |
-
 
 

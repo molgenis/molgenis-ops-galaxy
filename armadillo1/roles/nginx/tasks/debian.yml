@@ -13,12 +13,6 @@
 - name: create robots.conf directories | Configuration (Debian)
   file:
     path: /etc/nginx/global.d
-    state: directory
-    mode: '755'
-
-- name: add robots.conf | Configuration (Debian)
-  file:
-    path: /etc/nginx/global.d
     owner: www-data
     group: www-data
     state: directory

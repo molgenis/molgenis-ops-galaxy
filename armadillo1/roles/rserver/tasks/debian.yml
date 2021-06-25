@@ -1,0 +1,14 @@
+---
+- name: dockerhub | Configuration
+  community.docker.docker_login:
+    username: "{{ dockerhub.username }}"
+    password: "{{ dockerhub.password }}"
+  no_log: true
+  when: dockerhub.enabled
+
+- name: pull the image | Installation
+  community.docker.docker_image:
+    state: present
+    name: "{{ image.repo }}/{{ image.name }}"
+    tag: "{{ image.version }}"
+    source: pull
