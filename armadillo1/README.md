@@ -192,7 +192,23 @@ server {
 #### Deploy
 First get your collections installed.
 
-`ansible-galaxy install -r requirements.yml`
+`ansible-galaxy collection install -r requirements.yml`
+
+You can also install them separatly:
+
+`ansible-galaxy collection install community.docker`
+`ansible-galaxy collection install containers.podman`
+`ansible-galaxy collection install molgenis.armadillo`
+
+When you already installed the collection use the `--force` flag to update.
+
+Example:
+
+`ansible-galaxy collection install --force -r requirements.yml`
+
+Or specifically
+
+`ansible-galaxy collection install --force molgenis.armadillo`
 
 Then install the server with Ansible.
 
@@ -213,8 +229,8 @@ You can run it by executing: `ansible-playbook -i inventory.ini ./upgrade_armadi
   vars:
     ci: false
     minio:
-      access_key: molgenis
-      secret_key: molgenis
+      access_key: xxxxxxxx
+      secret_key: xxxxxxxx
       port: 9000
       host: http://localhost
     oauth:

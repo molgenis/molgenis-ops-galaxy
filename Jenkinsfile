@@ -49,9 +49,9 @@ pipeline {
                 } 
             }
         }
-        stage('Publish [ master ]') {
+        stage('Publish [ main ]') {
             when {
-                branch 'master'
+                branch 'main'
             }
             parallel {
                 stage('MOLGENIS (8)') {

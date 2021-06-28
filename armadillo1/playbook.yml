@@ -6,8 +6,8 @@
   vars:
     ci: false
     minio:
-      access_key: molgenis
-      secret_key: molgenis
+      access_key: xxxxxxxx
+      secret_key: xxxxxxxx
       port: 9000
       host: http://localhost
     oauth:
