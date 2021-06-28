@@ -30,9 +30,12 @@ This file needs to contain the following content.
 > Be advised: the version may differ. Please check the latest version on the galaxy website.
 
 ```yaml
+---
 collections:
+  - name: community.docker
+  - name: containers.podman
   - name: molgenis.armadillo
-    version: 1.3.0
+    version: 1.3.2
 ```
 #### Creating inventory.ini
 Your target host needs to be defined here.

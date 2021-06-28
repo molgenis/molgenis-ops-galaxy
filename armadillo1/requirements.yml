@@ -1,4 +1,4 @@
 ---
 collections:
-- community.docker
-- containers.podman
+  - community.docker
+  - containers.podman
