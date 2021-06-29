@@ -81,7 +81,7 @@
       when: war_version.stat.isreg is not defined
 
     - include_role:
-        name: httpd_centos8
+        name: nginx
       when: war_version.isreg is not defined
 
     - name: Start elasticsearch

@@ -1,6 +1,0 @@
----
-- name: start Tomcat service
-  systemd:
-    name: tomcat
-    state: started
-  listen: "start tomcat"

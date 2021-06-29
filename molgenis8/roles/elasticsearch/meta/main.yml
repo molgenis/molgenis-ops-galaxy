@@ -1,6 +1,6 @@
 ---
 galaxy_info:
-  role_name: postinstall
+  role_name: elasticsearch
   author: Erik Schaberg
   description: this role is part of the Molgenis installation of CentOS
   company: UMCG/RUG

@@ -1,0 +1,12 @@
+---
+- name: Setup new java-11
+  apt:
+    pkg:
+      - openjdk-11-jdk-headless
+    update_cache: yes  
+
+- name: create extra symlink for JAVA_HOME
+  file:
+    src: /usr/lib/jvm/java-11-openjdk-amd64
+    dest: /usr/lib/jvm/java-11-openjdk
+    state: link
