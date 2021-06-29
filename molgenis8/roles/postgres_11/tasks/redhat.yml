@@ -8,6 +8,7 @@
 - name: Install psycopg2 for python3
   dnf:
     state: present
+    update_cache: yes
     name:
       - python3-psycopg2
       - libicu
@@ -18,6 +19,7 @@
 - name: Install psycopg2 for python2 on centos7/rhel7
   dnf:
     state: present
+    update_cache: yes
     name:
       - python-psycopg2
       - libicu
