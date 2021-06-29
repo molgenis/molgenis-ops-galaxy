@@ -65,7 +65,7 @@ pipeline {
                                     sh 'ansible-lint --force-color roles/*/*/main.yml'
                                     sh 'ansible-galaxy collection build'
                                     env.ARTIFACT = sh(script: 'ls *.gz', returnStdout: true)
-                                    sh "ansible-galaxy collection publish ${ARTIFACT} --token ${ANSIBLE_GALAXY_TOKEN}"
+                                    sh 'ansible-galaxy collection publish ${ARTIFACT} --token ${ANSIBLE_GALAXY_TOKEN}'
                                 }
                             }
                         }

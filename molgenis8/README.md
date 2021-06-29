@@ -2,7 +2,7 @@
 
 ## Usage
 
-### Usage to image remote server through ssh and ansible
+### Image remote server through ssh and ansible
 'ansible-galaxy collection install molgenis.molgenis8'
 
 You can use ansible to setup up a basic molgenis server on a remote linux machine. At the moment we support the following Linux flavours:

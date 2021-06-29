@@ -178,14 +178,14 @@ Below you can find an exmaple configuration for NGINX. The **bold** blocks show 
 server {
     <b>listen 443 ssl;</b>
     server_name domain.org;
-
+    
     <b>ssl_certificate /etc/ssl/certs/star.domain.org.crt;</b>
     <b>ssl_certificate_key /etc/ssl/certs/star.domain.org.key;</b>
-
+    
     include /etc/nginx/globals.d/*.conf;
     
     ...
-
+    
 }
 </pre>
 
@@ -196,9 +196,11 @@ First get your collections installed.
 
 You can also install them separatly:
 
-`ansible-galaxy collection install community.docker`
-`ansible-galaxy collection install containers.podman`
-`ansible-galaxy collection install molgenis.armadillo`
+<pre>
+ansible-galaxy collection install community.docker
+ansible-galaxy collection install containers.podman
+ansible-galaxy collection install molgenis.armadillo
+</pre>
 
 When you already installed the collection use the `--force` flag to update.
 
