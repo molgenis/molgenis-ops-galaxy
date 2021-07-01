@@ -17,6 +17,6 @@ documentation: https://github.com/molgenis/molgenis-service-armadillo
 homepage: https://molgenis.org
 issues: https://github.com/molgenis/molgenis-service-armadillo/issues
 dependencies: 
-  "community.docker": ">= 1.8.0"
-  "containers.podman": ">= 1.6.1"
+  "community.docker": ">=1.7.0"
+  "containers.podman": ">=1.5.0"
 
