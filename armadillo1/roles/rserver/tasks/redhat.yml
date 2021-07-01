@@ -1,13 +1,8 @@
----
-- name: podman | Configuration
-  containers.podman.podman_login:
-    username: "{{ dockerhub.username }}"
-    password: "{{ dockerhub.password }}"
-  no_log: true
+- name: dockerhub ratelimit prevention | Installation
+  ansible.builtin.shell:
+    cmd: cat {{ dockerhub.password }} | podman login --username {{ dockerhub.username }} --password-stdin
   when: dockerhub.enabled
 
 - name: pull the image | Installation
-  containers.podman.podman_image:
-    state: present
-    name: "{{ image.repo }}/{{ image.name }}"
-    tag: "{{ image.version }}"
+  ansible.builtin.shell:
+    cmd: podman pull {{ image.repo }}/{{ image.name }}:{{ image.version }}
