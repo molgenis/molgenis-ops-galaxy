@@ -16,13 +16,9 @@
       client_id: xxxxx-xxxxxxxx-xxxxxxx
       client_secret: xxxxx-xxxxxxxx-xxxxxxx
     dockerhub:
-      enabled: false
+      enabled: true
       username: xxxxxxx
       password: xxxxxxx
-  
-  collections:
-    - community.docker
-    - containers.podman
 
   roles:
     - role: java

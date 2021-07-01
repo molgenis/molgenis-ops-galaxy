@@ -20,23 +20,8 @@ To use Ansible to deploy the stack you need to binaries on your system. You can 
 #### Setup
 When you installed ansible you need to create 3 files:
 
-- `requirements.yml`
 - `inventory.ini`
 - `playbook.yml`
-
-#### Creating requirements.yml
-This file needs to contain the following content. 
-
-> Be advised: the version may differ. Please check the latest version on the galaxy website.
-
-```yaml
----
-collections:
-  - name: community.docker
-  - name: containers.podman
-  - name: molgenis.armadillo
-    version: 1.3.2
-```
 #### Creating inventory.ini
 Your target host needs to be defined here.
 
@@ -190,25 +175,13 @@ server {
 </pre>
 
 #### Deploy
-First get your collections installed.
+You can install the galaxy collection using the following syntax:
 
-`ansible-galaxy collection install -r requirements.yml`
-
-You can also install them separatly:
-
-<pre>
-ansible-galaxy collection install community.docker
-ansible-galaxy collection install containers.podman
-ansible-galaxy collection install molgenis.armadillo
-</pre>
+`ansible-galaxy collection install molgenis.armadillo`
 
 When you already installed the collection use the `--force` flag to update.
 
 Example:
-
-`ansible-galaxy collection install --force -r requirements.yml`
-
-Or specifically
 
 `ansible-galaxy collection install --force molgenis.armadillo`
 
