@@ -1,4 +1,10 @@
 ---
 collections:
-  - community.docker
-  - containers.podman
+  - name: community.docker
+    version: 1.8.0 
+    source: https://galaxy.ansible.com
+  - name: containers.podman
+    version: 1.6.1
+    source: https://galaxy.ansible.com
+    
+    

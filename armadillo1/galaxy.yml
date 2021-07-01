@@ -1,7 +1,7 @@
 # required
 namespace: molgenis
 name: armadillo
-version: 1.3.5
+version: 1.3.6
 readme: README.md
 authors:
 - Sido Haakma <s.haakma@rug.nl>
@@ -16,3 +16,7 @@ repository: https://github.com/molgenis/molgenis-service-armadillo
 documentation: https://github.com/molgenis/molgenis-service-armadillo
 homepage: https://molgenis.org
 issues: https://github.com/molgenis/molgenis-service-armadillo/issues
+dependencies: 
+  "community.docker": ">= 1.8.0"
+  "containers.podman": ">= 1.6.1"
+
