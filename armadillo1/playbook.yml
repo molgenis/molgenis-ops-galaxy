@@ -19,6 +19,10 @@
       enabled: false
       username: xxxxxxx
       password: xxxxxxx
+  
+  collections:
+    - community.docker
+    - containers.podman
 
   roles:
     - role: java
