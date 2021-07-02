@@ -1,8 +1,7 @@
+---
 - name: dockerhub ratelimit prevention | Installation
-  ansible.builtin.shell:
-    cmd: cat {{ dockerhub.password }} | podman login --username {{ dockerhub.username }} --password-stdin
+  command: cat {{ dockerhub.password }} | podman login --username {{ dockerhub.username }} --password-stdin
   when: dockerhub.enabled
 
 - name: pull the image | Installation
-  ansible.builtin.shell:
-    cmd: podman pull {{ image.repo }}/{{ image.name }}:{{ image.version }}
+  command: podman pull {{ image.repo }}/{{ image.name }}:{{ image.version }}
