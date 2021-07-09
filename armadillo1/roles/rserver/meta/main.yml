@@ -7,25 +7,19 @@ galaxy_info:
 
   license: LGPL
 
-  min_ansible_version: 1.2
-
-  github_branch: master
+  min_ansible_version: "2.9"
 
   platforms:
+    - name: EL
+      versions:
+        - "8"
+        - "7"
     - name: Ubuntu
       versions:
-        - 20
+        - focal
     - name: Debian
       versions:
-        - 10
-    - name: CentOS
-      versions:
-        - 8
-        - 7
-    - name: RedHat
-      versions:
-        - 8
-        - 7
+        - buster
 
   galaxy_tags: [federation]
 
