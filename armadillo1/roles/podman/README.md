@@ -6,7 +6,7 @@ This installs the Podman (a sort of Kubernetes agent for CentOS / Redhat) on you
 
 Requirements
 ------------
-The only requirement you need a clean base image of CentOS => 7.
+The only requirement you need a clean base image of RedHat and CentOS => 7.
 
 Role Variables
 --------------
