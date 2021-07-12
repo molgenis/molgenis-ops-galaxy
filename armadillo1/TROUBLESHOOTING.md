@@ -57,3 +57,6 @@ You need to have ipv6 enabled.
 * Then recreate your boot configuration `grub2-mkconfig -o /boot/grub2/grub.cfg`
 * Your are done! `reboot` now!
 
+### user namespaces are not enabled in /proc/sys/user/max_user_namespaces
+Run podman as root to fix this problem.
+

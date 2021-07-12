@@ -21,6 +21,9 @@
       password: xxxxxxx
 
   roles:
+    - security: 
+      vars:
+        enabled: false
     - role: java
       vars:
         version: 11
