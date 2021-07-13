@@ -1,0 +1,69 @@
+---
+- name: epel-release | Installation (RedHat)
+  dnf:
+    state: present
+    name: epel-release
+
+- name: SELinux manage | Installation (RedHat)
+  dnf:
+    state: present
+    name: 
+      - libselinux-python
+      - libsemanage-python
+  when:
+    - ansible_facts['distribution_major_version'] == "7"
+
+- name: nginx | Installation (RedHat)
+  dnf:
+    state: present
+    name: nginx
+
+- name: start and enable | Configuration (RedHat)
+  systemd:
+    name: nginx
+    enabled: yes
+    state: started
+
+- name: set httpd_can_network_connect | Configuration (RedHat)
+  seboolean:
+    name: httpd_can_network_connect
+    state: yes
+    persistent: yes
+
+- name: create robots.conf directories | Configuration (RedHat)
+  file:
+    path: /etc/nginx/global.d
+    owner: nginx
+    group: nginx
+    state: directory
+    mode: '755'
+
+- name: add robots.conf | Configuration (RedHat)
+  copy:
+    src: robots.conf
+    dest: /etc/nginx/global.d/robots.conf
+  notify: "restart nginx"
+
+- name: ammend /etc/hosts to include hostname | Configuration (RedHat)
+  lineinfile:
+    dest: /etc/hosts
+    line: "{{ ansible_default_ipv4.address }}"
+    state: present
+
+- name: install armadillo configuration | Configuration (RedHat)
+  template:
+    src: armadillo.j2
+    dest: /etc/nginx/default.d/armadillo.conf
+  notify: "restart nginx"
+
+- name: install storage configuration | Configuration (RedHat)
+  template:
+    src: storage.j2
+    dest: /etc/nginx/default.d/storage.conf
+  notify: "restart nginx"
+
+- name: install armadillo auth configuration | Configuration (RedHat)
+  template:
+    src: auth.j2
+    dest: /etc/nginx/default.d/auth.conf
+  notify: "restart nginx"

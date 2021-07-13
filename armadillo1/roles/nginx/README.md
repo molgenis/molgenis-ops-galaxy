@@ -6,7 +6,7 @@ This installs the NGINX webserver to proxy the file storage, the armadillo and t
 
 Requirements
 ------------
-The nginx-role is based upon a clean Redhat >= 7.x, Centos >= 7.x, Debian >= 10.x image or Ubuntu >= 20.x. It's dependencies are described below.
+The nginx-role is based upon a clean Rocky >= 8.x, RedHat and CentOS >= 7.x, Debian >= 10.x image or Ubuntu >= 20.x. It's dependencies are described below.
 
 Role Variables
 --------------
