@@ -6,7 +6,7 @@ Installs the authentication manager on the Armadillo server
 
 Requirements
 ------------
-This role requires Podman on the CentOS or RedHat => 7.x, Ubuntu and Debian. Then the authentication server will run out of the box.
+This role requires Podman on the Rocky >= 8.x, RedHat and CentOS >= 7.x, Ubuntu and Debian. Then the authentication server will run out of the box.
 
 Role Variables
 --------------

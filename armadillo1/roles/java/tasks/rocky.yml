@@ -1,0 +1,13 @@
+---
+- name: dnf | Installation (RedHat)
+  yum:
+    state: present
+    name:
+      - dnf
+    update_cache: yes
+
+- name: java | Installation (RedHat)
+  dnf:
+    state: present
+    name: java-{{ version }}-openjdk-headless
+    update_cache: yes
