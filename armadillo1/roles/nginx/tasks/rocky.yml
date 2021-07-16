@@ -1,10 +1,10 @@
 ---
-- name: epel-release | Installation (RedHat)
+- name: epel-release | Installation (Rocky)
   dnf:
     state: present
     name: epel-release
 
-- name: SELinux manage | Installation (RedHat)
+- name: SELinux manage | Installation (Rocky)
   dnf:
     state: present
     name: 
@@ -13,24 +13,24 @@
   when:
     - ansible_facts['distribution_major_version'] == "7"
 
-- name: nginx | Installation (RedHat)
+- name: nginx | Installation (Rocky)
   dnf:
     state: present
     name: nginx
 
-- name: start and enable | Configuration (RedHat)
+- name: start and enable | Configuration (Rocky)
   systemd:
     name: nginx
     enabled: yes
     state: started
 
-- name: set httpd_can_network_connect | Configuration (RedHat)
+- name: set httpd_can_network_connect | Configuration (Rocky)
   seboolean:
     name: httpd_can_network_connect
     state: yes
     persistent: yes
 
-- name: create robots.conf directories | Configuration (RedHat)
+- name: create robots.conf directories | Configuration (Rocky)
   file:
     path: /etc/nginx/global.d
     owner: nginx
@@ -38,31 +38,38 @@
     state: directory
     mode: '755'
 
-- name: add robots.conf | Configuration (RedHat)
+- name: add robots.conf | Configuration (Rocky)
   copy:
     src: robots.conf
     dest: /etc/nginx/global.d/robots.conf
   notify: "restart nginx"
 
-- name: ammend /etc/hosts to include hostname | Configuration (RedHat)
+- name: ammend /etc/hosts to include hostname | Configuration (Rocky)
   lineinfile:
     dest: /etc/hosts
     line: "{{ ansible_default_ipv4.address }}"
     state: present
 
-- name: install armadillo configuration | Configuration (RedHat)
+- name: customize nginx.conf | Configuration (Rocky)
+  copy:
+    src: nginx.conf
+    dest: /etc/nginx/nginx.conf
+    mode: '0644'
+  notify: "restart nginx"
+
+- name: install armadillo configuration | Configuration (Rocky)
   template:
     src: armadillo.j2
     dest: /etc/nginx/default.d/armadillo.conf
   notify: "restart nginx"
 
-- name: install storage configuration | Configuration (RedHat)
+- name: install storage configuration | Configuration (Rocky)
   template:
     src: storage.j2
     dest: /etc/nginx/default.d/storage.conf
   notify: "restart nginx"
 
-- name: install armadillo auth configuration | Configuration (RedHat)
+- name: install armadillo auth configuration | Configuration (Rocky)
   template:
     src: auth.j2
     dest: /etc/nginx/default.d/auth.conf
