@@ -8,10 +8,12 @@
 You can use ansible to setup up a basic molgenis server on a remote linux machine. At the moment we support the following Linux flavours:
 
 * RedHat/CentOS 7 (EoL June 2024)
-* RedHat/CentOS 8 (EoL December 2021)
+* RedHat Enterprise Linux 8 (EoL May 2029)
+* CentOS 8 (EoL December 2021)
 * Ubuntu 20.04 (EoL April 2025)
+* RockyLinux 8 (EoL May 2029)
 
-The RedHat/CentOS servers needs to have selinux enabled (might need a reboot) before your run the playbook.
+The RedHat/CentOS/Rocky servers needs to have selinux enabled (might need a reboot) before your run the playbook.
 It is also recommended to first upgrade/patch your server to the latest patch level, before running the playbook.
 
 You need to have setup an ssh trust between the system your run ansible on and the remote linux server root account where molgenis will be installed.
@@ -23,7 +25,7 @@ First create an inventory.ini file with the FQDNs/ip addresses of your target ho
 We currently support automatic memory configuration for 4, 8 and 16 Gb of memory. This way tomcat/java and elasticsearch each get a decent amount of memory for Molgenis to run.
 
 
-To upgrade an remote molgenis server to a newer molgenis verion, you can run:
+To upgrade a remote molgenis server to a newer molgenis verion, you can run:
 
 'ansible-playbook playbook_upgrade.yml' 
 

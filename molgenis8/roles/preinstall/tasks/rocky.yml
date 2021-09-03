@@ -1,0 +1,56 @@
+---
+- name: install base packages used to configure RockyLinux properly
+  yum:
+    state: present
+    name:
+      - redhat-lsb-core
+      - selinux-policy
+      - selinux-policy-targeted
+      - epel-release
+      - nano
+      - sudo
+      - rsync
+      - lsof
+      - wget
+      - chrony
+      - openssh-server
+      - yum-plugin-versionlock
+      - audit
+      - glibc-common
+      - which
+      - net-tools
+      - bind-utils
+      - dnf
+      - java-11-openjdk-headless
+
+- name: create extra symlink for JAVA_HOME
+  file:
+    src: /etc/alternatives/jre_11
+    dest: /usr/lib/jvm/java-11-openjdk
+    state: link
+
+- name: gathering package facts
+  package_facts:
+    manager: auto
+
+- name: clear versionlocks
+  command: yum versionlock clear
+  args:
+    warn: false        # set warn=false to prevent warning about better using yum module
+  changed_when: false
+
+- name: install a ntpd/chronyd when needed
+  systemd:
+    state: started
+    enabled: yes
+    name: chronyd
+
+- name: initial sync of NTP/chronyc
+  command: chronyc -a makestep
+  changed_when: false
+  when: not ci|bool
+
+- name: enable selinux
+  selinux:
+    policy: targeted
+    state: enforcing

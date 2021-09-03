@@ -1,0 +1,13 @@
+---
+- name: Create repository for Elasticsearch
+  copy:
+    src: elasticsearch.repo
+    dest: /etc/yum.repos.d/elasticsearch.repo
+    mode: '0644'
+
+- name: Install Elasticsearch latest 5.x
+  yum:
+    name: elasticsearch
+    state: present
+    allow_downgrade: yes
+  notify: "restart elasticsearch"
