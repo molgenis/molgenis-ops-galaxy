@@ -1,6 +1,6 @@
 ---
 - name: Install NginX
-  dnf:
+  yum:
     state: present
     name:
       - nginx
