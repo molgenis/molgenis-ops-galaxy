@@ -1,0 +1,6 @@
+---
+- name: RockyLinux use versionlock plugin for Filebeat and Elasticsearch
+  command: yum versionlock elasticsearch filebeat
+  args:
+    warn: false        # set warn=false to prevent warning about better using yum module
+  changed_when: false

@@ -16,7 +16,7 @@
       client_id: xxxxx-xxxxxxxx-xxxxxxx
       client_secret: xxxxx-xxxxxxxx-xxxxxxx
     dockerhub:
-      enabled: true
+      enabled: false
       username: xxxxxxx
       password: xxxxxxx
 

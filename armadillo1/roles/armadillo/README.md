@@ -6,7 +6,7 @@ This installs the Armadillo service on your system. It installs Java and creates
 
 Requirements
 ------------
-The armadillo-role is based upon a clean RedHat >= 7.x, CentOS >= 8.x, Ubuntu >= 20.x or Debian => 10.x image. It's dependencies are described below.
+The armadillo-role is based upon a clean Rocky >= 8.x, RedHat and CentOS >= 7.x, Ubuntu >= 20.x or Debian => 10.x image. It's dependencies are described below.
 
 Role Variables
 --------------

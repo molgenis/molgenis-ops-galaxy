@@ -6,7 +6,7 @@ This installs the Java JDK environment on your system. This allows you to tun ap
 
 Requirements
 ------------
-The only requirement you need a clean base image of Redhat >= 7, CentOS >= 7, Debian >= 10, Ubuntu => 20.
+The only requirement you need a clean base image of Rocky >= 8.x, RedHat and CentOS >= 7.x, Debian >= 10, Ubuntu => 20.
 
 Role Variables
 --------------

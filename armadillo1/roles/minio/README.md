@@ -6,7 +6,7 @@ This installs the Minio file storage on your system. This allows you to store da
 
 Requirements
 ------------
-The only requirement you need a clean base image of CentOS >= 7.x or >= 8.x, Ubuntu >= 20.x or Debian >= 10.x.
+The only requirement you need a clean base image of Rocky >= 8.x, RedHat and CentOS >= 7.x, Ubuntu >= 20.x or Debian >= 10.x.
 
 Role Variables
 --------------

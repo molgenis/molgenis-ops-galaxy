@@ -1,5 +1,5 @@
 ---
-- name: Create the repository for postgres on centos
+- name: Create the repository for postgres on rocky
   copy:
     src: postgres.repo
     dest: /etc/yum.repos.d/postgres.repo
@@ -12,21 +12,9 @@
     name:
       - python3-psycopg2
       - libicu
-  when:
-    - ansible_distribution_major_version > '7'
-
-- name: Install psycopg2 for python2 on centos7/rhel7
-  yum:
-    state: present
-    update_cache: yes
-    name:
-      - python-psycopg2
-      - libicu
-  when:
-    - ansible_distribution_major_version == '7'
 
 - name: Install PostgreSQL
-  yum:
+  dnf:
     state: present
     name: postgresql11-server
     disablerepo: '*'

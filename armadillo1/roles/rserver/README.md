@@ -6,7 +6,7 @@ Installs the RServer which does the actual analysis.
 
 Requirements
 ------------
-This role requires Podman on the CentOS or RedHat >= 7.x, Ubuntu >= 20 or Debian >= 10 base image. Then the rserver will run out of the box.
+This role requires Podman on the Rocky >= 8.x, RedHat and CentOS >= 7.x, Ubuntu >= 20 or Debian >= 10 base image. Then the rserver will run out of the box.
 
 Role Variables
 --------------
