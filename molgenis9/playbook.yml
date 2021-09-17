@@ -1,0 +1,40 @@
+---
+- name: Deployment for MOLGENIS - operational development
+  hosts: "{{ host_group }}"
+  gather_facts: true
+  become: true
+  vars:
+    host_group: "all"
+    experimental: false
+    ci: false
+    minio:
+      access_key: molgenis
+      secret_key: molgenis
+      port: 9000
+      host: http://localhost
+    molgenis:
+      setup: true
+      version: 9.0.6
+      ssh: true
+
+  roles:
+    # system configuration
+    - role: swap
+    - role: preinstall
+    # application configuration
+    - role: elasticsearch
+    - role: postgres_11
+    - role: minio
+      vars:
+        version: 2020-07-02T00-15-09Z
+        data: /var/lib/minio/data
+        access_key: "{{ minio.access_key }}"
+        secret_key: "{{ minio.secret_key }}"
+    - role: tomcat
+    - role: molgenis_user
+    - role: molgenis_application
+    - role: nginx
+
+    # additional configuration
+    - role: python
+    - role: postinstall

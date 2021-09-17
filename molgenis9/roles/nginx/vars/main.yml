@@ -1,0 +1,44 @@
+---
+frontend:
+  version: "{{ molgenis.version | string }}"
+  proxy:         #  /@molgenis-ui
+    '9.0.5':
+      - 'questionnaires@3.4.0'
+      - 'app-manager@1.0.2'
+      - 'core-ui@0.5.1'
+      - 'legacy-lib@1.1.4'
+      - 'data-row-edit@5.5.0'
+      - 'metadata-manager@0.2.3'
+      - 'one-click-importer@0.1.6'
+      - 'scripts@3.4.0'
+      - 'searchall@0.1.7'
+      - 'security@0.5.0'
+      - 'settings@4.4.0'
+      - 'data-explorer@3.13.6'
+      - 'components-library@2.7.8'
+      - 'molgenis-theme@2.5.0'
+      - 'navigator@0.3.0'
+    '9.0.6':
+      - 'questionnaires@3.4.0'
+      - 'app-manager@1.0.2'
+      - 'core-ui@0.5.1'
+      - 'legacy-lib@1.1.4'
+      - 'data-row-edit@5.5.0'
+      - 'metadata-manager@0.2.3'
+      - 'one-click-importer@0.1.6'
+      - 'scripts@3.4.0'
+      - 'searchall@0.1.7'
+      - 'security@0.5.0'
+      - 'settings@4.4.0'
+      - 'data-explorer@3.13.7'
+      - 'components-library@2.7.8'
+      - 'molgenis-theme@2.5.0'
+      - 'navigator@0.3.0'
+  proxy2:           #  /@molgenis/
+    '9.0.5':
+      - 'expressions@0.21.1'
+      - 'molgenis-ui-form@5.6.2'
+    '9.0.6':
+      - 'expressions@0.21.1'
+      - 'molgenis-ui-form@5.6.2'
+

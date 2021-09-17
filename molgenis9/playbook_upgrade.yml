@@ -1,0 +1,91 @@
+---
+- name: Upgrade molgenis to 9.x.y on centos 8/7, Rocky 8 and Ubuntu 20.04
+  hosts: "{{ host_group }}"
+  gather_facts: true
+  become: true
+  vars:
+    host_group: "all"
+    molgenis:
+      setup: true
+      version: 9.0.6
+
+  tasks:
+    - name: Gathering package facts
+      package_facts:
+        manager: auto
+
+    - name: Check if war of correct version is present
+      stat:
+        path: /usr/local/share/molgenis/war/molgenis-app-{{ molgenis.version }}.war
+      register: war_version
+
+    - name: Stop tomcat
+      systemd:
+        name: tomcat
+        state: stopped
+      when: war_version.stat.isreg is not defined
+
+    - name: Stop elasticsearch
+      systemd:
+        name: elasticsearch
+        state: stopped
+      when: war_version.stat.isreg is not defined
+
+    - name: Remove old ROOT.wars if rpm was present
+      file:
+        state: absent
+        path: "{{ item }}"
+      with_items:
+      - /usr/share/tomcat/webapps/ROOT.war
+      - /usr/local/share/molgenis/war/ROOT.war
+      when:
+        - '"molgenis" in ansible_facts.packages'
+
+    - name: Remove old molgenis war folder
+      file:
+        path: /usr/local/share/molgenis/war
+        state: absent
+      when: war_version.stat.isreg is not defined
+
+    - name: Create empty molgenis war folder
+      file:
+        path: /usr/local/share/molgenis/war
+        state: directory
+        owner: molgenis
+        group: molgenis
+        mode: '0775'
+      when: war_version.stat.isreg is not defined
+
+    - name: install war MOLGENIS
+      get_url:
+        url: https://registry.molgenis.org/repository/maven-public/org/molgenis/molgenis-app/{{ molgenis.version }}/molgenis-app-{{ molgenis.version }}.war
+        mode: '0660'
+        owner: molgenis
+        group: molgenis
+        dest: /usr/local/share/molgenis/war/
+      when: war_version.stat.isreg is not defined
+
+    - name: create symbolic link
+      file:
+        src: /usr/local/share/molgenis/war/molgenis-app-{{ molgenis.version }}.war
+        dest: /usr/share/tomcat/webapps/ROOT.war
+        owner: molgenis
+        group: molgenis
+        state: link
+      when: war_version.stat.isreg is not defined
+
+    - include_role:
+        name: nginx
+      when: war_version.isreg is not defined
+
+    - name: Start elasticsearch
+      systemd:
+        name: elasticsearch
+        state: started
+      when: war_version.isreg is not defined
+
+    - name: Start tomcat
+      systemd:
+        name: tomcat
+        state: started
+      when: war_version.isreg is not defined
