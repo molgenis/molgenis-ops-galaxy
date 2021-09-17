@@ -41,4 +41,3 @@ frontend:
     '9.0.6':
       - 'expressions@0.21.1'
       - 'molgenis-ui-form@5.6.2'
-
