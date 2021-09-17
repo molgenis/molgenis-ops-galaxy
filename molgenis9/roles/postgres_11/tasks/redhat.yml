@@ -1,0 +1,69 @@
+---
+- name: Create the repository for postgres on centos
+  copy:
+    src: postgres.repo
+    dest: /etc/yum.repos.d/postgres.repo
+    mode: '0755'
+
+- name: Install psycopg2 for python3
+  dnf:
+    state: present
+    update_cache: yes
+    name:
+      - python3-psycopg2
+      - libicu
+  when:
+    - ansible_distribution_major_version > '7'
+
+- name: Install psycopg2 for python2 on centos7/rhel7
+  yum:
+    state: present
+    update_cache: yes
+    name:
+      - python-psycopg2
+      - libicu
+  when:
+    - ansible_distribution_major_version == '7'
+
+- name: Install PostgreSQL
+  yum:
+    state: present
+    name: postgresql11-server
+    disablerepo: '*'
+    enablerepo: pgdg11
+  notify: "restart postgresql"
+
+- name: Check if /var/lib/pgsql/11/data/global exists, if not initdb
+  stat:
+    path: /var/lib/pgsql/11/data/global
+  register: postgresql_data_folder
+
+- name: Initialise postgresql if first install
+  command: /usr/pgsql-11/bin/postgresql-11-setup initdb
+  args:
+    warn: false
+  when: not postgresql_data_folder.stat.exists
+
+- name: Copy pg_hba.conf configuration
+  copy:
+    src: pg_hba.conf
+    owner: postgres
+    group: postgres
+    dest: /var/lib/pgsql/11/data/pg_hba.conf
+    mode: '0644'
+  notify: "restart postgresql"
+
+- name: Copy postgresql.conf configuration
+  copy:
+    src: postgresql.conf
+    owner: postgres
+    group: postgres
+    dest: /var/lib/pgsql/11/data/postgresql.conf
+    mode: '0644'
+  notify: "restart postgresql"
+
+- name: Start and enable Postgres (at boot time)
+  systemd:
+    name: postgresql-11
+    state: started
+    enabled: yes

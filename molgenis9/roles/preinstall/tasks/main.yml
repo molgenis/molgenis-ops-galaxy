@@ -1,0 +1,3 @@
+---
+- name: Pre-install based on OS
+  include_tasks: "{{ ansible_os_family|lower }}.yml"

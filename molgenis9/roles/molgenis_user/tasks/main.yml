@@ -1,0 +1,9 @@
+---
+- name: Create molgenis group
+  group:
+    name: molgenis
+
+- name: Create molgenis uid
+  user:
+    name: molgenis
+    group: molgenis
