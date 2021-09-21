@@ -1,7 +1,7 @@
 ---
-- name: dockerhub ratelimit prevention | Installation
+- name: dockerhub ratelimit prevention | Installation (Redhat)
   command: cat {{ dockerhub.password }} | podman login --username {{ dockerhub.username }} --password-stdin
   when: dockerhub.enabled
 
-- name: pull the image | Installation
+- name: pull the image | Installation (Redhat)
   command: podman pull {{ image.repo }}/{{ image.name }}:{{ image.version }}

@@ -1,0 +1,5 @@
+---
+- name: firewall | Installation (Debian)
+  apt:
+    state: present
+    name: firewalld

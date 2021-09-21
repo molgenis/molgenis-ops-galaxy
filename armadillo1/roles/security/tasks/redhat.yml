@@ -1,0 +1,5 @@
+---
+- name: firewall | Installation (RedHat)
+  dnf:
+    state: present
+    name: firewalld

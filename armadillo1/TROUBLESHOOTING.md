@@ -46,17 +46,25 @@ Then you need to prune all docker resources
 Then restart the service again. 
 `systemctl restart rserver`
 
-## CentOS
-Trouble on your CentOS/Redhat based systems.
+## ipv6 disabled on your system
+If you encounter this error:
 
-### ipv6 disabled on your system
+`Address family not supported by protocol [::1]:80`
+### RedHat based systems
 You need to have ipv6 enabled.
 
 * Edit your boot configuration: `vi /etc/default/grub`
 * Please change the parameter `ipv6.disable=1` to `ipv6.disable=0`
 * Then recreate your boot configuration `grub2-mkconfig -o /boot/grub2/grub.cfg`
 * Your are done! `reboot` now!
+### Debian based systems
+You need to have ipv6 enabled.
 
-### user namespaces are not enabled in /proc/sys/user/max_user_namespaces
-Run podman as root to fix this problem.
+Add this line `iface eth0 **inet6** auto` to `/etc/network/interfaces`.
+
+Restart networking services: `systemctl restart networking.service`
+
+## User namespaces are not enabled 
+### RedHat based systems
+If you encounter a error message containing this directory: `/proc/sys/user/max_user_namespaces` you need to run **podman** as `root` user.
 
