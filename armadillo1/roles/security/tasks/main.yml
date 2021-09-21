@@ -7,7 +7,19 @@
   notify: 'restart sshd service'
   when: enabled
 
-- name: configure firewall
+- name: firewall | Installation
+  include_tasks: "{{ ansible_os_family|lower }}.yml"
 
+- name: allow https on dmz zone | Configuration
+  ansible.posix.firewalld:
+    zone: dmz
+    service: https
+    permanent: yes
+    state: enabled
 
-
+- name: allow ssh on internal zone | Configuration
+  ansible.posix.firewalld:
+    zone: internal
+    service: ssh
+    permanent: yes
+    state: enabled
