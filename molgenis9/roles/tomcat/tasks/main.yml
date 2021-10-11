@@ -1,4 +1,7 @@
 ---
+- name: Pre-install based on OS
+  include_tasks: "{{ ansible_os_family|lower }}.yml"
+
 - name: Create molgenis group
   group:
     name: molgenis
@@ -11,12 +14,12 @@
 
 - name: Register if tomcat is already there
   stat:
-    path: /usr/share/apache-tomcat-9.0.39/
+    path: /usr/share/apache-tomcat-9.0.53/
   register: tomcat_already_there
 
 - name: Install Tomcat from source
   unarchive:
-    src: "https://archive.apache.org/dist/tomcat/tomcat-9/v9.0.39/bin/apache-tomcat-9.0.39.tar.gz"
+    src: "https://archive.apache.org/dist/tomcat/tomcat-9/v9.0.53/bin/apache-tomcat-9.0.53.tar.gz"
     dest: "/usr/share/"
     owner: tomcat
     group: molgenis
@@ -25,13 +28,13 @@
 
 - name: Register if first install tomcat
   stat:
-    path: /usr/share/apache-tomcat-9.0.39/webapps/examples
+    path: /usr/share/apache-tomcat-9.0.53/webapps/examples
   register: tomcat_first_install
 
 - name: Delete default folders tomcat webapps directory
   file:
     state: absent
-    path: "/usr/share/apache-tomcat-9.0.39/webapps/{{ item }}"
+    path: "/usr/share/apache-tomcat-9.0.53/webapps/{{ item }}"
   with_items:
     - ROOT
     - docs
@@ -42,50 +45,105 @@
 
 - name: create softlink to tomcat logs
   file:
-    src: /usr/share/apache-tomcat-9.0.39/logs
+    src: /usr/share/apache-tomcat-9.0.53/logs
     dest: /var/log/tomcat
     state: link
 
 - name: create softlink to tomcat conf
   file:
-    src: /usr/share/apache-tomcat-9.0.39/conf
+    src: /usr/share/apache-tomcat-9.0.53/conf
     dest: /etc/tomcat
     state: link
 
 - name: create softlink to tomcat shortname
   file:
-    src: /usr/share/apache-tomcat-9.0.39
+    src: /usr/share/apache-tomcat-9.0.53
     dest: /usr/share/tomcat
     state: link
 
 - name: Install molgenis server.xml file for tomcat
   copy:
     src: server.xml
-    dest: /usr/share/apache-tomcat-9.0.39/conf/server.xml
+    dest: /usr/share/apache-tomcat-9.0.53/conf/server.xml
     mode: '0644'
 
 - name: Install systemctl services file for tomcat
-  copy:
-    src: tomcat.service
+  template:
+    src: tomcat.service_debian.j2
     dest: /etc/systemd/system/tomcat.service
     mode: '0644'
-  when: memory == '4'
+  vars:
+    minmem: 512
+    maxmem: 1024
+  when:
+    - memory == '4'
+    - ansible_os_family == 'Debian'
   notify: "restart tomcat"
 
 - name: Install systemctl services file for tomcat on large 8Gb VM
-  copy:
-    src: tomcat.service_8gb
+  template:
+    src: tomcat.service_debian.j2
     dest: /etc/systemd/system/tomcat.service
     mode: '0644'
-  when: memory == '8'
+  vars:
+    minmem: 512
+    maxmem: 2048
+    home: '/usr/lib/jvm/java-11-openjdk'
+  when:
+    - memory == '8'
+    - ansible_os_family == 'Debian'
   notify: "restart tomcat"
 
 - name: Install systemctl services file for tomcat on very large 16Gb VM
-  copy:
-    src: tomcat.service_16gb
+  template:
+    src: tomcat.service_debian.j2
     dest: /etc/systemd/system/tomcat.service
     mode: '0644'
-  when: memory == '16'
+  vars:
+    minmem: 1024
+    maxmem: 4098
+  when:
+    - memory == '16'
+    - ansible_os_family == 'Debian'
+  notify: "restart tomcat"
+
+- name: Install systemctl services file for tomcat
+  template:
+    src: tomcat.service_redhat_rocky.j2
+    dest: /etc/systemd/system/tomcat.service
+    mode: '0644'
+  vars:
+    minmem: 512
+    maxmem: 1024
+  when:
+    - memory == '4'
+    - ( ansible_os_family == 'RedHat' or ansible_os_family == 'Rocky' )
+  notify: "restart tomcat"
+
+- name: Install systemctl services file for tomcat on large 8Gb VM
+  template:
+    src: tomcat.service_redhat_rocky.j2
+    dest: /etc/systemd/system/tomcat.service
+    mode: '0644'
+  vars:
+    minmem: 512
+    maxmem: 2048
+  when:
+    - memory == '8'
+    - ( ansible_os_family == 'RedHat' or ansible_os_family == 'Rocky' )
+  notify: "restart tomcat"
+
+- name: Install systemctl services file for tomcat on very large 16Gb VM
+  template:
+    src: tomcat.service_redhat_rocky.j2
+    dest: /etc/systemd/system/tomcat.service
+    mode: '0644'
+  vars:
+    minmem: 1024
+    maxmem: 4098
+  when:
+    - memory == '16'
+    - ( ansible_os_family == 'RedHat' or ansible_os_family == 'Rocky' )
   notify: "restart tomcat"
 
 - name: Enable Tomcat (at boot time)

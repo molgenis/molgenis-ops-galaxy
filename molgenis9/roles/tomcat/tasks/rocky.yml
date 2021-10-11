@@ -1,0 +1,14 @@
+---
+- name: Install JDK-17
+  yum:
+    name: https://download.oracle.com/java/17/latest/jdk-17_linux-x64_bin.rpm
+    state: present
+    disable_gpg_check: yes
+  when: molgenis.version is version('9.1.0', '>=')
+
+- name: Correct java version for elasticsearch 5.x
+  alternatives:
+    name: java
+    link: /usr/bin/java
+    path: /usr/lib/jvm/java-11-openjdk/bin/java
+  when: molgenis.version is version('9.1.0', '>=')

@@ -3,7 +3,7 @@
   apt:
     pkg:
       - openjdk-11-jdk-headless
-    update_cache: yes  
+    update_cache: yes
 
 - name: create extra symlink for JAVA_HOME
   file:
