@@ -1,5 +1,12 @@
 # Ansible Collection - molgenis.molgenis9
 
+## Migration from Molgenis8 (molgenis 8.x.y)
+Molgenis 9.x.y contains a new expression language. This means that if you used expressions in Molgenis before, you need to adapt them during the migration.
+See the Molgenis 9.0.5 release notes: https://github.com/molgenis/molgenis/releases/tag/molgenis-9.0.5
+"This means that all expressions in your data models need to be rewritten. This should be fairly straightforward, but contact us if you need help on molgenis-support@umcg.nl"
+
+
+
 ## Usage
 
 ### Image remote server through ssh and ansible
