@@ -1,0 +1,20 @@
+---
+- name: Setup new java-17
+  apt:
+    pkg:
+      - openjdk-17-jre-headless
+    update_cache: yes
+  when: molgenis.version is version('9.1.0', '>=')
+
+- name: Correct java version for elasticsearch 5.x
+  alternatives:
+    name: java
+    path: /usr/lib/jvm/java-11-openjdk-amd64/bin/java
+  when: molgenis.version is version('9.1.0', '>=')
+
+- name: create extra symlink for JAVA_HOME
+  file:
+    src: /usr/lib/jvm/java-17-openjdk-amd64
+    dest: /usr/lib/jvm/java-17-openjdk
+    state: link
+  when: molgenis.version is version('9.1.0', '>=')

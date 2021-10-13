@@ -14,7 +14,7 @@ This Ansible Galaxy collection is a subset of the roles used in our private repo
 - ElasticSearch
 
 ## Requirements
-- OS: RedHat 8 or Centos 8 minimal install
+- OS: RedHat 8 or Centos 8 or Rocky8 of Ubuntu 20.04 minimal install
 - Hardware specs:  
   - 4-8 Gb memory
   - 2-4 cores
@@ -23,7 +23,7 @@ This Ansible Galaxy collection is a subset of the roles used in our private repo
 - Ansibe or AnsibleTower/Ansible AWX
 
 ## Ansible
-We chose Ansible for our orchestration bacause it is lightwight and only needs python and ssh.
+We chose Ansible for our orchestration because it is lightwight and only needs python and ssh.
 
 We use Ansible AWX (the free Ansible Tower) to install, patch, upgrade our 100+ VMs with Molgenis. But for smaller setups, plain ansible from a laptop will also do nicely.
 
