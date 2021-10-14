@@ -21,7 +21,7 @@ pipeline {
             parallel {
                 stage('MOLGENIS (8)') {
                     when {
-                        changeset "molgenis8/**"
+                        changeset "molgenis8/**/*"
                     }
                     steps {
                         container('toolset') {
