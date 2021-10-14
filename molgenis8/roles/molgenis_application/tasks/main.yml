@@ -38,6 +38,8 @@
     src: molgenis-server.properties
     dest: /usr/local/share/molgenis/molgenis-server.properties
     mode: '0644'
+    owner: molgenis
+    group: molgenis
   when: existing_properties.stat.isreg is not defined
 
 - name: Install extra molgenis crossrestore tools
