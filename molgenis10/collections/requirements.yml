@@ -1,0 +1,12 @@
+---
+collections:
+  # Install a collection from Ansible Galaxy.
+  - name: ansible.posix
+    version: 1.1.1
+    source: https://galaxy.ansible.com
+  - name: community.general
+    version: 2.0.1
+    source: https://galaxy.ansible.com
+  - name: community.postgresql
+    version: 1.6.0
+    source: https://galaxy.ansible.com

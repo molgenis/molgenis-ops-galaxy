@@ -1,0 +1,39 @@
+---
+- name: set swap_file variable
+  set_fact:
+    swap_file: /swapfile.swap
+
+- name: check if swap file exists
+  ansible.builtin.stat:
+    path: "{{ swap_file }}"
+  register: swap_file_check
+
+- name: create swap file on normal linux
+  ansible.builtin.command: fallocate -l {{ swap_space }} {{ swap_file }}
+  when: not swap_file_check.stat.exists
+
+- name: create swap file extra step on centos7/rhel7
+  ansible.builtin.command: dd if=/dev/zero of={{ swap_file }} count=2560 bs=1MiB
+  when:
+    - not swap_file_check.stat.exists
+    - ansible_distribution == 'CentOS'
+    - ansible_distribution_major_version == '7'
+
+- name: set permissions on swap file
+  ansible.builtin.file:
+    path: "{{ swap_file }}"
+    mode: 0600
+
+- name: format swap file
+  ansible.builtin.command: mkswap {{ swap_file }}
+  when: not swap_file_check.stat.exists
+
+- name: add to fstab
+  ansible.builtin.lineinfile:
+    dest: /etc/fstab
+    regexp: "{{ swap_file }}"
+    line: "{{ swap_file }} none swap sw 0 0"
+
+- name: turn on swap
+  ansible.builtin.command: swapon -a
+  changed_when: false

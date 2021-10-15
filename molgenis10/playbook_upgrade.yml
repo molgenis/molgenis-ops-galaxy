@@ -1,0 +1,92 @@
+---
+- name: Upgrade molgenis to 10.x.y on centos 7, Rocky 8 and Ubuntu 20.04
+  hosts: "{{ host_group }}"
+  gather_facts: true
+  become: true
+  vars:
+    host_group: "all"
+    molgenis:
+      setup: true
+      version: 10.0.2
+
+  tasks:
+    - name: Gathering package facts
+      package_facts:
+        manager: auto
+
+    - name: Check if war of correct version is present
+      ansible.builtin.stat:
+        path: /usr/local/share/molgenis/war/molgenis-app-{{ molgenis.version }}.war
+      register: war_version
+
+    - name: Stop tomcat
+      ansible.builtin.systemd:
+        name: tomcat
+        state: stopped
+      when: war_version.stat.isreg is not defined
+
+    - name: Stop elasticsearch
+      ansible.builtin.systemd:
+        name: elasticsearch
+        state: stopped
+      when: war_version.stat.isreg is not defined
+
+    - name: Remove old ROOT.wars if rpm was present
+      ansible.builtin.file:
+        state: absent
+        path: "{{ item }}"
+      with_items:
+      - /usr/share/tomcat/webapps/ROOT.war
+      - /usr/local/share/molgenis/war/ROOT.war
+      when:
+        - '"molgenis" in ansible_facts.packages'
+
+    - name: Remove old molgenis war folder
+      ansible.builtin.file:
+        path: /usr/local/share/molgenis/war
+        state: absent
+      when: war_version.stat.isreg is not defined
+
+    - name: Create empty molgenis war folder
+      ansible.builtin.file:
+        path: /usr/local/share/molgenis/war
+        state: directory
+        owner: molgenis
+        group: molgenis
+        mode: '0775'
+      when: war_version.stat.isreg is not defined
+
+    - name: install war MOLGENIS
+      ansible.builtin.get_url:
+        url: https://registry.molgenis.org/repository/maven-public/org/molgenis/molgenis-app/{{ molgenis.version }}/molgenis-app-{{ molgenis.version }}.war
+        mode: '0660'
+        owner: molgenis
+        group: molgenis
+        dest: /usr/local/share/molgenis/war/
+      when: war_version.stat.isreg is not defined
+
+    - name: create symbolic link
+      ansible.builtin.file:
+        src: /usr/local/share/molgenis/war/molgenis-app-{{ molgenis.version }}.war
+        dest: /usr/share/tomcat/webapps/ROOT.war
+        owner: molgenis
+        group: molgenis
+        state: link
+      when: war_version.stat.isreg is not defined
+
+    - name: role nginx
+      ansible.builtin.include_role:
+        name: nginx
+      when: war_version.isreg is not defined
+
+    - name: Start elasticsearch
+      ansible.builtin.systemd:
+        name: elasticsearch
+        state: started
+      when: war_version.isreg is not defined
+
+    - name: Start tomcat
+      systemd:
+        name: tomcat
+        state: started
+      when: war_version.isreg is not defined

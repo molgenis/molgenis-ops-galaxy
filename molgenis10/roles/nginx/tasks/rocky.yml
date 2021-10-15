@@ -1,0 +1,26 @@
+---
+- name: Install NginX
+  ansible.builtin.dnf:
+    state: present
+    name:
+      - nginx
+
+- name: Set httpd_can_network_connect flag in SELINUX
+  seboolean:
+    name: httpd_can_network_connect
+    state: yes
+    persistent: yes
+
+- name: Customize nginx.conf
+  copy:
+    src: nginx.conf
+    dest: /etc/nginx/nginx.conf
+    mode: '0644'
+  notify: "restart nginx"
+
+- name: Customize nginx.servce on Rocky8 to make it resilient
+  ansible.builtin.copy:
+    src: nginx.service
+    dest: /etc/systemd/system/nginx.service
+    mode: '0755'
+  notify: "restart nginx"
