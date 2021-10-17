@@ -15,8 +15,7 @@
     name: 
       - libselinux-python
       - libsemanage-python
-  when:
-    - ansible_facts['distribution_major_version'] == "7"
+  when: ansible_facts['distribution_major_version'] == "7"
 
 - name: nginx | Installation (RedHat)
   dnf:
@@ -62,19 +61,30 @@
     mode: '0644'
   notify: "restart nginx"
 
-- name: install armadillo configuration | Configuration (RedHat)
+- name: letsencrypt | Installation (RedHat)
+  include_tasks: "acme.yml"
+  when: letsencrypt.enabled
+
+- name: remove default NGINX | Configuration (RedHat)
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items: 
+    - /etc/nginx/default.d/default
+
+- name: install Armadillo configuration | Configuration (RedHat)
   template:
     src: armadillo.j2
     dest: /etc/nginx/default.d/armadillo.conf
   notify: "restart nginx"
 
-- name: install storage configuration | Configuration (RedHat)
+- name: install Armadillo storage configuration | Configuration (RedHat)
   template:
     src: storage.j2
     dest: /etc/nginx/default.d/storage.conf
   notify: "restart nginx"
 
-- name: install armadillo auth configuration | Configuration (RedHat)
+- name: install Armadillo auth configuration | Configuration (RedHat)
   template:
     src: auth.j2
     dest: /etc/nginx/default.d/auth.conf

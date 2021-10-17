@@ -1,6 +1,11 @@
 server {
-    listen 80;
+    listen {% if letsencrypt.enabled == true %}443 ssl{% else %}80{% endif %};
     server_name {{ domains.armadillo }};
+
+    {% if letsencrypt.enabled == true %}
+    ssl_certificate /etc/ssl/certs/{{ domains.armadillo }}/fullchain.cer;
+    ssl_certificate_key /etc/ssl/certs/{{ domains.armadillo }}/{{ domains.armadillo }}.key;
+    {% endif %}
 
     include /etc/nginx/global.d/*.conf;
 

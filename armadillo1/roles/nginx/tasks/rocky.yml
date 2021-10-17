@@ -57,6 +57,10 @@
     mode: '0644'
   notify: "restart nginx"
 
+- name: letsencrypt | Installation (Rocky)
+  include_tasks: "acme.yml"
+  when: letsencrypt.enabled
+
 - name: install armadillo configuration | Configuration (Rocky)
   template:
     src: armadillo.j2
