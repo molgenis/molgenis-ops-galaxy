@@ -28,7 +28,7 @@
       vars:
         version: 2021-02-19T04-38-02Z
         data: /var/lib/minio/data
-        domain: armadillo-storage.local:8080
+        domain: armadillo-storage.local
         access_key: "{{ minio.access_key }}"
         secret_key: "{{ minio.secret_key }}"
     - role: podman
@@ -37,10 +37,15 @@
       when: ansible_os_family == "Debian"
     - role: nginx
       vars:
+        enabled: true
         domains: 
-          armadillo: armadillo.local
-          storage: armadillo-storage.local
-          auth: armadillo-auth.local
+          armadillo: armadillo.local:8080
+          storage: armadillo-storage.local:8080
+          auth: armadillo-auth.local:8080
+        letsencrypt:
+          enabled: false
+          acme: 
+            email: user@example.org
     - role: rserver
       vars:
         debug: false

@@ -54,7 +54,7 @@ The playbook is the base of the rollout for the Armadillo. The contents of the p
       client_id: xxxxxxx-xxxxxxxxx-xxxxxxxxxx
       client_secret: xxxxxxx-xxxxxxxxx-xxxxxxxxxx
     dockerhub:
-      enabled: true
+      enabled: false
       username: xxxxxxx
       password: xxxxxxx
 
@@ -66,7 +66,7 @@ The playbook is the base of the rollout for the Armadillo. The contents of the p
       vars:
         version: 2021-02-19T04-38-02Z
         data: /var/lib/minio/data
-        domain: armadillo-storage.local:8080
+        domain: armadillo-storage.local
         access_key: "{{ minio.access_key }}"
         secret_key: "{{ minio.secret_key }}"
     - role: molgenis.armadillo.podman
@@ -75,10 +75,15 @@ The playbook is the base of the rollout for the Armadillo. The contents of the p
       when: ansible_os_family == "Debian"
     - role: molgenis.armadillo.nginx
       vars:
+        enabled: true
         domains: 
           armadillo: armadillo.local
           storage: armadillo-storage.local
           auth: armadillo-auth.local
+        letsencrypt:
+          enabled: false
+          acme:
+            email: user@example.org
     - role: molgenis.armadillo.rserver
       vars:
         debug: false
@@ -161,11 +166,11 @@ The top one needs to be opened up to this ip-address: `129.125.243.25/32` with p
 Below you can find an exmaple configuration for NGINX. The **bold** blocks show what you need to change. NGINX expects the fullchain. So PEM format in short.
 <pre>
 server {
-    <b>listen 443 ssl;</b>
+    listen 443 ssl;
     server_name domain.org;
     
-    <b>ssl_certificate /etc/ssl/certs/star.domain.org.crt;</b>
-    <b>ssl_certificate_key /etc/ssl/certs/star.domain.org.key;</b>
+    ssl_certificate /etc/ssl/certs/star.domain.org.crt;
+    ssl_certificate_key /etc/ssl/certs/star.domain.org.key;
     
     include /etc/nginx/globals.d/*.conf;
     
@@ -219,13 +224,6 @@ You can run it by executing: `ansible-playbook -i inventory.ini ./upgrade_armadi
       password: xxxxxxx
 
   roles:
-    - role: molgenis.armadillo.minio
-      vars:
-        version: 2021-02-19T04-38-02Z
-        data: /var/lib/minio/data
-        domain: armadillo-storage.local:8080
-        access_key: "{{ minio.access_key }}"
-        secret_key: "{{ minio.secret_key }}"
     - role: molgenis.armadillo.armadillo
       vars:
         version: 0.0.17
@@ -246,7 +244,7 @@ You can run it by executing: `ansible-playbook -i inventory.ini ./upgrade_armadi
           repo: molgenis
           name: molgenis-auth
         api_token: xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-        base_url: http://armadillo-auth.local:8080
+        base_url: http://armadillo-auth.local
         resources:
           memory: 512m
           cpu: 1
