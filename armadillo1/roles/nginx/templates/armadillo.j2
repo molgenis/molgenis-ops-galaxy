@@ -3,7 +3,7 @@ server {
     server_name {{ domains.armadillo }};
 
     {% if letsencrypt.enabled == true %}
-    ssl_certificate /etc/ssl/certs/{{ domains.armadillo }}/fullchain.cer;
+    ssl_certificate /etc/ssl/certs/{{ domains.armadillo }}/{{ domains.armadillo }}.cer;
     ssl_certificate_key /etc/ssl/certs/{{ domains.armadillo }}/{{ domains.armadillo }}.key;
     {% endif %}
 

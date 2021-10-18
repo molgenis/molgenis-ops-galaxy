@@ -3,7 +3,7 @@ server {
     server_name {{ domains.auth }};
 
     {% if letsencrypt.enabled == true %}
-    ssl_certificate /etc/ssl/certs/{{ domains.auth }}/fullchain.cer;
+    ssl_certificate /etc/ssl/certs/{{ domains.auth }}/{{ domains.auth }}.cer;
     ssl_certificate_key /etc/ssl/certs/{{ domains.auth }}/{{ domains.auth }}.key;
     {% endif %}
 
