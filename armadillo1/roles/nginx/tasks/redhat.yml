@@ -22,7 +22,7 @@
     state: present
     name: nginx
 
-- name: start and enable | Configuration (RedHat)
+- name: stop nginx to issue certificates (if needed) | Configuration (RedHat)
   systemd:
     name: nginx
     enabled: yes
@@ -60,6 +60,12 @@
     dest: /etc/nginx/nginx.conf
     mode: '0644'
   notify: "restart nginx"
+
+- name: letsencrypt depedencies - socat | Installation (RedHat)
+  dnf:
+    state: present
+    name: socat
+  when: letsencrypt.enabled
 
 - name: letsencrypt | Installation (RedHat)
   include_tasks: "acme.yml"

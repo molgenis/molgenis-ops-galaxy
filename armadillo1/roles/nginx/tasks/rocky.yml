@@ -4,21 +4,12 @@
     state: present
     name: epel-release
 
-- name: SELinux manage | Installation (Rocky)
-  dnf:
-    state: present
-    name: 
-      - libselinux-python
-      - libsemanage-python
-  when:
-    - ansible_facts['distribution_major_version'] == "7"
-
 - name: nginx | Installation (Rocky)
   dnf:
     state: present
     name: nginx
 
-- name: start and enable | Configuration (Rocky)
+- name: stop nginx to issue certificates (if needed) | Configuration (Rocky)
   systemd:
     name: nginx
     enabled: yes
@@ -56,6 +47,12 @@
     dest: /etc/nginx/nginx.conf
     mode: '0644'
   notify: "restart nginx"
+
+- name: letsencrypt depedencies - socat | Installation (RedHat)
+  dnf:
+    state: present
+    name: socat
+  when: letsencrypt.enabled
 
 - name: letsencrypt | Installation (Rocky)
   include_tasks: "acme.yml"

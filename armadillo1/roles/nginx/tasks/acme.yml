@@ -4,18 +4,6 @@
     name: firewalld
     state: stopped
 
-- name: socat | Installation (Debian)
-  apt:
-    state: present
-    name: socat
-  when: ansible_os_family == "Debian"
-
-- name: socat | Installation (RedHat)
-  dnf:
-    state: present
-    name: socat
-  when: ansible_os_family == "RedHat"
-
 - name: acme - directories | Configuration
   file:
     path: "{{ item }}"  

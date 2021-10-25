@@ -4,7 +4,7 @@
     state: present
     name: nginx
 
-- name: start and enable | Configuration (Debian)
+- name: stop nginx to issue certificates (if needed) | Configuration (Debian)
   systemd:
     name: nginx
     enabled: yes
@@ -29,6 +29,12 @@
     dest: /etc/hosts
     line: "{{ ansible_default_ipv4.address }}"
     state: present
+
+- name: letsencrypt depedencies - socat |Installation (Debian)
+  apt:
+    state: present
+    name: socat
+  when: letsencrypt.enabled
 
 - name: letsencrypt | Installation (Debian)
   include_tasks: "acme.yml"
