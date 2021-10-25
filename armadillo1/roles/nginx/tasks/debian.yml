@@ -40,7 +40,7 @@
   include_tasks: "acme.yml"
   when: letsencrypt.enabled
 
-- name: remove default NGINX | Configuration (Debian)
+- name: remove default nginx | Configuration (Debian)
   file:
     path: "{{ item }}"
     state: absent
@@ -48,19 +48,19 @@
     - /etc/nginx/sites-available/default
     - /etc/nginx/sites-enabled/default
 
-- name: install Armadillo configuration | Configuration (Debian)
+- name: install armadillo configuration | Configuration (Debian)
   template:
     src: armadillo.j2
     dest: /etc/nginx/sites-available/armadillo.conf
   notify: "restart nginx"
 
-- name: install Armadillo storage configuration | Configuration (Debian)
+- name: install storage configuration | Configuration (Debian)
   template:
     src: storage.j2
     dest: /etc/nginx/sites-available/storage.conf
   notify: "restart nginx"
 
-- name: install Armadillo auth configuration | Configuration (Debian)
+- name: install auth configuration | Configuration (Debian)
   template:
     src: auth.j2
     dest: /etc/nginx/sites-available/auth.conf
