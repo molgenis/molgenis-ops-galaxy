@@ -30,7 +30,7 @@
     line: "{{ ansible_default_ipv4.address }}"
     state: present
 
-- name: letsencrypt depedencies - socat |Installation (Debian)
+- name: letsencrypt depedencies - socat | Installation (Debian)
   apt:
     state: present
     name: socat
