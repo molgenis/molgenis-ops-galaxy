@@ -83,15 +83,15 @@ The playbook is the base of the rollout for the Armadillo. The contents of the p
       vars:
         debug: false
         image:
-          version: 2.0.1
-          repo: molgenis
-          name: rserver
+          version: 2.0.0
+          repo: datashield
+          name: armadillo-rserver
         resources:
           memory: 6g
           cpu: 2
     - role: molgenis.armadillo.armadillo
       vars:
-        version: 0.0.17
+        version: 1.0.1
         storage:
           access_key: "{{ minio.access_key }}"
           secret_key: "{{ minio.secret_key }}"
@@ -105,7 +105,7 @@ The playbook is the base of the rollout for the Armadillo. The contents of the p
     - role: molgenis.armadillo.auth
       vars:
         image: 
-          version: latest
+          version: 0.3.2
           repo: molgenis
           name: molgenis-auth
         api_token: xxxxxxxxxxxxxxxxx
