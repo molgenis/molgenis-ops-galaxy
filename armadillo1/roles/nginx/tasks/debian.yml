@@ -4,11 +4,11 @@
     state: present
     name: nginx
 
-- name: start and enable | Configuration (Debian)
+- name: stop nginx to issue certificates (if needed) | Configuration (Debian)
   systemd:
     name: nginx
     enabled: yes
-    state: started
+    state: stopped
 
 - name: create robots.conf directories | Configuration (Debian)
   file:
@@ -30,7 +30,25 @@
     line: "{{ ansible_default_ipv4.address }}"
     state: present
 
-- name: install Armadillo configuration | Configuration (Debian)
+- name: letsencrypt depedencies - socat | Installation (Debian)
+  apt:
+    state: present
+    name: socat
+  when: letsencrypt.enabled
+
+- name: letsencrypt | Installation (Debian)
+  include_tasks: "acme.yml"
+  when: letsencrypt.enabled
+
+- name: remove default nginx | Configuration (Debian)
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items: 
+    - /etc/nginx/sites-available/default
+    - /etc/nginx/sites-enabled/default
+
+- name: install armadillo configuration | Configuration (Debian)
   template:
     src: armadillo.j2
     dest: /etc/nginx/sites-available/armadillo.conf
@@ -42,7 +60,7 @@
     dest: /etc/nginx/sites-available/storage.conf
   notify: "restart nginx"
 
-- name: install Armadillo auth configuration | Configuration (Debian)
+- name: install auth configuration | Configuration (Debian)
   template:
     src: auth.j2
     dest: /etc/nginx/sites-available/auth.conf
