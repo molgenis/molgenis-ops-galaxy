@@ -34,20 +34,20 @@
     - '{{ domains.storage }}'
 
 - name: acme - certificate installation | Installation
-  copy:
+  file:
     src: /root/.acme.sh/{{ item }}/fullchain.cer
     dest: /etc/ssl/certs/{{ item }}/{{ item }}.cer
-    remote_src: yes
+    state: link
   with_items: 
     - '{{ domains.armadillo }}'
     - '{{ domains.auth }}'
     - '{{ domains.storage }}'
 
 - name: acme - private key installation | Installation
-  copy:
+  file:
     src: /root/.acme.sh/{{ item }}/{{ item }}.key
     dest: /etc/ssl/certs/{{ item }}/{{ item }}.key
-    remote_src: yes
+    state: link
   with_items: 
     - '{{ domains.armadillo }}'
     - '{{ domains.auth }}'
