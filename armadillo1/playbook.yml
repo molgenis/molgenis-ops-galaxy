@@ -21,65 +21,65 @@
       password: xxxxxxx
 
   roles:
-    - security: 
-      vars:
-        enabled: false
-    - role: java
-      vars:
-        version: 11
-    - role: minio
-      vars:
-        version: 2021-02-19T04-38-02Z
-        data: /var/lib/minio/data
-        domain: armadillo-storage.local
-        access_key: "{{ minio.access_key }}"
-        secret_key: "{{ minio.secret_key }}"
-    - role: podman
-      when: ansible_os_family == "RedHat"
-    - role: docker
-      when: ansible_os_family == "Debian"
-    - role: nginx
+    - role: security 
       vars:
         enabled: true
-        domains: 
-          armadillo: armadillo.local:8080
-          storage: armadillo-storage.local:8080
-          auth: armadillo-auth.local:8080
-        letsencrypt:
-          enabled: false
-          acme: 
-            email: user@example.org
-    - role: rserver
-      vars:
-        debug: false
-        image:
-          version: 2.0.0
-          repo: datashield
-          name: armadillo-rserver
-        resources:
-          memory: 6g
-          cpu: 2
-    - role: armadillo
-      vars:
-        version: 1.0.1
-        storage:
-          access_key: "{{ minio.access_key }}"
-          secret_key: "{{ minio.secret_key }}"
-          host: "{{ minio.host }}"
-          port: "{{ minio.port }}"
-        memory:
-          xmx: 1024m
-          xms: 512m
-        username: xxxxxxx
-        password: xxxxxxx
-    - role: auth
-      vars:
-        image: 
-          version: 0.3.2
-          repo: molgenis
-          name: molgenis-auth
-        api_token: xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-        base_url: http://armadillo-auth.local:8080
-        resources:
-          memory: 512m
-          cpu: 1
+    # - role: java
+    #   vars:
+    #     version: 11
+    # - role: minio
+    #   vars:
+    #     version: 2021-02-19T04-38-02Z
+    #     data: /var/lib/minio/data
+    #     domain: armadillo-storage.local
+    #     access_key: "{{ minio.access_key }}"
+    #     secret_key: "{{ minio.secret_key }}"
+    # - role: podman
+    #   when: ansible_os_family == "RedHat"
+    # - role: docker
+    #   when: ansible_os_family == "Debian"
+    # - role: nginx
+    #   vars:
+    #     enabled: true
+    #     domains: 
+    #       armadillo: armadillo.local:8080
+    #       storage: armadillo-storage.local:8080
+    #       auth: armadillo-auth.local:8080
+    #     letsencrypt:
+    #       enabled: false
+    #       acme: 
+    #         email: user@example.org
+    # - role: rserver
+    #   vars:
+    #     debug: false
+    #     image:
+    #       version: 2.0.0
+    #       repo: datashield
+    #       name: armadillo-rserver
+    #     resources:
+    #       memory: 6g
+    #       cpu: 2
+    # - role: armadillo
+    #   vars:
+    #     version: 1.0.1
+    #     storage:
+    #       access_key: "{{ minio.access_key }}"
+    #       secret_key: "{{ minio.secret_key }}"
+    #       host: "{{ minio.host }}"
+    #       port: "{{ minio.port }}"
+    #     memory:
+    #       xmx: 1024m
+    #       xms: 512m
+    #     username: xxxxxxx
+    #     password: xxxxxxx
+    # - role: auth
+    #   vars:
+    #     image: 
+    #       version: 0.3.2
+    #       repo: molgenis
+    #       name: molgenis-auth
+    #     api_token: xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+    #     base_url: http://armadillo-auth.local:8080
+    #     resources:
+    #       memory: 512m
+    #       cpu: 1

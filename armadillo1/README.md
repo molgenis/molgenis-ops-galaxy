@@ -12,7 +12,26 @@ Deploy the Armadillo suite.
 > | 0-20.000      | 8              | 100               | 4         |
 > | 20.000-70.000 | 16             | 100               | 4         |
 > | 70.000>       | 32             | 150               | 8         |
-
+>
+>
+> The analysis to do methylation analysis follow these requirements:
+>
+> | Array size | Participants | Diskspace (in GB) | Memory (in	GB) |
+> | ---------- | ------------ | ----------------- | --------------- |
+> | 450.000    | 25        	  | 56,62             | 1,6             |
+> |            | 100          | 216,37            | 3,4             |
+> |            | 250          | 535,87            | 6,9             |
+> |            | 500          | 1068,37           | 12,8            |
+> |            | 750          | 1600,87		        | 18,6            |
+> |            | 1000         | 2133,37           | 24,5            |
+> |            | 2000         | 4263,37           | 47,9            |
+> | 850.000    | 25           | 163,31            | 3,0             |
+> |            | 100          | 641,06            | 8,2             |
+> |            | 250          | 1596,56           | 18,5            |
+> |            | 500          | 3189,06           | 35,8            |
+> |            | 750          | 4781,56           | 53,0            |
+> |            | 1000         | 6374,06           | 70,3            |
+> |            | 2000         | 12744,06          | 139,4           |
 
 ## Usage 
 To use Ansible to deploy the stack you need to binaries on your system. You can install Ansible following this [user guide](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html). You need to be sure to run Ansible >- 2.9.
@@ -59,6 +78,9 @@ The playbook is the base of the rollout for the Armadillo. The contents of the p
       password: xxxxxxx
 
   roles:
+    - role: security 
+      vars:
+        enabled: true
     - role: molgenis.armadillo.java
       vars:
         version: 11
@@ -123,7 +145,12 @@ The playbook is the base of the rollout for the Armadillo. The contents of the p
 There are a few prerequisites that we need. 
 
 ##### "become" needs to work
-When you login to a VM you are hopefully yourself as in a useraccount that is recognisable as your account. After you logged in you need to be able to perform `sudo su` without entering a password. Get that in place and you will be able to run the playbook.
+When you login to a VM you are hopefully yourself as in a useraccount that is recognisable as your account. After you logged in you need to be able to perform `sudo su` without entering a password. Get that in place and you will be able to run the playbook. You can achieve this by adding this line at the end of the sudoers file.
+
+```bash
+root> visudo
+$USER ALL=(ALL) NOPASSWD: ALL
+```
 
 ##### Authentication and authorisation
 Before you deploy you need to register your application on the DataSHIELD authentication server. This allows you to delegate the authentication and usermanagement. The authorisation will still be under your control.
@@ -226,7 +253,7 @@ You can run it by executing: `ansible-playbook -i inventory.ini ./upgrade_armadi
   roles:
     - role: molgenis.armadillo.armadillo
       vars:
-        version: 0.0.17
+        version: 1.0.1
         storage:
           access_key: "{{ minio.access_key }}"
           secret_key: "{{ minio.secret_key }}"
@@ -237,10 +264,10 @@ You can run it by executing: `ansible-playbook -i inventory.ini ./upgrade_armadi
           xms: 512m
         username: xxxxxxx
         password: xxxxxxx
-    - role: auth
+    - role: molgenis.armadillo.auth
       vars:
         image: 
-          version: latest
+          version: 0.3.2
           repo: molgenis
           name: molgenis-auth
         api_token: xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -248,11 +275,13 @@ You can run it by executing: `ansible-playbook -i inventory.ini ./upgrade_armadi
         resources:
           memory: 512m
           cpu: 1
-    - role: rserver
+    - role: molgenis.armadillo.rserver
       vars:
         debug: false
         image:
-          version: 2.0.1
+          version: 2.0.0
+          repo: datashield
+          name: armadillo-rserver
         resources:
           memory: 6g
           cpu: 2

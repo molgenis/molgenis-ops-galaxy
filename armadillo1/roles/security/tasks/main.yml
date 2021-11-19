@@ -10,16 +10,32 @@
 - name: firewall | Installation
   include_tasks: "{{ ansible_os_family|lower }}.yml"
 
-- name: allow https on dmz zone | Configuration
-  ansible.posix.firewalld:
-    zone: dmz
-    service: https
-    permanent: yes
-    state: enabled
-
-- name: allow ssh on internal zone | Configuration
-  ansible.posix.firewalld:
-    zone: internal
+- name: allow http on trusted zone | Configuration
+  firewalld:
+    zone: public
     service: ssh
     permanent: yes
     state: enabled
+
+# - name: allow https on trusted zone | Configuration
+#   firewalld:
+#     zone: trusted
+#     service: https
+#     permanent: yes
+#     state: enabled
+
+# - name: add source ip-range on trusted zone | Configuration
+#   firewalld:
+#     source: {{ item }}
+#     zone: trusted
+#     state: enabled
+#    with_items: 
+#      - 94.212.206.40
+#      - 129.125.243.25
+
+# - name: allow ssh on internal zone | Configuration
+#   firewalld:
+#     zone: internal
+#     service: ssh
+#     permanent: yes
+#     state: enabled
