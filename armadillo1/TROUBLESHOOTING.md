@@ -9,15 +9,20 @@ Make sure the following domains are whitlisted in on your deploy environment.
 
 * dl.minio.io
 * auth.molgenis.org
-* *.docker.io
-* *.redhat.io
-* *.access.redhat.com
 * production.cloudflare.docker.com
 * registry.molgenis.org
 * galaxy.ansible.com
 * ansible-galaxy.s3.amazonaws.com
 * raw.githubusercontent.com
 
+Wildcard domains
+* registry.hub.docker.com
+* index.docker.io
+
+* *.docker.com
+* *.docker.io
+* *.redhat.io
+* *.access.redhat.com
 
 ### Check the logging for the docker services
 There are 2 docker services at the moment:
