@@ -36,6 +36,40 @@ frontend:
       - 'components-library@2.7.14'
       - 'molgenis-theme@2.5.1'
       - 'navigator@0.3.0'
+    '9.2.0':
+      - 'data-row-permissions@0.3.4'
+      - 'questionnaires@3.4.1'
+      - 'app-manager@1.1.1'
+      - 'core-ui@0.5.1'
+      - 'legacy-lib@1.1.5'
+      - 'data-row-edit@5.5.1'
+      - 'metadata-manager@0.2.3'
+      - 'one-click-importer@0.1.6'
+      - 'scripts@3.4.0'
+      - 'searchall@0.1.7'
+      - 'security@0.5.0'
+      - 'settings@4.4.0'
+      - 'data-explorer@3.13.8'
+      - 'components-library@2.7.15'
+      - 'molgenis-theme@2.5.1'
+      - 'navigator@0.3.0'
+    '9.2.1':
+      - 'data-row-permissions@0.3.4'
+      - 'questionnaires@3.4.2'
+      - 'app-manager@1.1.1'
+      - 'core-ui@0.5.1'
+      - 'legacy-lib@1.1.5'
+      - 'data-row-edit@5.5.3'
+      - 'metadata-manager@0.2.3'
+      - 'one-click-importer@0.1.6'
+      - 'scripts@3.4.0'
+      - 'searchall@0.1.7'
+      - 'security@0.5.0'
+      - 'settings@4.4.2'
+      - 'data-explorer@3.13.10'
+      - 'components-library@2.7.15'
+      - 'molgenis-theme@2.5.1'
+      - 'navigator@0.3.0'
   proxy2:           #  /@molgenis/
     '9.1.0':
       - 'expressions@0.21.1'
@@ -43,3 +77,10 @@ frontend:
     '9.1.1':
       - 'expressions@0.21.1'
       - 'molgenis-ui-form@5.6.2'
+    '9.2.0':
+      - 'expressions@0.21.1'
+      - 'molgenis-ui-form@5.8.1'
+    '9.2.1':
+      - 'expressions@0.21.1'
+      - 'molgenis-ui-form@5.8.3'
+
