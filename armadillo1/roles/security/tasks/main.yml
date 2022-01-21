@@ -10,32 +10,40 @@
 - name: firewall | Installation
   include_tasks: "{{ ansible_os_family|lower }}.yml"
 
-- name: allow http on trusted zone | Configuration
+- name: allow ssh from trusted zone | Configuration
   firewalld:
-    zone: public
+    zone: trusted
     service: ssh
     permanent: yes
     state: enabled
 
-# - name: allow https on trusted zone | Configuration
-#   firewalld:
-#     zone: trusted
-#     service: https
-#     permanent: yes
-#     state: enabled
+- name: set source ip-range on trusted zone | Configuration 
+  firewalld:
+    source: '{{ item }}'
+    zone: trusted
+    state: enabled
+    permanent: yes
+  with_items: 
+    - 94.212.206.40
+    - 129.125.243.25
 
-# - name: add source ip-range on trusted zone | Configuration
-#   firewalld:
-#     source: {{ item }}
-#     zone: trusted
-#     state: enabled
-#    with_items: 
-#      - 94.212.206.40
-#      - 129.125.243.25
+- name: remove ssh, http and https from public zone | Configuration
+  firewalld:
+    zone: public
+    service: '{{ item }}'
+    permanent: yes
+    state: disabled
+  with_items: 
+    - ssh
+    - http
+    - https
 
-# - name: allow ssh on internal zone | Configuration
-#   firewalld:
-#     zone: internal
-#     service: ssh
-#     permanent: yes
-#     state: enabled
+- name: allow http and https on trusted zone | Configuration
+  firewalld:
+    zone: trusted
+    service: '{{ item }}'
+    permanent: yes
+    state: disabled
+  with_items: 
+    - http
+    - https

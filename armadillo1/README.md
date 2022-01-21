@@ -149,7 +149,7 @@ When you login to a VM you are hopefully yourself as in a useraccount that is re
 
 ```bash
 root> visudo
-$USER ALL=(ALL) NOPASSWD: ALL
+?user? ALL=(ALL) NOPASSWD: ALL
 ```
 
 ##### Authentication and authorisation
