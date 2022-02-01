@@ -1,13 +1,13 @@
 ---
-- name: stop systemd service | Cleanup
-  ansible.builtin.systemd:
-    name: "{{ item }}"
-    state: stopped
-    daemon_reload: true
-  with_items:
-    - "{{ packages }}"
+# - name: stop systemd services | Cleanup
+#   ansible.builtin.systemd:
+#     name: "{{ item }}"
+#     state: stopped
+#     daemon_reload: true
+#   with_items:
+#     - "{{ packages }}"
 
-- name: remove systemd service | Cleanup
+- name: remove systemd services | Cleanup
   ansible.builtin.file:
     path: "/etc/systemd/system/{{ item }}.service"
     state: absent

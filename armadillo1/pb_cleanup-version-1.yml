@@ -6,10 +6,13 @@
   gather_facts: true
 
   roles:
-    - role: clean_version_1
+    - role: cleanup_version_1
       vars:
         packages:
           - armadillo
           - armadillo-auth
           - minio
           - rserver
+        dependencies:
+          java:
+            version: 11
