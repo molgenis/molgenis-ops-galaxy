@@ -1,0 +1,7 @@
+---
+- name: remove unnecessary dependencies | Cleanup (Debian)
+  apt:
+    state: present
+    name: "{{ item }}"
+  with_items:
+    - openjdk-{{ java.version }}-jre-headless
