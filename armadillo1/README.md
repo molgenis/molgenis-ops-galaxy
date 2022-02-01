@@ -192,14 +192,14 @@ Example:
 
 Then install the server with Ansible.
 
-`ansible-playbook -i inventory.ini ./playbook.yml`
+`ansible-playbook -i inventory.ini ./pb_install-armadillo.yml`
 
 After this the server get's deployed with all the needed configuration.
 
 #### Upgrade
-You need to create a separate playbook. Name it for example: `upgrade_armadillo.yml`
+You need to create a separate playbook. Name it for example: `pb_upgrade-armadillo.yml`
 
-You can run it by executing: `ansible-playbook -i inventory.ini ./upgrade_armadillo.yml`
+You can run it by executing: `ansible-playbook -i inventory.ini ./pb_upgrade-armadillo.yml`
 
 ```yaml
 - hosts: all
