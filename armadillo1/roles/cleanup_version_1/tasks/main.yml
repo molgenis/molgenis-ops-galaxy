@@ -1,11 +1,11 @@
 ---
-# - name: stop systemd services | Cleanup
-#   ansible.builtin.systemd:
-#     name: "{{ item }}"
-#     state: stopped
-#     daemon_reload: true
-#   with_items:
-#     - "{{ packages }}"
+- name: stop systemd services | Cleanup
+  ansible.builtin.systemd:
+    name: "{{ item }}"
+    state: stopped
+    daemon_reload: true
+  with_items:
+    - "{{ packages }}"
 
 - name: remove systemd services | Cleanup
   ansible.builtin.file:
@@ -33,6 +33,3 @@
 
 - name: remove package dependencies | Cleanup
   include_tasks: "{{ ansible_os_family|lower }}.yml"
-
-
-

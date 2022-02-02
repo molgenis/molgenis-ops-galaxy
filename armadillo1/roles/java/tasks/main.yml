@@ -1,6 +1,6 @@
 ---
 - name: os | Installation
-  debug: 
+  debug:
     msg: "{{ ansible_os_family|lower }}"
 
 - name: java | Installation
