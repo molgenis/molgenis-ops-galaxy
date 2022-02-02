@@ -1,8 +1,8 @@
 ---
 - hosts: all
-  become: yes
+  become: true
   become_user: root
-  gather_facts: yes
+  gather_facts: true
   vars:
     ci: false
     minio:

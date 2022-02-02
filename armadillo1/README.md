@@ -146,8 +146,6 @@ The general variables in the playbook.yml need to be amended to set the configur
         ...
 ```
 
-
-
 #### Domains to expose
 There are three domains that need to be opened up for the cohort.
 
@@ -192,71 +190,37 @@ Example:
 
 Then install the server with Ansible.
 
-`ansible-playbook -i inventory.ini ./playbook.yml`
+`ansible-playbook -i inventory.ini ./pb_install-armadillo.yml`
 
 After this the server get's deployed with all the needed configuration.
 
-#### Upgrade
-You need to create a separate playbook. Name it for example: `upgrade_armadillo.yml`
+#### Migrating from Opal
+We have created a role to migrate all Opal workspace to the Armadillo.
 
-You can run it by executing: `ansible-playbook -i inventory.ini ./upgrade_armadillo.yml`
-
-```yaml
-- hosts: all
-  become: yes
+* Step 1: Compress the `/var/lin/opal/data/DataSHIELD` directory to `workspaces.zip`
+* Step 2: Copy the `workspaces.zip` to the armadillo server in `/root/backup`
+* Step 3: Unzip the `workspaces.zip` in `/root/backup/`
+* Step 4: Now check the user directories in `/root/backup/DataSHIELD/`
+* > Optional Step 4.1: Move directories with spaces in the directory names to directory names without spaces
+* Step 5: Email molgenis-support@umcg.nl to figure out the usernames in the authentication server. This should be something like this: `user-213719dsjka-dalshdq390283-sdnalkdnsa`
+* Step 6: Create the migration playbook (`pb_migrate-workspaces.yml`): 
+  ```yaml
+  ---
+  - hosts: all # needs to be: 'localhost' if local connection is set
+  become: true
+  # connection: local 
   become_user: root
-  gather_facts: yes
-  vars:
-    ci: false
-    minio:
-      access_key: xxxxxxxx
-      secret_key: xxxxxxxx
-      port: 9000
-      host: http://localhost
-    oauth:
-      issuer_uri: https://auth.molgenis.org
-      discovery_path: .well-known/openid-configuration
-      client_id: xxxxx-xxxxxxxx-xxxxxxx
-      client_secret: xxxxx-xxxxxxxx-xxxxxxx
-    dockerhub:
-      enabled: false
-      username: xxxxxxx
-      password: xxxxxxx
+  gather_facts: true
 
   roles:
-    - role: molgenis.armadillo.armadillo
+    - role: migrate
       vars:
-        version: 0.0.17
-        storage:
-          access_key: "{{ minio.access_key }}"
-          secret_key: "{{ minio.secret_key }}"
-          host: "{{ minio.host }}"
-          port: "{{ minio.port }}"
-        memory:
-          xmx: 1024m
-          xms: 512m
-        username: xxxxxxx
-        password: xxxxxxx
-    - role: auth
-      vars:
-        image: 
-          version: latest
-          repo: molgenis
-          name: molgenis-auth
-        api_token: xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-        base_url: http://armadillo-auth.local
-        resources:
-          memory: 512m
-          cpu: 1
-    - role: rserver
-      vars:
-        debug: false
-        image:
-          version: 2.0.1
-        resources:
-          memory: 6g
-          cpu: 2
-```
+        users:
+          # - { source_user: sido_directory, target_user: user-298371298312 }
+          # - { source_user: tim_directory, target_user: user-987348932734 }
+  ```
+* Step 6: Put the usermapping in the `users` variable. 
+* Step 7: Run the `pb_migrate-workspaces.yml`
 
 ### Development and testing
 To test the deployment we are using Vagrant to deploy the ansible playbook locally on your machine. You will need some prerequisites to deploy locally.
@@ -281,7 +245,7 @@ Vagrant.configure("2") do |config|
   end
   config.vm.provision "ansible" do |ansible|
     ansible.limit = "all"
-    ansible.playbook = "i_setup_armadillo_1.yml"
+    ansible.playbook = "playbook.yml"
     ansible.verbose = false
   end
 end

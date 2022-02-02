@@ -1,0 +1,13 @@
+---
+- hosts: all # needs to be: 'localhost' if local connection is set
+  become: true
+  # connection: local 
+  become_user: root
+  gather_facts: true
+
+  roles:
+    - role: migrate
+      vars:
+        users:
+          # - { source_user: sido_directory, target_user: user-298371298312 }
+          # - { source_user: tim_directory, target_user: user-987348932734 }
