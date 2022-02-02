@@ -29,7 +29,10 @@ We have created a role to migrate all Opal workspace to the Armadillo.
           # - { source_user: tim_directory, target_user: user-987348932734 }
   ```
 * Step 7: Put the usermapping in the `users` variable. 
-* Step 8: Run the `pb_migrate-workspaces.yml`
+* Step 8: Run the `pb_migrate-workspaces.yml` by executing: `ansible-playbook pb_migrate-workspaces.yml`. 
+  
+  When running remote you need to create an [inventory file](https://github.com/molgenis/molgenis-ops-galaxy/blob/main/armadillo1/README.md#creating-inventoryini) and point to the file like this: `ansible-playbook -i inventory.ini pb_migrate-workspaces.yml`
+
 
 ## Migrate from Armadillo 1.x to Armadillo 2.x
 We have prepared a migration guide for upgrading to Armadillo 2.x.
@@ -55,8 +58,9 @@ We have prepared a migration guide for upgrading to Armadillo 2.x.
             java:
                 version: 11  
   ```
-* Step 2. Run the `cleanup.yml` playbook
-* Step 3. Update your original `playbook.yml`
+* Step 2. Run the `pb_cleanup-version-1.yml` playbook by executing: `ansible-playbook pb_cleanup-version-1.yml`.
+  When running remote you need to create an [inventory file](https://github.com/molgenis/molgenis-ops-galaxy/blob/main/armadillo1/README.md#creating-inventoryini) and point to the file like this: `ansible-playbook -i inventory.ini pb_cleanup-version-1.yml`
+* Step 3. Update your original `pb_install-armadillo.yml`
   ```yaml
   vars:
     ...
@@ -112,4 +116,6 @@ We have prepared a migration guide for upgrading to Armadillo 2.x.
     - role: molgenis.armadillo.post_nginx
     - role: molgenis.armadillo.post_upgrade
   ```
-* Step 4. Rerun the original `playbook.yml`
+* Step 4. Rerun the original `pb_install-armadillo.yml` by executing `ansible-playbook pb_install-armadillo.yml`.
+  
+  When running remote you need to create an [inventory file](https://github.com/molgenis/molgenis-ops-galaxy/blob/main/armadillo1/README.md#creating-inventoryini) and point to the file like this: `ansible-playbook -i inventory.ini pb_install-armadillo.yml`
