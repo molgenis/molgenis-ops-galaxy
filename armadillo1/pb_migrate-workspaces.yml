@@ -9,5 +9,5 @@
     - role: migrate
       vars:
         users:
-          # - { source_user: sido, target_user: user-298371298312 }
-          # - { source_user: tim, target_user: user-987348932734 }
+          # - { source_user: sido_directory, target_user: user-298371298312 }
+          # - { source_user: tim_directory, target_user: user-987348932734 }
