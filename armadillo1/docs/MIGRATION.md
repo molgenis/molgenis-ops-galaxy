@@ -28,8 +28,8 @@ We have created a role to migrate all Opal workspace to the Armadillo.
           # - { source_user: sido_directory, target_user: user-298371298312 }
           # - { source_user: tim_directory, target_user: user-987348932734 }
   ```
-* Step 6: Put the usermapping in the `users` variable. 
-* Step 7: Run the `pb_migrate-workspaces.yml`
+* Step 7: Put the usermapping in the `users` variable. 
+* Step 8: Run the `pb_migrate-workspaces.yml`
 
 ## Migrate from Armadillo 1.x to Armadillo 2.x
 We have prepared a migration guide for upgrading to Armadillo 2.x.
