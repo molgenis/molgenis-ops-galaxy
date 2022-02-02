@@ -1,0 +1,10 @@
+---
+- name: remove unnecessary dependencies | Cleanup (Debian)
+  apt:
+    state: absent
+    name: "{{ item }}"
+  with_items:
+    - openjdk-{{ dependencies.java.version }}-jre-headless
+
+- name: prune all dangling container resources | Cleanup (Debian)
+  command: docker system prune -a -f

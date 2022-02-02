@@ -1,3 +1,7 @@
 ---
+- name: os | Installation
+  debug:
+    msg: "{{ ansible_os_family|lower }}"
+
 - name: java | Installation
   include_tasks: "{{ ansible_os_family|lower }}.yml"

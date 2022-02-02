@@ -1,12 +1,12 @@
 ---
-- name: dnf | Installation (RedHat)
+- name: dnf | Installation (Rocky)
   yum:
     state: present
     name:
       - dnf
     update_cache: yes
 
-- name: java | Installation (RedHat)
+- name: java | Installation (Rocky)
   dnf:
     state: present
     name: java-{{ version }}-openjdk-headless

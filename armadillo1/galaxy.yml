@@ -3,7 +3,7 @@ namespace: molgenis
 
 name: armadillo
 
-version: 1.5.0
+version: 1.6.0
 
 readme: README.md
 
@@ -25,4 +25,3 @@ documentation: https://github.com/molgenis/molgenis-service-armadillo
 homepage: https://molgenis.org
 
 issues: https://github.com/molgenis/molgenis-service-armadillo/issues
-

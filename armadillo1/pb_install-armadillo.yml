@@ -32,16 +32,22 @@
         access_key: "{{ minio.access_key }}"
         secret_key: "{{ minio.secret_key }}"
     - role: podman
-      when: ansible_os_family == "RedHat"
+      vars:
+        redhat:
+          subscription:
+            enabled: false
+            username: xxxxxxx
+            password: xxxxxxx
+      when: ansible_os_family == "RedHat" or ansible_os_family == "Rocky"
     - role: docker
       when: ansible_os_family == "Debian"
     - role: nginx
       vars:
         enabled: true
         domains: 
-          armadillo: armadillo.local:8080
-          storage: armadillo-storage.local:8080
-          auth: armadillo-auth.local:8080
+          armadillo: armadillo.local
+          storage: armadillo-storage.local
+          auth: armadillo-auth.local
         letsencrypt:
           enabled: false
           acme: 

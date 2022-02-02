@@ -1,5 +1,5 @@
 # Armadillo suite
-Deploy the Armadillo suite.
+Collection for deploying the Armadillo suite.
 
 
 > Requirements
@@ -17,12 +17,12 @@ Deploy the Armadillo suite.
 ## Usage 
 To use Ansible to deploy the stack you need to binaries on your system. You can install Ansible following this [user guide](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html). You need to be sure to run Ansible >- 2.9.
 
-#### Setup
+### Setup
 When you installed ansible you need to create 3 files:
 
 - `inventory.ini`
 - `playbook.yml`
-#### Creating inventory.ini
+### Creating inventory.ini
 Your target host needs to be defined here.
 
 ```ini
@@ -30,7 +30,7 @@ Your target host needs to be defined here.
 [armadillo]
 x.x.x.x # ip address of the system
 ```
-#### Creating playbook.yml
+### Creating playbook.yml
 The playbook is the base of the rollout for the Armadillo. The contents of the playbook is shown below.
 
 ```yaml
@@ -70,7 +70,13 @@ The playbook is the base of the rollout for the Armadillo. The contents of the p
         access_key: "{{ minio.access_key }}"
         secret_key: "{{ minio.secret_key }}"
     - role: molgenis.armadillo.podman
-      when: ansible_os_family == "RedHat"
+      when: ansible_os_family == "RedHat" or ansible_os_family == "Rocky"
+      vars:
+        redhat:
+          subscription:
+            enabled: true
+            username: xxxxxxx
+            password: xxxxxxx
     - role: molgenis.armadillo.docker
       when: ansible_os_family == "Debian"
     - role: molgenis.armadillo.nginx
@@ -122,10 +128,10 @@ The playbook is the base of the rollout for the Armadillo. The contents of the p
 
 There are a few prerequisites that we need. 
 
-##### "become" needs to work
+### "become" needs to work
 When you login to a VM you are hopefully yourself as in a useraccount that is recognisable as your account. After you logged in you need to be able to perform `sudo su` without entering a password. Get that in place and you will be able to run the playbook.
 
-##### Authentication and authorisation
+### Authentication and authorisation
 Before you deploy you need to register your application on the DataSHIELD authentication server. This allows you to delegate the authentication and usermanagement. The authorisation will still be under your control.
 
 The general variables in the playbook.yml need to be amended to set the configuration right:
@@ -146,7 +152,7 @@ The general variables in the playbook.yml need to be amended to set the configur
         ...
 ```
 
-#### Domains to expose
+### Domains to expose
 There are three domains that need to be opened up for the cohort.
 
 *For researchers*
@@ -160,7 +166,7 @@ There are three domains that need to be opened up for the cohort.
 
 The top one needs to be opened up to this ip-address: `129.125.243.25/32` with port number `443`.
 
-##### Setup SSL
+#### Setup SSL
 Below you can find an exmaple configuration for NGINX. The **bold** blocks show what you need to change. NGINX expects the fullchain. So PEM format in short.
 <pre>
 server {
@@ -177,7 +183,7 @@ server {
 }
 </pre>
 
-#### Deploy
+### Deploy
 You can install the galaxy collection using the following syntax:
 
 `ansible-galaxy collection install molgenis.armadillo`
@@ -194,35 +200,7 @@ Then install the server with Ansible.
 
 After this the server get's deployed with all the needed configuration.
 
-#### Migrating from Opal
-We have created a role to migrate all Opal workspace to the Armadillo.
-
-* Step 1: Compress the `/var/lin/opal/data/DataSHIELD` directory to `workspaces.zip`
-* Step 2: Copy the `workspaces.zip` to the armadillo server in `/root/backup`
-* Step 3: Unzip the `workspaces.zip` in `/root/backup/`
-* Step 4: Now check the user directories in `/root/backup/DataSHIELD/`
-* > Optional Step 4.1: Move directories with spaces in the directory names to directory names without spaces
-* Step 5: Email molgenis-support@umcg.nl to figure out the usernames in the authentication server. This should be something like this: `user-213719dsjka-dalshdq390283-sdnalkdnsa`
-* Step 6: Create the migration playbook (`pb_migrate-workspaces.yml`): 
-  ```yaml
-  ---
-  - hosts: all # needs to be: 'localhost' if local connection is set
-  become: true
-  # connection: local 
-  become_user: root
-  gather_facts: true
-
-  roles:
-    - role: migrate
-      vars:
-        users:
-          # - { source_user: sido_directory, target_user: user-298371298312 }
-          # - { source_user: tim_directory, target_user: user-987348932734 }
-  ```
-* Step 6: Put the usermapping in the `users` variable. 
-* Step 7: Run the `pb_migrate-workspaces.yml`
-
-### Development and testing
+## Development and testing
 To test the deployment we are using Vagrant to deploy the ansible playbook locally on your machine. You will need some prerequisites to deploy locally.
 
 * [Vagrant](https://www.vagrantup.com/downloads)
@@ -230,7 +208,7 @@ To test the deployment we are using Vagrant to deploy the ansible playbook local
 * [git](https://git-scm.com/downloads)
 
 
-#### Creating the configuration
+### Creating the configuration
 Create a file called: `Vagrant` looking like this:
 
 ```javascript
@@ -253,21 +231,24 @@ end
 
 Create an file called `playbook.yml` with the content from here: [ansible galaxy content](#creating-playbook.yml).
 
-### Running the VM
-> Caveat for mac!
-Vagrant uses Virtualbox which in turn requires an Oracle kernel extension to work.
-If the installation fails, retry after you enable it in:
-  System Preferences → Security & Privacy → General
-For more information, refer to virtualbox vendor documentation or this [Apple Technical Note](https://developer.apple.com/library/content/technotes/tn2459/_index.html).
+**Running the VM**
 
-#### Installing dependencies
+> Caveat for mac!
+> Vagrant uses Virtualbox which in turn requires an Oracle kernel extension to work.
+> If the installation fails, retry after you enable it in:
+>  System Preferences → Security & Privacy → General
+> For more information, refer to virtualbox vendor documentation or this [Apple Technical Note](https://developer.apple.com/library/content/technotes/tn2459/_index.html).
+
+**Installing dependencies**
+
 Before you can deploy, you need to install the dependencies by running
 
 ```bash
 > ansible-galaxy install -r requirements.yml
 ```
 
-#### Configure secrets
+**Configure secrets**
+
 By default, uses the Armadillo Localhost application in auth.molgenis.org.
 You have to fill in OIDC client secret and auth server api key in `playbook.yml`.
 
@@ -292,11 +273,11 @@ in NGINX will resolve.
 You are done. You can reach both services on:
 
 * Armadillo service to wok with DataSHIELD
-  http://armadillo.local:8080
+  http://armadillo.local
 * Armadillo storage service to store you files on
-  http://armadillo-storage.local:8080
+  http://armadillo-storage.local
 * Armadillo authentication service to store you files on
-  http://armadillo-auth.local:8080
+  http://armadillo-auth.local
 
 Login with:
 
@@ -304,5 +285,3 @@ Login with:
 * password: admin
 
 Only the storage server has a user interface. The DataSHIELD service works with R only.
-
-
