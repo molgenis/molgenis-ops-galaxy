@@ -1,0 +1,10 @@
+---
+- name: install the upgrade script | Configuration
+  ansible.builtin.template:
+    src: upgrade-armadillo.bash.j2
+    dest: /usr/share/armadillo/upgrade-armadillo.bash
+    owner: armadillo
+    group: armadillo
+    mode: '0755'
+  vars:
+    container_manager: podman

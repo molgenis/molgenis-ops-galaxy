@@ -1,0 +1,28 @@
+---
+- name: add minio group | Configuration
+  ansible.builtin.group:
+    name: minio
+
+- name: add minio user | Configuration
+  ansible.builtin.user:
+    name: minio
+    group: minio
+
+- name: create directories | Configuration
+  ansible.builtin.file:
+    path: "{{ data }}"
+    owner: minio
+    group: minio
+    state: directory
+    mode: '655'
+
+- name: minio | Installation
+  ansible.builtin.template:
+    src: minio.yml.j2
+    dest: /usr/share/armadillo/services/minio.yml
+    owner: minio
+    group: minio
+    mode: '655'
+
+- name: allow containers to write in /var/lib/minio/data | Configuration
+  ansible.builtin.include_tasks: "{{ ansible_os_family|lower }}.yml"

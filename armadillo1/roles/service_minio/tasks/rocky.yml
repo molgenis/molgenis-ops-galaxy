@@ -1,0 +1,5 @@
+---
+- name: allow containers to write in /var/lib/minio/data | Configuration (Rocky)
+  ansible.builtin.command: chcon -R --type svirt_sandbox_file_t {{ data }}
+  tags:
+    - skip_ansible_lint

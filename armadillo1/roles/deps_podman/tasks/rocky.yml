@@ -1,0 +1,4 @@
+---
+- name: not specific yet | Configuration (Rocky)
+  ansible.builtin.debug: 
+    msg: "nothing specific yet"

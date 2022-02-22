@@ -1,0 +1,14 @@
+version: "3"
+
+services: 
+  armadillo:
+    image: molgenis/armadillo:{{ version }}
+    environment:
+      - SPRING_PROFILES_ACTIVE=production
+      - SPRING_CONFIG_LOCATION=/app/conf/
+    ports:
+      - 8080:8080
+    volumes:
+      - /etc/armadillo/:/app/conf/
+      - /var/log/armadillo/:/app/logs/
+    restart: unless-stopped

@@ -1,0 +1,84 @@
+---
+- name: epel-release | Installation (Rocky)
+  ansible.builtin.dnf:
+    state: present
+    name: epel-release
+
+- name: nginx | Installation (Rocky)
+  ansible.builtin.dnf:
+    state: present
+    name: nginx
+
+- name: stop nginx to issue certificates (if needed) | Configuration (Rocky)
+  ansible.builtin.systemd:
+    name: nginx
+    enabled: yes
+    state: started
+
+- name: set httpd_can_network_connect | Configuration (Rocky)
+  ansible.posix.seboolean:
+    name: httpd_can_network_connect
+    state: yes
+    persistent: yes
+
+- name: create robots.conf directories | Configuration (Rocky)
+  ansible.builtin.file:
+    path: /etc/nginx/global.d
+    owner: nginx
+    group: nginx
+    state: directory
+    mode: '755'
+
+- name: add robots.conf | Configuration (Rocky)
+  ansible.builtin.copy:
+    src: robots.conf
+    dest: /etc/nginx/global.d/robots.conf
+  notify: "restart nginx"
+
+- name: ammend /etc/hosts to include hostname | Configuration (Rocky)
+  ansible.builtin.lineinfile:
+    dest: /etc/hosts
+    line: "{{ ansible_default_ipv4.address }}"
+    state: present
+
+- name: customize nginx.conf | Configuration (Rocky)
+  ansible.builtin.copy:
+    src: nginx.conf
+    dest: /etc/nginx/nginx.conf
+    mode: '0644'
+  notify: "restart nginx"
+
+- name: letsencrypt depedencies - socat | Installation (RedHat)
+  ansible.builtin.dnf:
+    state: present
+    name: socat
+  when: letsencrypt.enabled
+
+- name: letsencrypt | Installation (Rocky)
+  ansible.builtin.include_tasks: "acme.yml"
+  when: letsencrypt.enabled
+
+- name: install armadillo configuration | Configuration (Rocky)
+  ansible.builtin.template:
+    src: armadillo.j2
+    dest: /etc/nginx/default.d/armadillo.conf
+  notify: "restart nginx"
+
+- name: install storage configuration | Configuration (Rocky)
+  ansible.builtin.template:
+    src: storage.j2
+    dest: /etc/nginx/default.d/storage.conf
+  notify: "restart nginx"
+
+- name: install storage-console configuration | Configuration (RedHat)
+  ansible.builtin.template:
+    src: console.j2
+    dest: /etc/nginx/default.d/console.conf
+  notify: "restart nginx"
+  when: minio.console.enabled
+
+- name: install auth configuration | Configuration (Rocky)
+  ansible.builtin.template:
+    src: auth.j2
+    dest: /etc/nginx/default.d/auth.conf
+  notify: "restart nginx"

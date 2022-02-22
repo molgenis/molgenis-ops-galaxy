@@ -1,0 +1,38 @@
+---
+- name: add armadillo group | Configuration
+  ansible.builtin.group:
+    name: armadillo
+
+- name: add armadillo user | Configuration
+  ansible.builtin.user:
+    name: armadillo
+    group: armadillo
+
+- name: create directories | Configuration
+  ansible.builtin.file:
+    path: "{{ item }}"
+    owner: armadillo
+    group: armadillo
+    state: directory
+    mode: '655'
+  with_items:
+    - /usr/share/armadillo
+    - /usr/share/armadillo/services
+    - /etc/armadillo
+    - /var/log/armadillo
+
+- name: install armadillo | Installation
+  ansible.builtin.template:
+    src: armadillo.yml.j2
+    dest: /usr/share/armadillo/services/armadillo.yml
+    owner: armadillo
+    group: armadillo
+    mode: '655'
+
+- name: configure armadillo | Configuration
+  ansible.builtin.template:
+    src: application.yml.j2
+    dest: /etc/armadillo/application.yml
+    owner: armadillo
+    group: armadillo
+    mode: '655'

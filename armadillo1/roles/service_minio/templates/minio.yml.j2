@@ -1,0 +1,29 @@
+version: "3"
+
+services:
+  minio:
+    image: quay.io/minio/minio:RELEASE.{{ version }}
+    ports:
+{% if minio.console.enabled %}
+      - {{ minio.console.port }}:{{ minio.console.port }}
+{% endif %}
+      - {{ minio.port }}:{{ minio.port }}
+    environment:
+      MINIO_VOLUMES: {{ data }}
+      MINIO_DOMAIN: {{ minio.domain }}
+      MINIO_ROOT_USER: {{ root_user }}
+      MINIO_ROOT_PASSWORD: {{ root_password }}
+{% if oauth is defined %}
+      MINIO_IDENTITY_OPENID_REDIRECT_URI: {{ protocol }}://{{ minio.domain }}/oauth_callback
+      MINIO_IDENTITY_OPENID_CLIENT_ID: {{ oauth.client_id }}
+      MINIO_IDENTITY_OPENID_CLIENT_SECRET: {{ oauth.client_secret }}
+      MINIO_IDENTITY_OPENID_CONFIG_URL: {{ oauth.issuer_uri }}/{{ oauth.discovery_path }}
+{% endif %}
+{% if minio.console.enabled %}
+      MINIO_BROWSER_REDIRECT_URL: {{ protocol }}://{{ minio.console.domain }}/oauth_callback
+      MINIO_BROWSER: 'on'
+{% endif %}
+    command: server /data  --console-address ":{{ minio.console.port }}"
+    volumes:
+      - {{ data }}:/data
+    restart: unless-stopped

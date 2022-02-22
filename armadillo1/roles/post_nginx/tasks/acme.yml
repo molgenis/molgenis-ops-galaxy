@@ -1,0 +1,75 @@
+---
+- name: stop firewall | Pre-installation
+  ansible.builtin.systemd:
+    name: firewalld
+    state: stopped
+
+- name: acme - directories | Configuration
+  ansible.builtin.file:
+    path: "{{ item }}"  
+    state: directory
+  loop:
+    - /usr/local/share/acme
+    - /etc/ssl/certs/{{ domains.armadillo }}
+    - /etc/ssl/certs/{{ domains.auth }}
+    - /etc/ssl/certs/{{ domains.storage }}
+
+- name: acme - get | Installation
+  ansible.builtin.get_url:
+    url: https://get.acme.sh
+    dest: /usr/local/share/acme/acme.sh
+    mode: 0755
+
+- name: acme - unpack | Installation
+  ansible.builtin.command: /usr/local/share/acme/acme.sh
+
+- name: acme - register account | Configuration
+  ansible.builtin.command: /root/.acme.sh/acme.sh --register-account -m {{ letsencrypt.acme.email }}
+
+- name: acme - domain generation | Configuration
+  ansible.builtin.command: /root/.acme.sh/acme.sh --issue --standalone -d {{ item }} --force
+  with_items:
+    - '{{ domains.armadillo }}'
+    - '{{ domains.auth }}'
+    - '{{ domains.storage }}'
+
+- name: acme - certificate installation | Installation
+  ansible.builtin.file:
+    src: /root/.acme.sh/{{ item }}/fullchain.cer
+    dest: /etc/ssl/certs/{{ item }}/{{ item }}.cer
+    state: link
+  with_items: 
+    - '{{ domains.armadillo }}'
+    - '{{ domains.auth }}'
+    - '{{ domains.storage }}'
+
+- name: acme - private key installation | Installation
+  ansible.builtin.file:
+    src: /root/.acme.sh/{{ item }}/{{ item }}.key
+    dest: /etc/ssl/certs/{{ item }}/{{ item }}.key
+    state: link
+  with_items: 
+    - '{{ domains.armadillo }}'
+    - '{{ domains.auth }}'
+    - '{{ domains.storage }}'
+
+- name: acme - install autoamtic renewal | Configuration
+  ansible.builtin.copy:
+    src: ssl_renewal.bash
+    dest: /usr/local/bin/ssl_renewal.bash
+    mode: '0755'
+
+- name: acme - install automatic renewal | Installation
+  ansible.builtin.cron: 
+   minute="0" 
+   hour="3" 
+   day="1"
+   name="Automatic SSL-certificate renewal"
+   user="root"
+   cron_file="ssl_renewal"
+   job="/usr/local/bin/ssl_renewal"
+
+- name: start firewall | Post-installation
+  ansible.builtin.systemd:
+    name: firewalld
+    state: started

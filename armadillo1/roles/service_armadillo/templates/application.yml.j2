@@ -1,0 +1,57 @@
+server:
+  servlet:
+    session:
+      timeout: 30m
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: info, health, metrics
+
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt: 
+          issuer-uri: {{ oauth.issuer_uri }}
+        opaquetoken:
+          client-id: {{ oauth.client_id }}
+    user:
+      name: {{ username }}
+      password: {{ password }}
+
+datashield:
+  profiles:
+{% for profile in datashield.profiles %}
+{% if profile.enabled %}
+    - name: {{ profile.name }}
+      environment: {{ profile.environment }}
+      whitelist:
+{% for package in profile.whitelist %}
+        - {{ package }}
+{% endfor %}
+      options:
+{% if profile.options is defined %}
+        {{ profile.options }}
+{% endif %}
+        datashield: 
+          seed: {{ range(10000000, 99999999) | random }}
+{% endif %}
+{% endfor %}
+   
+rserve:
+  environments:
+{% for environment in rserve.environments %}
+{% if environment.enabled %}
+    - name: {{ environment.name }}
+      host: rserver-{{ environment.name }}
+      port: {{ environment.exposed_port }}
+{% endif %}
+{% endfor %}
+
+minio:
+  url: {{ storage.host }}
+  port: {{ storage.port }}
+  access-key: {{ storage.root_user }}
+  secret-key: {{ storage.root_password }}

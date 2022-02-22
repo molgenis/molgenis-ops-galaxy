@@ -1,0 +1,23 @@
+---
+- name: create directories | Configuration
+  ansible.builtin.file:
+    path: /usr/share/armadillo/services/rservers/
+    state: directory
+    owner: armadillo
+    group: armadillo
+    mode: '655'
+
+- name: rserver | Installation
+  ansible.builtin.template:
+    src: rserver.yml.j2
+    dest: /usr/share/armadillo/services/rservers/{{ item.name }}.yml
+    mode: '655'
+    owner: armadillo
+    group: armadillo
+  vars:
+    name: "{{ item.name }}"
+    image: "{{ item.image }}"
+    exposed_port: "{{ item.exposed_port }}"
+    debug: "{{ item.debug }}"
+  with_items:
+    - "{{ rserve.environments }}"

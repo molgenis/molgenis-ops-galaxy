@@ -1,0 +1,24 @@
+---
+galaxy_info:
+  role_name: post_assemble
+  author: Sido Haakma
+  description: Creates a Armadillo stack with the service extensions incorporated
+  company: MOLGENIS
+
+  license: LGPL
+
+  min_ansible_version: "2.9"
+
+  platforms:
+    - name: EL
+      versions:
+        - "8"
+        - "7"
+    - name: Ubuntu
+      versions:
+        - focal
+    - name: Debian
+      versions:
+        - buster
+
+  galaxy_tags: [federation]

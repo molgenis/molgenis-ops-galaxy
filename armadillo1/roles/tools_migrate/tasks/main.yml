@@ -1,0 +1,5 @@
+---
+- name: migrate workspaces to Armadillo | Configuration
+  ansible.builtin.script: opal-ws-migration.bash {{ item.source_user }} {{ item.target_user }}
+  with_items:
+    - "{{ users }}"

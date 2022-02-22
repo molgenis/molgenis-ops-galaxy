@@ -1,0 +1,26 @@
+---
+galaxy_info:
+  role_name: service_rserve
+  author: Sido Haakma
+  description: RServe environments used to perform local analysis and send aggregated results to the Armadillo
+  company: MOLGENIS
+
+  license: LGPL
+
+  min_ansible_version: "2.9"
+
+  platforms:
+    - name: EL
+      versions:
+        - "8"
+        - "7"
+    - name: Ubuntu
+      versions:
+        - focal
+    - name: Debian
+      versions:
+        - buster
+
+  galaxy_tags: [federation]
+
+allow_duplicates: true

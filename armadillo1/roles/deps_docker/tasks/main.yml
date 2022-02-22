@@ -1,0 +1,39 @@
+---
+- name: remove old packages | Cleanup
+  ansible.builtin.apt:
+    state: absent
+    name:
+      - docker
+      - docker-engine
+      - docker.io
+      - containerd
+      - runc
+
+- name: allow release-info to change for APT repositories | Configuration
+  ansible.builtin.command: apt update -y --allow-releaseinfo-change
+  tags:
+    - skip_ansible_lint
+
+- name: prerequisites | Installation
+  ansible.builtin.apt:
+    state: present
+    name:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - gnupg-agent
+      - software-properties-common
+    update_cache: true
+
+- name: docker | Repository configuration
+  ansible.builtin.include_tasks: "{{ ansible_distribution|lower }}.yml"
+
+- name: docker | Installation
+  ansible.builtin.apt:
+    state: present
+    name:
+      - docker-ce
+      - docker-ce-cli
+      - python3-docker
+      - containerd.io
+    update_cache: true
