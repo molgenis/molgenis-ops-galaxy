@@ -33,9 +33,16 @@ x.x.x.x # ip address of the system
 ### Creating requirements.txt
 Your target host needs to be defined here.
 
-```txt
-community.general
-ansible.posix
+```yaml
+---
+collections:
+# install collections from Ansible Galaxy
+- name: ansible.posix
+  version: 1.1.1
+  source: https://galaxy.ansible.com
+- name: community.general
+  version: 2.0.1
+  source: https://galaxy.ansible.com
 ```
 ### Creating playbook.yml
 The playbook is the base of the rollout for the Armadillo. The contents of the playbook is shown below.
@@ -112,6 +119,7 @@ The playbook is the base of the rollout for the Armadillo. The contents of the p
       vars:
         version: 2022-01-25T19-56-04Z
         data: /var/lib/minio/data
+        protocol: http
         domain: "{{ minio.domain }}"
         root_user: "{{ minio.root_user }}"
         root_password: "{{ minio.root_password }}"
