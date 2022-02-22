@@ -32,9 +32,16 @@ x.x.x.x # ip address of the system
 ### Creating requirements.txt
 Your target host needs to be defined here.
 
-```txt
-community.general
-ansible.posix
+```yaml
+---
+collections:
+# install collection from galaxy.ansible.com
+- name: ansible.posix
+  version: 1.1.1
+  source: https://galaxy.ansible.com
+- name: community.general
+  version: 2.0.1
+  source: https://galaxy.ansible.com
 ```
 ### Creating playbook.yml
 The playbook is the base of the rollout for the Armadillo. The contents of the playbook is shown below.
@@ -263,7 +270,7 @@ server {
 ### Deploy
 Install the prerequisites this way:
 
-`ansible-galaxy install -r requirements.txt`
+`ansible-galaxy install -r requirements.yml`
 
 You can install the galaxy collection using the following syntax:
 
