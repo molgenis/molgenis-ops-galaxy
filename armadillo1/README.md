@@ -112,6 +112,7 @@ The playbook is the base of the rollout for the Armadillo. The contents of the p
       vars:
         version: 2022-01-25T19-56-04Z
         data: /var/lib/minio/data
+        protocol: http
         domain: "{{ minio.domain }}"
         root_user: "{{ minio.root_user }}"
         root_password: "{{ minio.root_password }}"
