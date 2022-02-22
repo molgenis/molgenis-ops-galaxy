@@ -1,0 +1,10 @@
+---
+- name: remove unnecessary dependencies | Cleanup (Rocky)
+  ansible.builtin.dnf:
+    state: absent
+    name: "{{ item }}"
+  with_items:
+    - java-{{ dependencies.java.version }}-openjdk-headless
+
+- name: prune all dangling container resources | Cleanup (Rocky)
+  ansible.builtin.command: podman system prune -a -f

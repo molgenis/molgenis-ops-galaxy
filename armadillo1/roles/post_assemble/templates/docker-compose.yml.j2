@@ -1,0 +1,34 @@
+version: "3"
+
+services:
+  armadillo:
+    extends:
+      file: services/armadillo.yml
+      service: armadillo
+    depends_on:
+      - minio
+{% for environment in rserve.environments %}
+{% if environment.enabled %}
+      - rserver-{{ environment.name }}
+{% endif %}
+{% endfor %}
+
+  minio:
+    extends: 
+      file: services/minio.yml
+      service: minio
+
+  auth:
+    extends: 
+      file: services/auth.yml
+      service: auth
+
+{% for environment in rserve.environments %}
+{% if environment.enabled %}
+  rserver-{{ environment.name }}: 
+    extends: 
+      file: services/rservers/{{ environment.name }}.yml
+      service: rserver-{{ environment.name }}
+
+{% endif %}
+{% endfor %}

@@ -1,0 +1,99 @@
+---
+- name: nginx | Installation (Debian)
+  ansible.builtin.apt:
+    state: present
+    name: nginx
+
+- name: stop nginx to issue certificates (if needed) | Configuration (Debian)
+  ansible.builtin.systemd:
+    name: nginx
+    enabled: yes
+    state: stopped
+
+- name: create robots.conf directories | Configuration (Debian)
+  ansible.builtin.file:
+    path: /etc/nginx/global.d
+    owner: www-data
+    group: www-data
+    state: directory
+    mode: '755'
+
+- name: add robots.conf | Configuration (Debian)
+  ansible.builtin.copy:
+    src: robots.conf
+    dest: /etc/nginx/global.d/robots.conf
+  notify: "restart nginx"
+
+- name: ammend /etc/hosts to include hostname | Configuration (Debian)
+  ansible.builtin.lineinfile:
+    dest: /etc/hosts
+    line: "{{ ansible_default_ipv4.address }}"
+    state: present
+
+- name: letsencrypt depedencies - socat | Installation (Debian)
+  ansible.builtin.apt:
+    state: present
+    name: socat
+  when: letsencrypt.enabled
+
+- name: letsencrypt | Installation (Debian)
+  include_tasks: "acme.yml"
+  when: letsencrypt.enabled
+
+- name: remove default nginx | Configuration (Debian)
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  with_items: 
+    - /etc/nginx/sites-available/default
+    - /etc/nginx/sites-enabled/default
+
+- name: install armadillo configuration | Configuration (Debian)
+  ansible.builtin.template:
+    src: armadillo.j2
+    dest: /etc/nginx/sites-available/armadillo.conf
+  notify: "restart nginx"
+
+- name: install storage configuration | Configuration (Debian)
+  ansible.builtin.template:
+    src: storage.j2
+    dest: /etc/nginx/sites-available/storage.conf
+  notify: "restart nginx"
+
+- name: install storage-console configuration | Configuration (Debian)
+  ansible.builtin.template:
+    src: console.j2
+    dest: /etc/nginx/sites-available/console.conf
+  notify: "restart nginx"
+  when: minio.console.enabled
+
+- name: install auth configuration | Configuration (Debian)
+  ansible.builtin.template:
+    src: auth.j2
+    dest: /etc/nginx/sites-available/auth.conf
+  notify: "restart nginx"
+
+- name: make auth service enabled | Configuration (Debian)
+  ansible.builtin.file:
+    src: /etc/nginx/sites-available/auth.conf
+    dest: /etc/nginx/sites-enabled/auth.conf
+    state: link
+
+- name: make storage service enabled | Configuration (Debian)
+  ansible.builtin.file:
+    src: /etc/nginx/sites-available/storage.conf
+    dest: /etc/nginx/sites-enabled/storage.conf
+    state: link
+
+- name: make storage-console service enabled | Configuration (Debian)
+  ansible.builtin.file:
+    src: /etc/nginx/sites-available/console.conf
+    dest: /etc/nginx/sites-enabled/console.conf
+    state: link
+  when: minio.console.enabled
+
+- name: make armadillo service enabled | Configuration (Debian)
+  ansible.builtin.file:
+    src: /etc/nginx/sites-available/armadillo.conf
+    dest: /etc/nginx/sites-enabled/armadillo.conf
+    state: link

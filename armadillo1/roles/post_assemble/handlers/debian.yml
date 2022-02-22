@@ -1,0 +1,3 @@
+---
+- name: start Armadillo stack | Installation (Debian)
+  ansible.builtin.command: docker-compose -f /usr/share/armadillo/docker-compose.yml up --detach

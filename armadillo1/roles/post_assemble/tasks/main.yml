@@ -1,0 +1,9 @@
+---
+- name: install general services | Installation
+  ansible.builtin.template:
+    src: docker-compose.yml.j2
+    dest: /usr/share/armadillo/docker-compose.yml
+    owner: armadillo
+    group: armadillo
+    mode: '755'
+  notify: start Armadillo stack

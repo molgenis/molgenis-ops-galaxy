@@ -6,7 +6,7 @@
   gather_facts: true
 
   roles:
-    - role: cleanup_version_1
+    - role: tools_cleanup
       vars:
         packages:
           - armadillo

@@ -1,0 +1,20 @@
+---
+galaxy_info:
+  role_name: deps_docker
+  author: Sido Haakma
+  description: Docker used to run containers on the OS
+  company: MOLGENIS
+
+  license: LGPL
+
+  min_ansible_version: "2.9"
+
+  platforms:
+    - name: Ubuntu
+      versions:
+        - focal
+    - name: Debian
+      versions:
+        - buster
+
+  galaxy_tags: [federation]

@@ -1,0 +1,12 @@
+#!/bin/bash
+
+echo "Stop the armadillo stack"
+{{ container_manager }}-compose down
+echo "Remove the old images"
+{{ container_manager }} container prune -y
+echo "Pull the new images"
+{{ container_manager }}-compose pull
+echo "Start the Armadillo stack"
+{{ container_manager }}-compose up -d
+echo "Restart NGINX"
+systemctl restart nginx

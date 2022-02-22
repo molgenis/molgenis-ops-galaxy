@@ -1,0 +1,10 @@
+version: "3"
+
+services:
+  rserver-{{ name }}:
+    image: {{ image.repo }}/{{ image.name }}:{{ image.version }}
+    environment:  
+      DEBUG: '{{ debug|upper }}'
+    expose: 
+      - {{ exposed_port }}
+    restart: unless-stopped

@@ -1,0 +1,24 @@
+---
+- name: install dependencies for podman-compose | Installation
+  ansible.builtin.dnf: 
+    state: present
+    name: python3
+  
+- name: install python3 dependencies for podman-compose | Installation
+  ansible.builtin.pip:
+    name:  
+      - python-dotenv
+      - PyYAML
+      - cached-property
+
+- name: install podman-compose | Installation
+  ansible.builtin.get_url:
+    url : https://raw.githubusercontent.com/containers/podman-compose/stable/podman_compose.py
+    dest: /usr/local/bin/podman-compose
+    mode: 'u+x,g+x'
+
+- name: create symlink to /usr/bin/podman-compose | Configuration
+  ansible.builtin.file:
+   src: /usr/local/bin/podman-compose
+   dest: /usr/bin/podman-compose
+   state: link

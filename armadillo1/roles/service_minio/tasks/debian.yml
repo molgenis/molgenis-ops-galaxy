@@ -1,0 +1,10 @@
+---
+- name: add NTP service | Configuration (Debian)
+  ansible.builtin.apt:
+    name: ntp
+    state: present
+
+- name: enable NTP service | Configuration (Debian)
+  ansible.builtin.systemd:
+    state: restarted
+    name: ntp

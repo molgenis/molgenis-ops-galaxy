@@ -1,0 +1,3 @@
+---
+- name: start Armadillo stack | Installation (Rocky)
+  ansible.builtin.command: podman-compose -f /usr/share/armadillo/docker-compose.yml up --detach

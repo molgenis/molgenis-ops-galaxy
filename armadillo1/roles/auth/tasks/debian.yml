@@ -1,7 +1,0 @@
----
-- name: dockerhub ratelimit prevention | Installation
-  command: cat {{ dockerhub.password }} | docker login --username {{ dockerhub.username }} --password-stdin
-  when: dockerhub.enabled
-
-- name: pull the image | Installation
-  command: docker pull {{ image.repo }}/{{ image.name }}:{{ image.version }}

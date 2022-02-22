@@ -1,0 +1,8 @@
+---
+- name: install authentication service | Configuration
+  template:
+    src: auth.yml.j2
+    dest: /usr/share/armadillo/services/auth.yml
+    mode: '655'
+    owner: armadillo
+    group: armadillo

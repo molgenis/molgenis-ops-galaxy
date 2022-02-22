@@ -1,0 +1,15 @@
+---
+- name: dnf | Installation (RedHat)
+  ansible.builtin.yum:
+    state: present
+    name: dnf
+  when:
+    - ansible_facts['distribution_major_version'] == "7"
+
+- name: enable subscription | Configuration (RedHat)
+  community.general.redhat_subscription:
+    state: present
+    username: "{{ redhat.subscription.username }}"
+    password: "{{ redhat.subscription.password }}"
+    auto_attach: true
+  when: redhat.subscription.enabled == true

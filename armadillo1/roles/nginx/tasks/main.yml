@@ -1,4 +1,0 @@
----
-- name: nginx | Installation
-  include_tasks: "{{ ansible_os_family|lower }}.yml"
-  when: enabled
