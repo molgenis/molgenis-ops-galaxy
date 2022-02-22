@@ -1,5 +1,5 @@
 ---
-collections: # noqa 
+collections:
 # install collections from Ansible Galaxy
 - name: ansible.posix
   version: 1.1.1
