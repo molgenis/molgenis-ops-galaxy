@@ -145,7 +145,7 @@ The playbook is the base of the rollout for the Armadillo. The contents of the p
           enabled: false
           acme:
             email: user@example.org
-    - role: molgenis.armadillo.post_upgrade
+    - role: molgenis.armadillo.tools_upgrade
 ```
 
 There are a few prerequisites that we need. 
