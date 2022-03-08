@@ -1,4 +1,9 @@
 ---
+- name: allow changing release-info apt-repositories | Configuration
+  ansible.builtin.command: apt update -y --allow-releaseinfo-change
+  tags:
+    - skip_ansible_lint
+
 - name: add keyring | Repository configuration (Debian)
   ansible.builtin.apt_key:
     id: 9DC858229FC7DD38854AE2D88D81803C0EBFCD88

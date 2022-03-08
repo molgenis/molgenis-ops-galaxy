@@ -1,3 +1,23 @@
 ---
+- name: add armadillo group | Configuration
+  ansible.builtin.group:
+    name: armadillo
+
+- name: add armadillo user | Configuration
+  ansible.builtin.user:
+    name: armadillo
+    group: armadillo
+
+- name: create directories | Configuration
+  ansible.builtin.file:
+    path: "{{ item }}"
+    owner: armadillo
+    group: armadillo
+    state: directory
+    mode: '655'
+  with_items:
+    - /usr/share/armadillo
+    - /usr/share/armadillo/services
+
 - name: compose | Installation
   ansible.builtin.include_tasks: "{{ ansible_os_family|lower }}.yml"

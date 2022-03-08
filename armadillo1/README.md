@@ -16,9 +16,10 @@ Deploy the Armadillo suite.
 To use Ansible to deploy the stack you need to binaries on your system. You can install Ansible following this [user guide](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html). You need to be sure to run Ansible **>= 2.9**.
 
 When you installed ansible you need to create 3 files:
+
 - `inventory.ini`
 - `playbook.yml`
-- `requirements.txt`
+- `requirements.yml`
 
 ### Creating inventory.ini
 Your target host needs to be defined here.
@@ -29,12 +30,19 @@ Your target host needs to be defined here.
 x.x.x.x # ip address of the system
 ```
 
-### Creating requirements.txt
+### Creating requirements.yml
 Your target host needs to be defined here.
 
-```txt
-community.general
-ansible.posix
+```yaml
+---
+collections:
+# install collections from Ansible Galaxy
+- name: ansible.posix
+  version: 1.1.1
+  source: https://galaxy.ansible.com
+- name: community.general
+  version: 2.0.1
+  source: https://galaxy.ansible.com
 ```
 ### Creating playbook.yml
 The playbook is the base of the rollout for the Armadillo. The contents of the playbook is shown below.
@@ -54,7 +62,7 @@ The playbook is the base of the rollout for the Armadillo. The contents of the p
       root_password: xxxxxxx
       port: 9000
       domain: armadillo-storage.local
-      host: http://localhost
+      host: http://minio
       console:
         enabled: false
         port: 9001
@@ -109,9 +117,10 @@ The playbook is the base of the rollout for the Armadillo. The contents of the p
                 # override default DataSHIELD options
     - role: molgenis.armadillo.service_minio
       vars:
-        version: 2021-02-19T04-38-02Z
+        version: 2022-01-25T19-56-04Z
         data: /var/lib/minio/data
-        domain: armadillo-storage.local
+        protocol: http
+        domain: "{{ minio.domain }}"
         root_user: "{{ minio.root_user }}"
         root_password: "{{ minio.root_password }}"
     - role: molgenis.armadillo.service_auth
@@ -136,7 +145,7 @@ The playbook is the base of the rollout for the Armadillo. The contents of the p
           enabled: false
           acme:
             email: user@example.org
-    - role: molgenis.armadillo.post_upgrade
+    - role: molgenis.armadillo.tools_upgrade
 ```
 
 There are a few prerequisites that we need. 
