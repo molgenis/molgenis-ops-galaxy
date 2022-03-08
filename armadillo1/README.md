@@ -30,7 +30,7 @@ Your target host needs to be defined here.
 x.x.x.x # ip address of the system
 ```
 
-### Creating requirements.txt
+### Creating requirements.yml
 Your target host needs to be defined here.
 
 ```yaml
