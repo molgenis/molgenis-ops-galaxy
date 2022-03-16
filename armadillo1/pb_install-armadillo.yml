@@ -84,7 +84,7 @@
                 - dsMediation        
     - role: service_minio
       vars:
-        version: 2022-01-25T19-56-04Z
+        version: 2022-02-26T02-54-46Z
         data: /var/lib/minio/data
         protocol: http
         root_user: "{{ minio.root_user }}"
@@ -112,3 +112,5 @@
           acme: 
             email: user@example.org
     - role: tools_upgrade
+      vars:
+        enabled: true
