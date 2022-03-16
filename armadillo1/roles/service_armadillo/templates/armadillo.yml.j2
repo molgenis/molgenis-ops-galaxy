@@ -3,6 +3,9 @@ version: "3"
 services: 
   armadillo:
     image: molgenis/armadillo:{{ version }}
+{% if ansible_os_family == "RedHat" or ansible_os_family == "Rocky" %}
+    network: host
+{% endif %}
     environment:
       - SPRING_PROFILES_ACTIVE=production
       - SPRING_CONFIG_LOCATION=/app/conf/

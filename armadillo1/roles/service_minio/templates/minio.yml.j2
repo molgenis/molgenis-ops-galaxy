@@ -8,6 +8,9 @@ services:
       - {{ minio.console.port }}:{{ minio.console.port }}
 {% endif %}
       - {{ minio.port }}:{{ minio.port }}
+{% if ansible_os_family == "RedHat" or ansible_os_family == "Rocky" %}
+    network: host
+{% endif %}  
     environment:
       MINIO_VOLUMES: {{ data }}
       MINIO_DOMAIN: {{ minio.domain }}
@@ -20,7 +23,8 @@ services:
       MINIO_IDENTITY_OPENID_CONFIG_URL: {{ oauth.issuer_uri }}/{{ oauth.discovery_path }}
 {% endif %}
 {% if minio.console.enabled %}
-      MINIO_BROWSER_REDIRECT_URL: {{ protocol }}://{{ minio.console.domain }}/oauth_callback
+      MINIO_SERVER_URL: {{ protocol }}://{{ minio.domain }}
+      MINIO_BROWSER_REDIRECT_URL: {{ protocol }}://{{ minio.console.domain }}
       MINIO_BROWSER: 'on'
 {% endif %}
     command: server /data  --console-address ":{{ minio.console.port }}"
