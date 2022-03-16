@@ -18,11 +18,11 @@ No direct dependencies for this role
 
 Example Playbook
 ----------------
-You can include the podman-role by adding the yaml block below.
+You can include the deps_podman-role by adding the yaml block below.
 
     - hosts: all
       roles:
-       - role: podman
+       - role: deps_podman
                    
 License
 -------

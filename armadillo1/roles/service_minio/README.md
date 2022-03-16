@@ -29,7 +29,7 @@ Role Variables
 
 Example Playbook
 ----------------
-You can include the minio-role by adding the yaml block below.
+You can include the service_minio-role by adding the yaml block below.
 
     - hosts: all
       vars:

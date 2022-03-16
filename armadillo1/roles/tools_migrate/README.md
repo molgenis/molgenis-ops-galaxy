@@ -20,14 +20,14 @@ No direct dependencies for this role
 
 Example Playbook
 ----------------
-You can include the podman-role by adding the yaml block below.
+You can include the tools_migrate-role by adding the yaml block below.
 
     - hosts: all
       roles:
        - role: tools_migrate
          vars:
            users:
-             - { source_user: "", target_user: "" }
+             - { source_user: "firstname.givenname", target_user: "user-abcde" }
                    
 License
 -------

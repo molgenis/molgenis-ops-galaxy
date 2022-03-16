@@ -25,7 +25,7 @@ This is dependant on the following list of roles:
 
 Example Playbook
 ----------------
-You can include the armadillo-role by adding the yaml block below.
+You can include the post_nginx-role by adding the yaml block below.
 
     - hosts: all
       roles:

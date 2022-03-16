@@ -18,7 +18,7 @@ No direct dependencies for this role
 
 Example Playbook
 ----------------
-You can include the podman-role by adding the yaml block below.
+You can include the tools_cleanup-role by adding the yaml block below.
 
     - hosts: all
       roles:

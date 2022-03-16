@@ -62,3 +62,11 @@ You need to have ipv6 enabled.
 * Then recreate your boot configuration `grub2-mkconfig -o /boot/grub2/grub.cfg`
 * Your are done! `reboot` now!
 
+### Correct the time with chronyd
+Please follow the instructions below
+
+```bash
+chronyc makestep
+chronyc ntpdata
+timedatectl
+```

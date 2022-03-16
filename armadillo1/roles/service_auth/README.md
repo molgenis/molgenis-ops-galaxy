@@ -25,7 +25,7 @@ Role Variables
 
 Example Playbook
 ----------------
-You can include the rserver-role by adding the yaml block below.
+You can include the service_auth-role by adding the yaml block below.
 
     - hosts: all
       roles:

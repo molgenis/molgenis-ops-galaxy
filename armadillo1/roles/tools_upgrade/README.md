@@ -10,7 +10,9 @@ The only requirement you need a clean base image of CentOS or Redhat => 7, Debia
 
 Role Variables
 --------------
-No variables are needed for this role.
+| Variable  | Required | Default | Choices    | Comments                                                                |
+|-----------|----------|---------|------------|-------------------------------------------------------------------------|
+| enabled   | yes      | true    | true/false | Update each Sunday based upon the major tag of the analysis environment |
 
 Dependencies
 ------------
@@ -18,11 +20,13 @@ No direct dependencies for this role
 
 Example Playbook
 ----------------
-You can include the podman-role by adding the yaml block below.
+You can include the tools_upgrade-role by adding the yaml block below.
 
     - hosts: all
       roles:
        - role: tools_upgrade
+         vars:
+           enabled: true
                    
 License
 -------
