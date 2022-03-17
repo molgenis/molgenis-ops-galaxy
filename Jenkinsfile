@@ -1,7 +1,10 @@
 pipeline {
     agent {
         kubernetes {
-            inheritFrom 'ansible'
+            // the shared pod template defined on the Jenkins server config
+            inheritFrom 'shared'
+            // ansible pod template defined in molgenis/molgenis-jenkins-pipeline repository
+            yaml libraryResource("pod-templates/ansible.yaml")
         }
     }
     stages {
