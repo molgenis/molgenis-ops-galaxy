@@ -65,7 +65,7 @@ The playbook is the base of the rollout for the Armadillo. The contents of the p
       host: http://minio
       console:
         enabled: false
-        port: 9001
+        port: 9090
         domain: armadillo-storage-console.local
     oauth:
       issuer_uri: https://auth.molgenis.org
@@ -97,7 +97,7 @@ The playbook is the base of the rollout for the Armadillo. The contents of the p
     - role: molgenis.armadillo.deps_compose
     - role: molgenis.armadillo.service_armadillo
       vars:
-        version: 2.0.0
+        version: 2.2.0
         storage:
           root_user: "{{ minio.root_user }}"
           root_password: "{{ minio.root_password }}"
@@ -123,6 +123,8 @@ The playbook is the base of the rollout for the Armadillo. The contents of the p
         domain: "{{ minio.domain }}"
         root_user: "{{ minio.root_user }}"
         root_password: "{{ minio.root_password }}"
+        console:
+          version: 0.14.8
     - role: molgenis.armadillo.service_auth
       vars:
         image: 

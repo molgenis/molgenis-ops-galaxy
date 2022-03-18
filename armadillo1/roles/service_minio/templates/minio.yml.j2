@@ -4,9 +4,6 @@ services:
   minio:
     image: quay.io/minio/minio:RELEASE.{{ version }}
     ports:
-{% if minio.console.enabled %}
-      - {{ minio.console.port }}:{{ minio.console.port }}
-{% endif %}
       - {{ minio.port }}:{{ minio.port }}
 {% if ansible_os_family == "RedHat" or ansible_os_family == "Rocky" %}
     network: host
@@ -22,12 +19,8 @@ services:
       MINIO_IDENTITY_OPENID_CLIENT_SECRET: {{ oauth.client_secret }}
       MINIO_IDENTITY_OPENID_CONFIG_URL: {{ oauth.issuer_uri }}/{{ oauth.discovery_path }}
 {% endif %}
-{% if minio.console.enabled %}
-      MINIO_SERVER_URL: {{ protocol }}://{{ minio.domain }}
-      MINIO_BROWSER_REDIRECT_URL: {{ protocol }}://{{ minio.console.domain }}
-      MINIO_BROWSER: 'on'
-{% endif %}
-    command: server /data  --console-address ":{{ minio.console.port }}"
+      MINIO_BROWSER: 'off'
+    command: server /data
     volumes:
       - {{ data }}:/data
     restart: unless-stopped

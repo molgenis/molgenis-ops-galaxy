@@ -26,6 +26,7 @@ Role Variables
 | minio.console.enabled  | yes      | false                             | na       | If the minio webinterface is enabled                                                              |
 | minio.console.port     | yes      | 9001                              | na       | The port where the minio webinterface can be reached on                                           |
 | minio.console.domain   | yes      | armadillo-storage-console.local   | na       | The domain the minio webinterface is running on                                                   |
+| minio.console.version  | yes      | 0.14.8                            | na       | The version of the Minio Console                                                                  |
 
 Example Playbook
 ----------------
@@ -40,9 +41,9 @@ You can include the service_minio-role by adding the yaml block below.
           domain: armadillo-storage.local
           host: http://minio
           console:
-            port: 9001
-            domain: armadillo-storage-console.local
             enabled: true
+            port: 9090
+            domain: armadillo-storage-console.local
         oauth: 
           issuer_uri: https://auth.example.org
           discovery_path: /.well-known/openid-configuration
@@ -56,6 +57,8 @@ You can include the service_minio-role by adding the yaml block below.
              protocol: http
              root_user: "{{ minio.root_user }}"
              root_password: "{{ minio.root_password }}"
+             console: 
+               version: 0.14.8
                    
 License
 -------
