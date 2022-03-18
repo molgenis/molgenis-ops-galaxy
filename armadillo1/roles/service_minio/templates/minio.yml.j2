@@ -19,7 +19,6 @@ services:
       MINIO_IDENTITY_OPENID_CLIENT_SECRET: {{ oauth.client_secret }}
       MINIO_IDENTITY_OPENID_CONFIG_URL: {{ oauth.issuer_uri }}/{{ oauth.discovery_path }}
 {% endif %}
-      MINIO_BROWSER: 'off'
     command: server /data
     volumes:
       - {{ data }}:/data
