@@ -18,6 +18,11 @@ services:
       file: services/minio.yml
       service: minio
 
+  console:
+    extends: 
+      file: services/console.yml
+      service: console
+
   auth:
     extends: 
       file: services/auth.yml

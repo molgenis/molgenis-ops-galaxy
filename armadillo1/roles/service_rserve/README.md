@@ -24,7 +24,7 @@ This role requires Podman on the Rocky >= 8.x, RedHat and CentOS >= 7.x, Ubuntu 
 
 Example Playbook
 ----------------
-You can include the rserver-role by adding the yaml block below.
+You can include the service_rserve-role by adding the yaml block below.
 
     - hosts: all
       rserve:

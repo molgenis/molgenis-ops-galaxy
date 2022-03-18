@@ -3,6 +3,9 @@ version: "3"
 services:
   auth:
     image: {{ image.repo }}/{{ image.name }}:{{ image.version }}
+{% if ansible_os_family == "RedHat" or ansible_os_family == "Rocky" %}
+    network: host
+{% endif %}
     environment:
       # FusionAuth API token which allows you to perform actions on the FusionAuth server
       FUSION_API_TOKEN: {{ api_token }}

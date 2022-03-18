@@ -24,5 +24,13 @@
     group: minio
     mode: '655'
 
+- name: minio - console | Installation
+  ansible.builtin.template:
+    src: console.yml.j2
+    dest: /usr/share/armadillo/services/console.yml
+    owner: minio
+    group: minio
+    mode: '655'
+
 - name: allow containers to write in /var/lib/minio/data | Configuration
   ansible.builtin.include_tasks: "{{ ansible_os_family|lower }}.yml"

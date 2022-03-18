@@ -34,7 +34,7 @@ This is dependant on the following list of roles:
 
 Example Playbook
 ----------------
-You can include the armadillo-role by adding the yaml block below.
+You can include the service_armadillo-role by adding the yaml block below.
 
     - hosts: all
       vars:

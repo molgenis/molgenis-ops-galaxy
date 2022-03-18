@@ -13,9 +13,9 @@
       domain: armadillo-storage.local
       host: http://minio
       console:
-        port: 9001
-        domain: armadillo-storage-console.local
         enabled: true
+        port: 9090
+        domain: armadillo-storage-console.local
     oauth:
       issuer_uri: https://auth.molgenis.org
       discovery_path: .well-known/openid-configuration
@@ -54,7 +54,7 @@
     - role: deps_compose
     - role: service_armadillo
       vars:
-        version: 2.0.0
+        version: 2.2.0
         storage:
           root_user: "{{ minio.root_user }}"
           root_password: "{{ minio.root_password }}"
@@ -84,11 +84,13 @@
                 - dsMediation        
     - role: service_minio
       vars:
-        version: 2022-01-25T19-56-04Z
+        version: 2022-02-26T02-54-46Z
         data: /var/lib/minio/data
         protocol: http
         root_user: "{{ minio.root_user }}"
         root_password: "{{ minio.root_password }}"
+        console: 
+          version: 0.14.8
     - role: service_auth
       vars:
         image: 
@@ -112,3 +114,5 @@
           acme: 
             email: user@example.org
     - role: tools_upgrade
+      vars:
+        enabled: true

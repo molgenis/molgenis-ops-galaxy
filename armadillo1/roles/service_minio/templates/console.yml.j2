@@ -1,0 +1,22 @@
+version: "3"
+
+services:
+  console:
+    image: quay.io/minio/console:v{{ console.version }}
+    ports:
+      - {{ minio.console.port }}:{{ minio.console.port }}
+{% if ansible_os_family == "RedHat" or ansible_os_family == "Rocky" %}
+    network: host
+{% endif %}  
+    environment:
+      CONSOLE_PBKDF_PASSPHRASE: {{ 999999999999999999999 | random | to_uuid | hash('md5') }}
+      CONSOLE_PBKDF_SALT: {{ 999999999999999999999 | random | to_uuid | hash('md5') }}
+      CONSOLE_MINIO_SERVER: {{ minio.host }}:{{ minio.port }}
+{% if oauth is defined %}
+      CONSOLE_IDP_URL: {{ oauth.issuer_uri }}/{{ oauth.discovery_path }}
+      CONSOLE_IDP_CLIENT_ID:  {{ oauth.client_id }}
+      CONSOLE_IDP_SECRET: {{ oauth.client_secret }}
+      CONSOLE_IDP_CALLBACK: {{ protocol }}://{{ minio.console.domain }}/oauth_callback
+{% endif %}
+    command: server
+    restart: unless-stopped

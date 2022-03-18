@@ -1,6 +1,7 @@
 ---
 - name: configure cronjob | Configuration
   ansible.builtin.include_tasks: "{{ ansible_os_family|lower }}.yml"
+  when: enabled
 
 - name: install cronjob for automatic upgrades | Configuration
   ansible.builtin.cron:
@@ -9,3 +10,4 @@
     hour: "0"
     weekday: "0"
     job: "/usr/share/armadillo/upgrade-armadillo.bash"
+  when: enabled

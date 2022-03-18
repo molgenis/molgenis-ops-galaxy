@@ -18,11 +18,11 @@ No direct dependencies for this role
 
 Example Playbook
 ----------------
-You can include the podman-role by adding the yaml block below.
+You can include the post_assemble-role by adding the yaml block below.
 
     - hosts: all
       roles:
-       - role: podman
+       - role: post_assemble
                    
 License
 -------
