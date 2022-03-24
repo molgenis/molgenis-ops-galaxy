@@ -1,0 +1,43 @@
+---
+- name: keyring | Repository configuration (CentOS)
+  ansible.builtin.rpm_key:
+    key: https://download.docker.com/linux/centos/gpg
+    state: present
+
+- name: docker | Repository configuration (CentOS)
+  ansible.builtin.yum_repository:
+    name: docker_centos
+    file: external_repos
+    description: Docker CentOS repository
+    baseurl: https://download.docker.com/linux/centos/7.9/x86_64/stable
+    state: present
+
+- name: remove old packages | Cleanup (CentOS)
+  ansible.builtin.yum:
+    state: absent
+    name:
+      - docker
+      - docker-client
+      - docker-client-latest
+      - docker-common
+      - docker-latest
+      - docker-latest-logrotate
+      - docker-logrotate
+      - docker-engine
+
+- name: prerequisites | Installation (CentOS)
+  ansible.builtin.yum:
+    state: present
+    name:
+      - ca-certificates
+      - curl
+    update_cache: true
+
+- name: docker | Installation (CentOS)
+  ansible.builtin.yum:
+    state: present
+    name:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+    update_cache: true

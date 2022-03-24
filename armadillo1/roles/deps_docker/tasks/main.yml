@@ -11,6 +11,8 @@
       - docker.io
       - containerd
       - runc
+  when: 
+    ansible_distribution != "CentOS"
 
 - name: prerequisites | Installation
   ansible.builtin.apt:
@@ -22,6 +24,8 @@
       - gnupg-agent
       - software-properties-common
     update_cache: true
+  when: 
+    ansible_distribution != "CentOS"
 
 - name: docker | Installation
   ansible.builtin.apt:
@@ -32,3 +36,5 @@
       - python3-docker
       - containerd.io
     update_cache: true
+  when: 
+    ansible_distribution != "CentOS"

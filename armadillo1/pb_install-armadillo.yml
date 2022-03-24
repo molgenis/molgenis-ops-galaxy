@@ -48,13 +48,13 @@
             enabled: false
             username: xxxxxxxx
             password: xxxxxxxx
-      when: ansible_os_family == "RedHat" or ansible_os_family == "Rocky"
+      when: ansible_distribution == "RedHat" or ansible_distribution == "Rocky"
     - role: deps_docker
-      when: ansible_os_family == "Debian"
+      when: ansible_os_family == "Debian" or ansible_distribution == "CentOS"
     - role: deps_compose
     - role: service_armadillo
       vars:
-        version: 2.2.0
+        version: 2.2.2
         storage:
           root_user: "{{ minio.root_user }}"
           root_password: "{{ minio.root_password }}"

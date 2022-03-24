@@ -20,4 +20,4 @@
     - /usr/share/armadillo/services
 
 - name: compose | Installation
-  ansible.builtin.include_tasks: "{{ ansible_os_family|lower }}.yml"
+  ansible.builtin.include_tasks: "{{ ansible_distribution|lower }}.yml"
