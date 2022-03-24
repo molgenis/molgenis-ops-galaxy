@@ -5,7 +5,7 @@ services:
     image: quay.io/minio/console:v{{ console.version }}
     ports:
       - {{ minio.console.port }}:{{ minio.console.port }}
-{% if ansible_os_family == "RedHat" or ansible_os_family == "Rocky" %}
+{% if (ansible_os_family == "RedHat" or ansible_os_family == "Rocky") and ansible_distribution != "CentOS" %}
     network: host
 {% endif %}  
     environment:

@@ -1,4 +1,11 @@
 ---
+- name: dnf | Installation (CentOS)
+  ansible.builtin.yum:
+    state: present
+    name: 
+     - dnf
+     - python-dnf
+
 - name: keyring | Repository configuration (CentOS)
   ansible.builtin.rpm_key:
     key: https://download.docker.com/linux/centos/gpg
