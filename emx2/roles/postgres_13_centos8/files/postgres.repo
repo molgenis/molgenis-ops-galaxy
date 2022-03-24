@@ -1,0 +1,6 @@
+[pgdg11]
+name=PostgreSQL 13.2 $releasever - $basearch
+baseurl=https://download.postgresql.org/pub/repos/yum/13/redhat/rhel-$releasever-$basearch
+enabled=1
+gpgcheck=0
+module_hotfixes=true
