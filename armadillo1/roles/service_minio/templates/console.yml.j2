@@ -14,7 +14,7 @@ services:
       CONSOLE_MINIO_SERVER: {{ minio.host }}:{{ minio.port }}
 {% if oauth is defined %}
       CONSOLE_IDP_URL: {{ oauth.issuer_uri }}/{{ oauth.discovery_path }}
-      CONSOLE_IDP_CLIENT_ID:  {{ oauth.client_id }}
+      CONSOLE_IDP_CLIENT_ID: {{ oauth.client_id }}
       CONSOLE_IDP_SECRET: {{ oauth.client_secret }}
       CONSOLE_IDP_CALLBACK: {{ protocol }}://{{ minio.console.domain }}/oauth_callback
 {% endif %}
