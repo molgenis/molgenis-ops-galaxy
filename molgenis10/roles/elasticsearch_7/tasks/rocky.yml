@@ -1,0 +1,14 @@
+---
+- name: Create repository for Elasticsearch7 on Rocky8
+  ansible.builtin.copy:
+    src: elasticsearch.repo
+    dest: /etc/yum.repos.d/elasticsearch.repo
+    mode: '0644'
+
+- name: Install Elasticsearch latest 7.x
+  ansible.builtin.yum:
+    name: elasticsearch
+    state: present
+    enablerepo: elasticsearch-7
+    allow_downgrade: yes
+  notify: "restart elasticsearch"

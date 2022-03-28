@@ -1,0 +1,56 @@
+---
+- name: install Minio service file
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/minio/minio-service/master/linux-systemd/minio.service
+    dest: /etc/systemd/system/minio.service
+    mode: '0644'
+
+- name: replace minio-user in service
+  ansible.builtin.replace:
+    path: /etc/systemd/system/minio.service
+    regexp: 'minio-user'
+    replace: "minio"
+
+- name: add Minio group
+  ansible.builtin.group:
+    name: minio
+
+- name: add Minio user
+  ansible.builtin.user:
+    name: minio
+    group: minio
+
+- name: create Minio directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    owner: minio
+    group: minio
+    state: directory
+    mode: '755'
+  with_items:
+    - /var/lib/minio
+    - /var/lib/minio/data
+
+- name: install Minio
+  ansible.builtin.get_url:
+    url: https://dl.min.io/server/minio/release/linux-amd64/archive/minio.RELEASE.{{ version }}
+    dest: /usr/local/bin/minio
+    mode: '0755'
+    owner: minio
+    group: minio
+
+- name: install Minio configuration
+  ansible.builtin.template:
+    src: minio.j2
+    dest: /etc/default/minio
+    owner: minio
+    group: minio
+    mode: '755'
+  notify:
+    - "restart Minio service"
+
+- name: start and enable Minio (at boot time)
+  ansible.builtin.systemd:
+    name: minio
+    enabled: yes
+    state: started

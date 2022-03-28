@@ -1,0 +1,9 @@
+---
+- name: Create molgenis group
+  ansible.builtin.group:
+    name: molgenis
+
+- name: Create molgenis uid
+  ansible.builtin.user:
+    name: molgenis
+    group: molgenis

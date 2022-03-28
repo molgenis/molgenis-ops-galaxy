@@ -1,0 +1,18 @@
+---
+galaxy_info:
+  role_name: minio
+  author: Sido Haakma
+  description: Minio file storage, used to get data into the federated platform
+  company: MOLGENIS
+  license: LGPL
+  min_ansible_version: 1.2
+  platforms:
+    - name: EL
+      versions:
+        - "8"
+        - "7"
+    - name: Ubuntu
+      versions:
+        - focal
+  galaxy_tags: [molgenis]
+dependencies: []

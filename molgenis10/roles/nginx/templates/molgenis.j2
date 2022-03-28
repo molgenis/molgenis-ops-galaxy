@@ -1,0 +1,32 @@
+location / {
+    proxy_pass http://localhost:8080;
+    client_max_body_size 0;
+    proxy_read_timeout 600s;
+    proxy_redirect http://localhost:8080/ $scheme://$host/;
+    proxy_set_header Host $host;
+    proxy_http_version 1.1;
+}
+
+location /@molgenis-ui{
+    proxy_pass https://unpkg.com/@molgenis-ui;
+
+    {% for app in frontend.proxy[frontend.version] -%}
+    rewrite ^/@molgenis-ui/{{- app.split('@')[0] }}/(.*) /@molgenis-ui/{{- app }}/$1;
+    {% endfor %}
+    # extra special frontends below
+
+    # do not cache these redirects too long
+    expires 10m;
+}
+
+{% if frontend.proxy2[frontend.version] is defined -%}
+location /@molgenis/ {
+
+    {% for app in frontend.proxy2[frontend.version] -%}
+    rewrite ^/@molgenis/{{- app.split('@')[0] }}(/(.*))?$ https://unpkg.com/@molgenis/{{- app }}$1  redirect;
+    {% endfor %}
+
+    # do not cache these redirects too long
+    expires 10m;
+}
+{% endif %}

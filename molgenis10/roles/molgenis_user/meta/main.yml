@@ -1,0 +1,18 @@
+---
+galaxy_info:
+  role_name: molgenis_user
+  author: Erik Schaberg
+  description: this role is part of the Molgenis installation of CentOS
+  company: UMCG/RUG
+  license: license (GPLv3)
+  min_ansible_version: 2.7.9
+  platforms:
+    - name: EL
+      versions:
+        - "8"
+        - "7"
+    - name: Ubuntu
+      versions:
+        - focal
+  galaxy_tags: [molgenis]
+dependencies: []

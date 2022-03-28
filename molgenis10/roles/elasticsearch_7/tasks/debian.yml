@@ -1,0 +1,17 @@
+---
+- name: Add elastic repo key
+  apt_key:
+    url: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+    state: present
+
+- name: Create apt repository for Elasticsearch7 on Ubuntu
+  ansible.builtin.copy:
+    src: elastic-7.x.list
+    dest: /etc/apt/sources.list.d/
+    mode: '0644'
+
+- name: Install Elasticsearch latest 7.x.x
+  ansible.builtin.apt:
+    pkg:
+      - elasticsearch
+    update_cache: yes 

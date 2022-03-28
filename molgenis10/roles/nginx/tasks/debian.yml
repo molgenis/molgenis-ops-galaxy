@@ -1,0 +1,27 @@
+---
+- name: Install NginX
+  ansible.builtin.apt:
+    state: present
+    name: nginx
+
+- name: Create folder structure
+  ansible.builtin.file:
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+    path: "/etc/nginx/default.d"
+
+- name: Customize nginx.conf
+  ansible.builtin.copy:
+    src: nginx.conf_debian
+    dest: /etc/nginx/nginx.conf
+    mode: '0644'
+  notify: "restart nginx"
+
+- name: Customize nginx.servce on Debian/Ubuntu to make it resilient
+  ansible.builtin.copy:
+    src: nginx.service_ubuntu
+    dest: /etc/systemd/system/nginx.service
+    mode: '0755'
+  notify: "restart nginx"
