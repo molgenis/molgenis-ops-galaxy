@@ -50,6 +50,20 @@ pipeline {
                         }
                     }
                 }
+                stage('MOLGENIS (10)') {
+                    when {
+                        changeset "molgenis10/**"
+                    }
+                    steps {
+                        container('toolset') {
+                            dir('molgenis10') {
+                                script{
+                                    sh 'ansible-lint --force-color roles/*/*/main.yml'
+                                }
+                            }
+                        }
+                    }
+                }
                 stage('Armadillo (1)') {
                     when {
                         changeset "armadillo1/**"
@@ -95,6 +109,23 @@ pipeline {
                     steps {
                         container('toolset') {
                             dir('molgenis9') {
+                                script {
+                                    sh 'ansible-lint --force-color roles/*/*/main.yml'
+                                    sh 'ansible-galaxy collection build'
+                                    env.ARTIFACT = sh(script: 'ls *.gz', returnStdout: true)
+                                    sh 'ansible-galaxy collection publish ${ARTIFACT} --token ${ANSIBLE_GALAXY_TOKEN}'
+                                }
+                            }
+                        }
+                    }
+                }
+                stage('MOLGENIS (10)') {
+                    when {
+                        changeset "molgenis10/**"
+                    }
+                    steps {
+                        container('toolset') {
+                            dir('molgenis10') {
                                 script {
                                     sh 'ansible-lint --force-color roles/*/*/main.yml'
                                     sh 'ansible-galaxy collection build'
