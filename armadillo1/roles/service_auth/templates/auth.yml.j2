@@ -3,7 +3,7 @@ version: "3"
 services:
   auth:
     image: {{ image.repo }}/{{ image.name }}:{{ image.version }}
-{% if ansible_os_family == "RedHat" or ansible_os_family == "Rocky" %}
+{% if (ansible_os_family == "RedHat" or ansible_os_family == "Rocky") and ansible_distribution != "CentOS" %}
     network: host
 {% endif %}
     environment:

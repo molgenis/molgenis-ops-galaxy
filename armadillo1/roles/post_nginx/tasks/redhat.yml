@@ -1,12 +1,4 @@
 ---
-- name: SELinux manage | Installation (RedHat)
-  ansible.builtin.dnf:
-    state: present
-    name: 
-      - libselinux-python
-      - libsemanage-python
-  when: ansible_facts['distribution_major_version'] == "7"
-
 - name: nginx | Installation (RedHat)
   ansible.builtin.dnf:
     state: present

@@ -1,0 +1,12 @@
+---
+- name: install docker-compose | Installation (CentOS)
+  ansible.builtin.get_url:
+    url : https://github.com/docker/compose/releases/download/1.29.2/docker-compose-Linux-x86_64
+    dest: /usr/local/bin/docker-compose
+    mode: 'u+x,g+x'
+
+- name: create symlink to /usr/bin/docker-compose | Configuration (CentOS)
+  ansible.builtin.file:
+   src: /usr/local/bin/docker-compose
+   dest: /usr/bin/docker-compose
+   state: link

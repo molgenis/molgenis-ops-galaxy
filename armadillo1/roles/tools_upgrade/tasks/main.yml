@@ -1,6 +1,6 @@
 ---
 - name: configure cronjob | Configuration
-  ansible.builtin.include_tasks: "{{ ansible_os_family|lower }}.yml"
+  ansible.builtin.include_tasks: "{{ ansible_distribution|lower }}.yml"
   when: enabled
 
 - name: install cronjob for automatic upgrades | Configuration
