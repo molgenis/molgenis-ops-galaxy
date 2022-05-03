@@ -289,7 +289,7 @@ Example:
 
 Then install the server with Ansible.
 
-`ansible-playbook -i inventory.ini ./pb_install-armadillo.yml`
+`ansible-playbook -i inventory.ini playbook.yml`
 
 After this the server get's deployed with all the needed configuration.
 
