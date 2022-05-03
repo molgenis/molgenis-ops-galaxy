@@ -46,6 +46,7 @@ collections:
 ```
 ### Creating playbook.yml
 The playbook is the base of the rollout for the Armadillo. The contents of the playbook is shown below.
+You should edit the section with the 'vars'
 
 ```yaml
 ---
