@@ -31,7 +31,7 @@ x.x.x.x # ip address of the system
 ```
 
 ### Creating requirements.yml
-Your target host needs to be defined here.
+Your requirements are as follows
 
 ```yaml
 ---
