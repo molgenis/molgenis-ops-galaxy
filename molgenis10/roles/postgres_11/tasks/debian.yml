@@ -4,11 +4,19 @@
     url: https://www.postgresql.org/media/keys/ACCC4CF8.asc
     state: present
 
-- name: Create the repository for postgresql on ubuntu
+- name: Create the repository for posgresql on ubuntu 20.04
   ansible.builtin.copy:
     src: pgdg.list
     dest: /etc/apt/sources.list.d/
     mode: '0644'
+  when: ansible_distribution == "Ubuntu" and ansible_distribution_major_version == '20'
+
+- name: Create the repository for posgresql on ubuntu 22.04
+  ansible.builtin.copy:
+    src: pgdg22_04.list
+    dest: /etc/apt/sources.list.d/pgdg.list
+    mode: '0644'
+  when: ansible_distribution == "Ubuntu" and ansible_distribution_major_version == '22'
 
 - name: Setup postgresql-11
   ansible.builtin.apt:
