@@ -14,7 +14,7 @@
       host: http://localhost
     molgenis:
       setup: true
-      version: 10.0.3
+      version: 10.0.4
       ssh: true
 
   roles:
