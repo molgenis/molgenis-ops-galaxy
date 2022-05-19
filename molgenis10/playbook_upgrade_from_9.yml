@@ -8,7 +8,7 @@
     ci: false
     molgenis:
       setup: true
-      version: 10.0.3
+      version: 10.0.4
 
   tasks:
     - name: Gathering package facts

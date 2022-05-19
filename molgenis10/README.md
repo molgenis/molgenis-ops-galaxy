@@ -15,6 +15,7 @@ You can use ansible to setup up a basic molgenis server on a remote linux machin
 * RedHat/CentOS 7 (EoL June 2024)
 * RedHat Enterprise Linux 8 (EoL May 2029)
 * Ubuntu 20.04 (EoL April 2025)
+* Ubuntu 22.04 (EoL April 2027)
 * RockyLinux 8 (EoL May 2029)
 
 The RedHat/Rocky servers needs to have selinux enabled (might need a reboot) before your run the playbook.
