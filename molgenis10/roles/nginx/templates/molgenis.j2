@@ -8,10 +8,9 @@ location / {
 }
 
 location /@molgenis-ui{
-    proxy_pass https://unpkg.com/@molgenis-ui;
 
     {% for app in frontend.proxy[frontend.version] -%}
-    rewrite ^/@molgenis-ui/{{- app.split('@')[0] }}/(.*) /@molgenis-ui/{{- app }}/$1;
+    rewrite ^/@molgenis-ui/{{- app.split('@')[0] }}/(.*) https://unpkg.com/@molgenis-ui/{{- app }}/$1  redirect;
     {% endfor %}
     # extra special frontends below
 
