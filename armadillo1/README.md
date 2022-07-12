@@ -275,7 +275,7 @@ server {
 ### Deploy
 Install the prerequisites this way:
 
-`ansible-galaxy install -r requirements.txt`
+`ansible-galaxy install -r requirements.yml`
 
 You can install the galaxy collection using the following syntax:
 
