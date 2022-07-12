@@ -4,7 +4,7 @@ We support galaxy collections for several services that the MOLGENIS suite provi
 ## Usage
 We have several services deployed at the moment. The detail instructions to deploy the services are on galaxy:
 - [MOLGENIS](https://galaxy.ansible.com/molgenis/molgenis8)
-- [Armadillo](https://galaxy.ansible.com/molgenis/armadillo1)
+- [Armadillo](https://galaxy.ansible.com/molgenis/armadillo)
 
 ## Development
 When you want to contribute on the galaxy collections please be aware of the following contribution guide lines.
