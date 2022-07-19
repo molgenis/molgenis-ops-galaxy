@@ -31,6 +31,8 @@
         access_key: "{{ minio.access_key }}"
         secret_key: "{{ minio.secret_key }}"
     - role: tomcat
+      vars:
+        tomcat_version: 9.0.64
     - role: molgenis_user
     - role: molgenis_application
     - role: nginx

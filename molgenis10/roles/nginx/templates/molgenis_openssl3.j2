@@ -1,3 +1,5 @@
+# Special config for OpenSSL >= 3.0.0 servers
+# Nginx proxy passes to unpkg.com fail over https due to OpenSSl incompatibility
 # Only the theme is proxied, the rest is all retrieved from unpkg.com by clients browser
 
 location / {
@@ -9,11 +11,11 @@ location / {
     proxy_http_version 1.1;
 }
 
-
 location /@molgenis-ui/molgenis-theme{
     # This is required because of the theme css being dependant on a relative url to images: 'url("/img/icons-rtl.gif")' which will otherwise be resolved as 'url("https://unpkg.com/img/icons-rtl.gif")'
+    # Needs to use our own theme/unpkg mirror
 
-    proxy_pass https://unpkg.com/@molgenis-ui/molgenis-theme;
+    proxy_pass https://unpkg.molgeniscloud.org/@molgenis-ui/molgenis-theme;
     {% for app in frontend.proxy0[frontend.version] -%}
     rewrite ^/@molgenis-ui/{{- app.split('@')[0] }}/(.*) /@molgenis-ui/{{- app }}/$1;
     {% endfor %}

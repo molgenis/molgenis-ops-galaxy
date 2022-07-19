@@ -14,12 +14,12 @@
 
 - name: Register if tomcat is already there
   ansible.builtin.stat:
-    path: /usr/share/apache-tomcat-9.0.59/
+    path: /usr/share/apache-tomcat-{{ tomcat_version }}/
   register: tomcat_already_there
 
 - name: Install Tomcat from source
-  unarchive:
-    src: "https://archive.apache.org/dist/tomcat/tomcat-9/v9.0.59/bin/apache-tomcat-9.0.59.tar.gz"
+  ansible.builtin.unarchive:
+    src: "https://archive.apache.org/dist/tomcat/tomcat-9/v{{ tomcat_version }}/bin/apache-tomcat-{{ tomcat_version }}.tar.gz"
     dest: "/usr/share/"
     owner: tomcat
     group: molgenis
@@ -28,13 +28,13 @@
 
 - name: Register if first install tomcat
   ansible.builtin.stat:
-    path: /usr/share/apache-tomcat-9.0.59/webapps/examples
+    path: /usr/share/apache-tomcat-{{ tomcat_version }}/webapps/examples
   register: tomcat_first_install
 
 - name: Delete default folders tomcat webapps directory
   ansible.builtin.file:
     state: absent
-    path: "/usr/share/apache-tomcat-9.0.59/webapps/{{ item }}"
+    path: "/usr/share/apache-tomcat-{{ tomcat_version }}/webapps/{{ item }}"
   with_items:
     - ROOT
     - docs
@@ -45,26 +45,26 @@
 
 - name: create softlink to tomcat logs
   ansible.builtin.file:
-    src: /usr/share/apache-tomcat-9.0.59/logs
+    src: /usr/share/apache-tomcat-{{ tomcat_version }}/logs
     dest: /var/log/tomcat
     state: link
 
 - name: create softlink to tomcat conf
   ansible.builtin.file:
-    src: /usr/share/apache-tomcat-9.0.59/conf
+    src: /usr/share/apache-tomcat-{{ tomcat_version }}/conf
     dest: /etc/tomcat
     state: link
 
 - name: create softlink to tomcat shortname
   ansible.builtin.file:
-    src: /usr/share/apache-tomcat-9.0.59
+    src: /usr/share/apache-tomcat-{{ tomcat_version }}
     dest: /usr/share/tomcat
     state: link
 
 - name: Install molgenis server.xml file for tomcat
   ansible.builtin.copy:
     src: server.xml
-    dest: /usr/share/apache-tomcat-9.0.59/conf/server.xml
+    dest: /usr/share/apache-tomcat-{{ tomcat_version }}/conf/server.xml
     mode: '0644'
 
 - name: Install systemctl services file for tomcat

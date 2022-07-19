@@ -26,6 +26,15 @@
     src: molgenis.j2
     dest: /etc/nginx/default.d/molgenis.conf
     mode: '0644'
+  when: not ( ansible_distribution == "Ubuntu" and ansible_distribution_major_version == '22' )
+  notify: "restart nginx"
+
+- name: Install special molgenis frontend config for OpenSSL 3.x servers
+  ansible.builtin.template:
+    src: molgenis_openssl3.j2
+    dest: /etc/nginx/default.d/molgenis.conf
+    mode: '0644'
+  when: ansible_distribution == "Ubuntu" and ansible_distribution_major_version == '22'
   notify: "restart nginx"
 
 - name: Register project from molgenis-server.properties
