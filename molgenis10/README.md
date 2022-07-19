@@ -1,7 +1,7 @@
 # Ansible Collection - molgenis.molgenis10
 
 ## Migration from Molgenis9 (molgenis 9.1.y)
-Molgenis 10.x.y uses elasticsearch 7 
+Molgenis 10.x.y uses elasticsearch 7. See playbook_upgrade_from_9.yml below.
 
 
 

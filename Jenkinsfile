@@ -27,7 +27,7 @@ pipeline {
                         changeset "molgenis8/**"
                     }
                     steps {
-                        container('toolset') {
+                        container('creator-ee') {
                             dir('molgenis8') {
                                 script{
                                     sh 'ansible-lint --force-color roles/*/*/main.yml'
@@ -41,7 +41,7 @@ pipeline {
                         changeset "molgenis9/**"
                     }
                     steps {
-                        container('toolset') {
+                        container('creator-ee') {
                             dir('molgenis9') {
                                 script{
                                     sh 'ansible-lint --force-color roles/*/*/main.yml'
@@ -55,7 +55,7 @@ pipeline {
                         changeset "molgenis10/**"
                     }
                     steps {
-                        container('toolset') {
+                        container('creator-ee') {
                             dir('molgenis10') {
                                 script{
                                     sh 'ansible-lint --force-color roles/*/*/main.yml'
@@ -69,7 +69,7 @@ pipeline {
                         changeset "armadillo1/**"
                     }
                     steps {
-                        container('toolset') {
+                        container('creator-ee') {
                             dir('armadillo1') {
                                 script {
                                     sh 'ansible-lint --force-color roles/*/*/main.yml'
@@ -90,7 +90,7 @@ pipeline {
                         changeset "molgenis8/**"
                     }
                     steps {
-                        container('toolset') {
+                        container('creator-ee') {
                             dir('molgenis8') {
                                 script {
                                     sh 'ansible-lint --force-color roles/*/*/main.yml'
@@ -107,7 +107,7 @@ pipeline {
                         changeset "molgenis9/**"
                     }
                     steps {
-                        container('toolset') {
+                        container('creator-ee') {
                             dir('molgenis9') {
                                 script {
                                     sh 'ansible-lint --force-color roles/*/*/main.yml'
@@ -124,7 +124,7 @@ pipeline {
                         changeset "molgenis10/**"
                     }
                     steps {
-                        container('toolset') {
+                        container('creator-ee') {
                             dir('molgenis10') {
                                 script {
                                     sh 'ansible-lint --force-color roles/*/*/main.yml'
@@ -141,7 +141,7 @@ pipeline {
                         changeset "armadillo1/**"
                     }
                     steps {
-                        container('toolset') {
+                        container('creator-ee') {
                             dir('armadillo1') {
                                 script {
                                     sh 'ansible-lint --force-color roles/*/*/main.yml'
