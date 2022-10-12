@@ -1,5 +1,5 @@
 ---
-- name: create directories | Configuration
+- name: Create directories | Configuration
   ansible.builtin.file:
     path: /usr/share/armadillo/services/rservers/
     state: directory
@@ -7,7 +7,7 @@
     group: armadillo
     mode: '655'
 
-- name: rserver | Installation
+- name: RServer | Installation
   ansible.builtin.template:
     src: rserver.yml.j2
     dest: /usr/share/armadillo/services/rservers/{{ item.name }}.yml

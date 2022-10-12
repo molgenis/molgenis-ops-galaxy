@@ -1,4 +1,35 @@
 ---
-- name: nginx | Installation
-  ansible.builtin.include_tasks: "{{ ansible_os_family|lower }}.yml"
+- name: Nginx | Installation
+  ansible.builtin.include_tasks: "{{ ansible_os_family | lower }}.yml"
   when: enabled
+
+- name: Create folder for example SSL configuration | Configuration (general)
+  ansible.builtin.file:
+    path: /etc/nginx/examples
+    mode: '0644'
+    state: directory
+
+- name: Install armadillo configuration | Configuration (general)
+  ansible.builtin.template:
+    src: armadillo_ssl.j2
+    dest: /etc/nginx/examples/armadillo.conf
+    mode: '0644'
+
+- name: Install storage configuration | Configuration (general)
+  ansible.builtin.template:
+    src: storage_ssl.j2
+    dest: /etc/nginx/examples/storage.conf
+    mode: '0644'
+
+- name: Install storage-console configuration | Configuration (general)
+  ansible.builtin.template:
+    src: console_ssl.j2
+    dest: /etc/nginx/examples/console.conf
+    mode: '0644'
+  when: minio.console.enabled
+
+- name: Install auth configuration | Configuration (general)
+  ansible.builtin.template:
+    src: auth_ssl.j2
+    dest: /etc/nginx/examples/auth.conf
+    mode: '0644'

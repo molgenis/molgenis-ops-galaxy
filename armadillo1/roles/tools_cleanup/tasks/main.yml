@@ -1,5 +1,5 @@
 ---
-- name: stop systemd services | Cleanup
+- name: Stop systemd services | Cleanup
   ansible.builtin.systemd:
     name: "{{ item }}"
     state: stopped
@@ -7,14 +7,14 @@
   with_items:
     - "{{ packages }}"
 
-- name: remove systemd services | Cleanup
+- name: Remove systemd services | Cleanup
   ansible.builtin.file:
     path: "/etc/systemd/system/{{ item }}.service"
     state: absent
   with_items:
     - "{{ packages }}"
 
-- name: remove configuration directories | Cleanup
+- name: Remove configuration directories | Cleanup
   ansible.builtin.file:
     path: "{{ item }}"
     state: absent
@@ -23,7 +23,7 @@
     - /etc/armadillo
     - /etc/rserver
 
-- name: remove configuration directories | Cleanup
+- name: Remove configuration directories | Cleanup
   ansible.builtin.file:
     path: "{{ item }}"
     state: absent
@@ -31,5 +31,5 @@
     - /usr/share/armadillo
     - /usr/local/bin/minio
 
-- name: remove package dependencies | Cleanup
-  ansible.builtin.include_tasks: "{{ ansible_os_family|lower }}.yml"
+- name: Remove package dependencies | Cleanup
+  ansible.builtin.include_tasks: "{{ ansible_os_family | lower }}.yml"

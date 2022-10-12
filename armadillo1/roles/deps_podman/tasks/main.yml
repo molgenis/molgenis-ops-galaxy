@@ -1,18 +1,18 @@
 ---
-- name: prepare environment | Configuration
-  ansible.builtin.include_tasks: "{{ ansible_distribution|lower }}.yml"
+- name: Prepare environment | Configuration
+  ansible.builtin.include_tasks: "{{ ansible_distribution | lower }}.yml"
 
-- name: add epel-release repo key | Configuration
+- name: Add epel-release repo key | Configuration
   ansible.builtin.rpm_key:
     state: present
     key: https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-{{ ansible_distribution_major_version }}
 
-- name: add epel-release | Installation
+- name: Add epel-release | Installation
   ansible.builtin.dnf:
     state: present
     name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-{{ ansible_distribution_major_version }}.noarch.rpm
 
-- name: podman | Installation
+- name: Podman | Installation
   ansible.builtin.dnf:
     state: present
     name:
@@ -21,7 +21,7 @@
       - podman-plugins
       - container-selinux
 
-- name: podman logging | Configuration
+- name: Podman logging | Configuration
   ansible.builtin.copy:
     src: 40-docker.conf
     dest: /etc/rsyslog.d

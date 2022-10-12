@@ -1,6 +1,6 @@
 ---
-- name: install authentication service | Configuration
-  template:
+- name: Install authentication service | Configuration
+  ansible.builtin.template:
     src: auth.yml.j2
     dest: /usr/share/armadillo/services/auth.yml
     mode: '655'

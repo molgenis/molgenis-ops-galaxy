@@ -1,9 +1,9 @@
 ---
-- name: configure cronjob | Configuration
-  ansible.builtin.include_tasks: "{{ ansible_distribution|lower }}.yml"
+- name: Configure cronjob | Configuration
+  ansible.builtin.include_tasks: "{{ ansible_distribution | lower }}.yml"
   when: enabled
 
-- name: install cronjob for automatic upgrades | Configuration
+- name: Install cronjob for automatic upgrades | Configuration
   ansible.builtin.cron:
     name: "Upgrade Armadillo stack"
     minute: "1"
