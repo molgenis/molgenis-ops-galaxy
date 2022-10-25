@@ -1,7 +1,17 @@
 # Armadillo stack troubleshooting
 
 ### "become" needs to work
-When you login to a VM you are hopefully yourself as in a useraccount that is recognisable as your account. After you logged in you need to be able to perform `sudo su` without entering a password. Get that in place and you will be able to run the playbook.
+When you logging into a VM you log in as a user other than root. After you logged in you need to be able to perform `sudo su` without entering a password. Get that in place and you will be able to run the playbook.
+
+If the user can not execute `sudo su` without entering a password, you will need to change the following things:
+1. Login with the super user(root) account
+2. Type:
+```bash
+root> visudo
+?user? ALL=(ALL) NOPASSWD: ALL
+```
+3. Save the file and close it
+4. Test again
 
 ### Ansible installation: debian.yml not found
 When you are deploying the armadillo stack with ansible, it could happen that you get this error saying that a file is not found. This is an known bug. If you have access to the system, please go to `/usr/share/armadillo` and type the following command for RHEL/CentOS systems: `podman-compose up -d`, for the other systems type: `docker-compose up -d`.
@@ -25,5 +35,6 @@ If you want to use HTTPS for an secure connection you will need to get SSL certi
 4. If you are within RStudio and get an error that it is not possible to connect to the Armadillo application. The applications used are very strict about the certificate provided must be an fully qualified domain. You will need to check if the certificate that is provided has the proper chain. To do this you will need to go to the website [ssl checker](https://www.sslshopper.com/ssl-checker.html) and fill in the different domains. If you see an broken lock by the chain you will need to fix it. You can ask the IT department to fix it or you need to download the intermediate/root certificate and copy it underneath the certificate  in the certificate file. Do this for every domain and restart nginx(`systemctl restart nginx`). Then retry with the [ssl checker](https://www.sslshopper.com/ssl-checker.html) and check if the action taken resolved the broken chain. If so, retry with RStudio to connect.
 
 ### It is not possible to sign into the central authentication server
-That can have a couple of problems.
-1. When you received a mail from `molgenis-support@umcg.nl` with the things you needed to change you copied somethings wrong. This could be a space to mutch in the copied strings, incomplete string(forgot to copy a (special) character/number) or a wrong issuer_uri(default: auth.molgenis.org but maybe has to be lifecycle-auth.molgenis.org). You need to check if you copied everything over correctly. If you didn't than you need to run the playbook.yml again with ansible.
+That can have a couple of problems. We assume that you have received a mail from `molgenis-support@umcg.nl` with the instructions what need to be changed in `pb_install-armadillo.yml`.
+1. The parts(think of `client_id`, `client_secret`, `issuer_uri`, `api_key` or `base_url`) that you have copy and paste are not the same. This can be extra spaces, extra or missing characters/numbers/special characters
+2. The `issuer_uri` is not correct in the `pb_install-armadillo.yml`. Does it need to be `lifecycle-auth.molgenis.org` instead of `auth.molgenis.org`?

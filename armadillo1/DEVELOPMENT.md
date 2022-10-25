@@ -26,7 +26,7 @@ Vagrant.configure("2") do |config|
 end
 ```
 
-Create an file called `playbook.yml` with the content from here: [ansible galaxy content](#creating-playbook.yml).
+Create an file called `playbook.yml` with the content described here: [ansible galaxy content](#creating-playbook.yml).
 
 ## Running the VM
 > Caveat for mac!
@@ -43,7 +43,7 @@ Before you can deploy, you need to install the dependencies by running
 ```
 
 ## Configure secrets
-By default, uses the Armadillo Localhost application in auth.molgenis.org.
+By default, Armadillo Localhost application uses auth.molgenis.org.
 You have to fill in [OIDC client]() secret and [auth server api key]() in `playbook.yml`.
 
 ## Running Vagrant
@@ -56,8 +56,7 @@ Update playbook: `vagrant up --provision`
 To run a specific operating system please run: `VAGRANT_VAGRANTFILE=Vagrantfile.centos7 vagrant up`.
 Make sure you start clean, so remove leftover initialisations of vagrent by executing `rm -rf .vagrant`.
 
-The vagrant box will bind on port 8080 to the host. If you add this block to the `etc/hosts`-file, the domains 
-in NGINX will resolve.
+The vagrant box will bind on port 8080 to the host. If you add this block to the `etc/hosts`-file, the domains in NGINX will resolve.
 
 ```
 # To allow vagrant httpd to bind to the internal domains
@@ -65,9 +64,9 @@ in NGINX will resolve.
 # End section
 ``` 
 
-You are done. You can reach both services on:
+You are done. You can reach the four services on:
 
-* Armadillo service to wok with DataSHIELD
+* Armadillo service working with DataSHIELD
   http://armadillo.local
 * Armadillo storage service to store you files on
   http://armadillo-storage.local
@@ -81,4 +80,4 @@ Login with:
 * username: **admin**
 * password: **admin**
 
-Only the storage server has a user interface. The DataSHIELD service works with R only.
+Only the storage webinterface server has a user interface. The DataSHIELD service works with R only.
