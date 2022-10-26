@@ -1,7 +1,11 @@
 # Armadillo suite
-This guide is to deploy the Armadillo suite.
+This guide is to deploy the DataSHIELD Armadillo suite.
+
+> ## If you are interested to try out the DataSHIELD Armadillo suite, let's get in touch and start the conversation. Please mail `molgenis-support@umcg.nl` to say hi. ##
 
 ### Note: [Should you have any problems, please click here for common problems and solutions.](./TROUBLESHOOTING.md)
+
+### Note: [For information about upgrading, click here](./UPGRADE.md)
 
 ### Note: [For developers, click here to start developing or testing.](./DEVELOPMENT.md)
 
@@ -20,20 +24,20 @@ This guide is to deploy the Armadillo suite.
 >
 > You will need to add whitelisting from your infrastructure to allow the Armadillo application domain to communicate with the central analysis server. You will need to open to this ip-address: `129.125.243.25/32` with port number `443`.
 
-### Authentication
-Before we start with the deployment of the Armadillo stack you will need to register your domains that you are going to use with your Armadillo stack on the DataSHIELD authentication server. This allows you to delegate the authentication and user management. The authorisation will still be under the control of the Data Manager(who gets access and who don't get access). To registrate you will need to send a mail to `molgenis-support@umcg.nl` with the [chosen domains](#domains) for the authentication, Minio and Minio console applications. Also add to the mail that you want to register for the the DataSHIELD authentication server and if you belong to a project like Lifecycle, Athlete or Longitools. When the Armadillo stack is registrerd you will get an mail back with data that need to be inserted in the [Authentication and authorisation section](#authentication-and-authorisation). 
-
 ### Domains
 There are four domains needed. This domains are for the armadillo, authentication, storage and storage console. It could be look something like this:
 
-| Domain                                      | Application   | User type    |
-| ------------------------------------------- | ------------- | ------------ |
-| cohort.armadillo.domain.org                 | Armadillo     | Researchers  |
-| cohort-auth.armadillo.domain.org            | Fusionauth    | Datamanagers |
-| cohort-storage.armadillo.domain.org         | Minio         | Datamanagers |
-| cohort-storage-console.armadillo.domain.org | Minio Console | Datamanagers |
+| Domain                                      | Application   | User endpoint |
+| ------------------------------------------- | ------------- | ------------- |
+| cohort.armadillo.domain.org                 | Armadillo     | Researchers   |
+| cohort-auth.armadillo.domain.org            | Fusionauth    | Datamanagers  |
+| cohort-storage.armadillo.domain.org         | Minio         | Datamanagers  |
+| cohort-storage-console.armadillo.domain.org | Minio Console | Datamanagers  |
 
 The application names and domains are referenced later on in the setup guide as an example.
+
+### Authentication
+Before we start with the deployment of the Armadillo stack you will need to register your domains that you are going to use with your Armadillo stack on the DataSHIELD authentication server. This allows you to delegate the authentication and user management. The authorisation will still be under the control of the Data Manager(who gets access and who don't get access). To registrate you will need to send a mail to `molgenis-support@umcg.nl` with the [chosen domains](#domains) for the authentication, Minio and Minio console applications. Also add to the mail that you want to register for the the DataSHIELD authentication server and if you belong to a project like Lifecycle, Athlete or Longitools. When the Armadillo stack is registrerd you will get an mail back with data that need to be inserted in the [Authentication and authorisation section](#authentication-and-authorisation). 
 
 ## Usage 
 We first begin with creating 3 files for ansible to work, namely:
@@ -104,6 +108,11 @@ Opened `pb_install-armadillo.yml`, you will need to edit the following parts of 
 
 ### Authentication and authorisation
 When you receive a mail from `molgenis-support@umcg.nl` with the the variables that need to be changed you will need to edit the the following parts in the `pb_install-armadillo.yml`:
+
+1. `issuer_uri`
+2. `client_id`
+3. `client_secret`
+4. `api_token`
 
 ```yaml
 ...
@@ -191,6 +200,8 @@ When you want to use your own SSL certificate files, you will need to do the fol
 4. The copied files need to be edited, you will need to add the certificate location and the certificate private key location. You need to change `ssl_certificate` and `ssl_certificate_key` in every file to the location from step 2
 5. Remove or disable the the old configuration files(if not done before)
 6. Type in the commandline: `nginx -t` to see if everything is configured correctly, restart NGINX
+
+> Note: The SSL certificate(s) have a limited lifespan and need to be changed yearly. You are responsible to renew the SSL certificate(s).
 
 ### Deploy
 Install the prerequisites this way:
