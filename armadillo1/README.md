@@ -31,10 +31,13 @@ There are four domains needed. This domains are for the armadillo, authenticatio
 | ------------------------------------------- | ------------- | ------------- |
 | cohort.armadillo.domain.org                 | Armadillo     | Researchers   |
 | cohort-auth.armadillo.domain.org            | Fusionauth    | Datamanagers  |
-| cohort-storage.armadillo.domain.org         | Minio         | Datamanagers  |
-| cohort-storage-console.armadillo.domain.org | Minio Console | Datamanagers  |
+| cohort-storage.armadillo.domain.org         | MinIO         | Datamanagers  |
+| cohort-storage-console.armadillo.domain.org | MinIO Console | Datamanagers  |
 
 The application names and domains are referenced later on in the setup guide as an example.
+
+### SSL certificate(s)
+If you want to secure the connection with an SSL certificate(s) for HTTPS you need to get your OWN SSL certificate(s). We can't do it for you. You will need to get SSL certificate(s) for [all the domains.](#domains)
 
 ### Authentication
 Before we start with the deployment of the Armadillo stack you will need to register your domains that you are going to use with your Armadillo stack on the DataSHIELD authentication server. This allows you to delegate the authentication and user management. The authorisation will still be under the control of the Data Manager(who gets access and who don't get access). To registrate you will need to send a mail to `molgenis-support@umcg.nl` with the [chosen domains](#domains) for the authentication, Minio and Minio console applications. Also add to the mail that you want to register for the the DataSHIELD authentication server and if you belong to a project like Lifecycle, Athlete or Longitools. When the Armadillo stack is registrerd you will get an mail back with data that need to be inserted in the [Authentication and authorisation section](#authentication-and-authorisation). 

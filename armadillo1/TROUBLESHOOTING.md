@@ -17,12 +17,12 @@ root> visudo
 When you are deploying the armadillo stack with ansible, it could happen that you get this error saying that a file is not found. This is an known bug. If you have access to the system, please go to `/usr/share/armadillo` and type the following command for RHEL/CentOS systems: `podman-compose up -d`, for the other systems type: `docker-compose up -d`.
 
 ### Use of own certificate file(s)
-If you want to use HTTPS for a secure connection you will need to get SSL certificate files. You could also add a SSL wildcard certificate file(not every company/institute allows that). You will need to do the following steps:
+If you want to use HTTPS for a secure connection you will need to get an SSL certificate files. <ins>You will need to get the SSL certificate files yourself.</ins> We can't do it for you. You could also add a SSL wildcard certificate file(not every company/institute allows that). You will need to do the following steps:
 1. Get the certificate files(domain.cer/domain.key)
 2. When you have received the certificate files you will need to copy them on the server
 3. Make a backup of the files located in `/etc/nginx/default.d`(RHEL/CentOS) or `/etc/nginx/sites-available`(Debian/Ubuntu) with an extension other then conf
 4. We have included example configuration files for SSL termination, copy the the files given in `/etc/nginx/examples/` to `/etc/nginx/sites-available`(Debian/Ubuntu) or `/etc/nginx/default.d`(RHEL/CentOS)
-5. Edit the armadille_ssl.conf file copied in step 4 and add the location of the certificate file to `ssl_certificate` and add the location of the key file to `ssl_certificate_key`
+5. Edit the armadillo_ssl.conf file copied in step 4 and add the location of the certificate file to `ssl_certificate` and add the location of the key file to `ssl_certificate_key`
 6. Repeat the process for all the *_ssl.conf files
 7. After editing the files, check if the configuration file have no warnings/errors with the command: `nginx -t`
 8. If there are no problems displayed, restart nginx with `systemctl restart nginx`
