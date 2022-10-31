@@ -54,7 +54,7 @@ When you want to provision:
 Update playbook: `vagrant up --provision`
 
 To run a specific operating system please run: `VAGRANT_VAGRANTFILE=Vagrantfile.centos7 vagrant up`.
-Make sure you start clean, so remove leftover initialisations of vagrent by executing `rm -rf .vagrant`.
+Make sure you start clean, so remove leftover initialisations of vagrant by executing `rm -rf .vagrant`.
 
 The vagrant box will bind on port 8080 to the host. If you add this block to the `etc/hosts`-file, the domains in NGINX will resolve.
 
