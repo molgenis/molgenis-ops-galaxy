@@ -1,8 +1,8 @@
 ---
-- name: docker | Repository configuration
-  ansible.builtin.include_tasks: "{{ ansible_distribution|lower }}.yml"
+- name: Docker | Repository configuration
+  ansible.builtin.include_tasks: "{{ ansible_distribution | lower }}.yml"
 
-- name: remove old packages | Cleanup
+- name: Remove old packages | Cleanup
   ansible.builtin.apt:
     state: absent
     name:
@@ -14,7 +14,7 @@
   when:
     ansible_distribution != "CentOS"
 
-- name: prerequisites | Installation
+- name: Prerequisites | Installation
   ansible.builtin.apt:
     state: present
     name:
@@ -27,7 +27,7 @@
   when:
     ansible_distribution != "CentOS"
 
-- name: docker | Installation
+- name: Docker | Installation
   ansible.builtin.apt:
     state: present
     name:

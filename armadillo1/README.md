@@ -1,7 +1,15 @@
 # Armadillo suite
-Deploy the Armadillo suite.
+This guide is to deploy the DataSHIELD Armadillo suite.
 
-> Requirements
+> ## If you are interested to try out the DataSHIELD Armadillo suite, let's get in touch and start the conversation. Please mail `molgenis-support@umcg.nl` to say hi. ##
+
+### Note: [Should you have any problems, please click here for common problems and solutions.](./TROUBLESHOOTING.md)
+
+### Note: [For information about upgrading, click here](./UPGRADE.md)
+
+### Note: [For developers, click here to start developing or testing.](./DEVELOPMENT.md)
+
+> ## Requirements
 >
 > Technical resources needed to run your cohort are here. You need a server / virtual machine (from now on VM) to deploy the 
 > Armadillo. The specifications of the VM are the following depending on the participant size of the cohort you are running.
@@ -11,11 +19,31 @@ Deploy the Armadillo suite.
 > | 0-20.000      | 8              | 100               | 4         |
 > | 20.000-70.000 | 16             | 100               | 4         |
 > | 70.000 >      | 32             | 150               | 8         |
+> 
+> The software required to install Armadillo stack which is called Ansible. To use Ansible to deploy the stack you need to binaries on your system. You can install Ansible following this [user guide](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html). You need to be sure to run Ansible **>= 2.9**.
+>
+> You will need to add whitelisting from your infrastructure to allow the Armadillo application domain to communicate with the central analysis server. You will need to open to this ip-address: `129.125.243.25/32` with port number `443`.
+
+### Domains
+There are four domains needed. This domains are for the armadillo, authentication, storage and storage console. It could be look something like this:
+
+| Domain                                      | Application   | User endpoint |
+| ------------------------------------------- | ------------- | ------------- |
+| cohort.armadillo.domain.org                 | Armadillo     | Researchers   |
+| cohort-auth.armadillo.domain.org            | Fusionauth    | Datamanagers  |
+| cohort-storage.armadillo.domain.org         | MinIO         | Datamanagers  |
+| cohort-storage-console.armadillo.domain.org | MinIO Console | Datamanagers  |
+
+The application names and domains are referenced later on in the setup guide as an example.
+
+### SSL certificate(s)
+If you want to secure the connection with an SSL certificate(s) for HTTPS you need to get your OWN SSL certificate(s). We can't do it for you. You will need to get SSL certificate(s) for [all the domains.](#domains)
+
+### Authentication
+Before we start with the deployment of the Armadillo stack you will need to register your domains that you are going to use with your Armadillo stack on the DataSHIELD authentication server. This allows you to delegate the authentication and user management. The authorisation will still be under the control of the Data Manager(who gets access and who don't get access). To registrate you will need to send a mail to `molgenis-support@umcg.nl` with the [chosen domains](#domains) for the authentication, Minio and Minio console applications. Also add to the mail that you want to register for the the DataSHIELD authentication server and if you belong to a project like Lifecycle, Athlete or Longitools. When the Armadillo stack is registrerd you will get an mail back with data that need to be inserted in the [Authentication and authorisation section](#authentication-and-authorisation). 
 
 ## Usage 
-To use Ansible to deploy the stack you need to binaries on your system. You can install Ansible following this [user guide](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html). You need to be sure to run Ansible **>= 2.9**.
-
-When you installed ansible you need to create 3 files:
+We first begin with creating 3 files for ansible to work, namely:
 
 - `inventory.ini`
 - `playbook.yml`
@@ -38,128 +66,56 @@ Your requirements are as follows
 collections:
 # install collections from Ansible Galaxy
 - name: ansible.posix
-  version: 1.1.1
   source: https://galaxy.ansible.com
 - name: community.general
-  version: 2.0.1
   source: https://galaxy.ansible.com
 ```
-### Creating playbook.yml
-The playbook is the base of the rollout for the Armadillo. The contents of the playbook is shown below.
-You should edit the section with the 'vars'
+### Editing pb_install-armadillo.yml
+The playbook [pb_install-armadillo.yml](./pb_install-armadillo.yml) is the base of the rollout for the Armadillo stack. The playbook can be found here: `<user home directory>/.ansible/collections/ansible_collections/molgenis/armadillo/pb_install-armadillo.yml`.
+We will show snippets of code of the playbook that you need to change down below.
+
+We recommend to copy `pb_install-armadillo.yml` to the `<user home directory>` and edit it there.
+
+### Changes that have to be made
+Opened `pb_install-armadillo.yml`, you will need to edit the following parts of the playbook:
+
+1. The `root_user` and `root_password` need to be changed into something unique and secure
+2. The domain of the minio need to be changed to the domain of the MinIO application
+3. If you want to upload data directly into MinIO console(website) you will need to set enabled to true by the console
+4. If you have enabled the MinIO Console, alse add the domain from the MinIO Console application
+5. Add the different domains you have selected to the post_nginx role. See the configuration example below:
 
 ```yaml
----
-- hosts: all
-  become: true
-  become_user: root
-  # if installing on local machine
-  # connection: local
-  gather_facts: true
-  vars:
-    ci: false
     minio:
-      root_user: xxxxxxx
-      root_password: xxxxxxx
-      port: 9000
-      domain: armadillo-storage.local
+      root_user: xxxxxxxx
+      root_password: xxxxxxxx
+...
+      domain: cohort-storage.armadillo.domain.org
       host: http://minio
       console:
-        enabled: false
-        port: 9090
-        domain: armadillo-storage-console.local
-    oauth:
-      issuer_uri: https://auth.molgenis.org
-      discovery_path: /.well-known/openid-configuration
-      client_id: xxxxxxx-xxxxxxxxx-xxxxxxxxxx
-      client_secret: xxxxxxx-xxxxxxxxx-xxxxxxxxxx
-    rserve:
-      environments:
-        - name: default
-          enabled: true
-          debug: false
-          image:
-            version: latest
-            repo: datashield
-            name: armadillo-rserver
-          exposed_port: 6311
-
-  roles:
-    - role: molgenis.armadillo.deps_podman
-      vars:
-        redhat:
-          subscription:
-            enabled: false
-            username: xxxxxxxx
-            password: xxxxxxxx
-      when: ansible_os_family == "RedHat" or ansible_os_family == "Rocky"
-    - role: molgenis.armadillo.deps_docker
-      when: ansible_os_family == "Debian"
-    - role: molgenis.armadillo.deps_compose
-    - role: molgenis.armadillo.service_armadillo
-      vars:
-        version: 2.2.0
-        storage:
-          root_user: "{{ minio.root_user }}"
-          root_password: "{{ minio.root_password }}"
-          host: "{{ minio.host }}"
-          port: "{{ minio.port }}"
-        username: xxxxx
-        password: xxxxx
-        datashield:
-          profiles:
-            - name: "{{ rserve.environments[0].name }}"
-              enabled: "{{ rserve.environments[0].enabled }}"
-              environment: "{{ rserve.environments[0].name }}"
-              whitelist:
-                - dsBase
-              # options:
-                # datashield:
-                # override default DataSHIELD options
-    - role: molgenis.armadillo.service_minio
-      vars:
-        version: 2022-01-25T19-56-04Z
-        data: /var/lib/minio/data
-        protocol: http
-        domain: "{{ minio.domain }}"
-        root_user: "{{ minio.root_user }}"
-        root_password: "{{ minio.root_password }}"
-        console:
-          version: 0.14.8
-    - role: molgenis.armadillo.service_auth
-      vars:
-        image: 
-          version: 0.3.2
-          repo: molgenis
-          name: molgenis-auth
-        api_token: xxxxxxxxxxxxxxxxx
-        base_url: http://armadillo-auth.local
-    - role: molgenis.armadillo.service_rserve
-    - role: molgenis.armadillo.post_assemble
-    - role: molgenis.armadillo.post_nginx
+        enabled: true
+...
+        domain: cohort-storage-console.armadillo.domain.org
+...
+    - role: post_nginx
       vars:
         enabled: true
         domains: 
-          armadillo: armadillo.local
+          armadillo: cohort.armadillo.domain.org
           storage: "{{ minio.domain }}"
           console: "{{ minio.console.domain }}"
-          auth: armadillo-auth.local
-        letsencrypt:
-          enabled: false
-          acme:
-            email: user@example.org
-    - role: molgenis.armadillo.tools_upgrade
+          auth: cohort-auth.armadillo.domain.org
 ```
 
-There are a few prerequisites that we need. 
-
-### "become" needs to work
-When you login to a VM you are hopefully yourself as in a useraccount that is recognisable as your account. After you logged in you need to be able to perform `sudo su` without entering a password. Get that in place and you will be able to run the playbook.
+> Keep in mind that when you see something like this: `storage: "{{ minio.domain }}"` it will be filled in automatically. You don't have to change it.
 
 ### Authentication and authorisation
-Before you deploy you need to register your application on the DataSHIELD authentication server. This allows you to delegate the authentication and usermanagement. The authorisation will still be under your control.
+When you receive a mail from `molgenis-support@umcg.nl` with the the variables that need to be changed you will need to edit the the following parts in the `pb_install-armadillo.yml`:
 
-The general variables in the `playbook.yml` need to be amended to set the configuration right:
+1. `issuer_uri`
+2. `client_id`
+3. `client_secret`
+4. `api_token`
 
 ```yaml
 ...
@@ -171,13 +127,14 @@ The general variables in the `playbook.yml` need to be amended to set the config
 ...
 
  - role: service_auth
-      vars:
-        ...
-        api_token: xxxxxxxxxxxxxxxxx
-        ...
+   vars:
+   ...
+     api_token: xxxxxxxxxxxxxxxxx
+     base_url: cohort-auth.armadillo.domain.org
+   ...
 ```
 
-### Define new environments and corresponding profiles
+### Define new R environments and corresponding R profiles
 When you are asked to serve new analysis profiles you can add them defining the environment and the profile.
 
 ```yaml
@@ -213,23 +170,8 @@ When you are asked to serve new analysis profiles you can add them defining the 
 
 Be sure to add the profile to the corresponding environment. To retrieve the details of the environments that you want to server you can ask molgenis-support@umcg.nl.
 
-### Domains to expose
-There are three domains that need to be opened up for the cohort.
-
-*For researchers*
-
-- cohort.armadillo.domain.org
-
-*For datamanagers*
-
-- cohort-auth.armadillo.domain.org
-- cohort-storage.armadillo.domain.org
-- cohort-storage-console.armadillo.domain.org
-
-The top one needs to be opened up to this ip-address: `129.125.243.25/32` with port number `443`.
-
 #### Setup SSL
-There are 2 ways of setting up SSL.
+There are 2 ways of setting up SSL for secure communication.
 - Use Letsencrypt
 - Use your own certificates
 
@@ -240,9 +182,7 @@ You can toggle the boolean in the nginx-role to true and fill you email address 
 ```yaml
   - role: molgenis.armadillo.post-nginx
       vars:
-     
         ...
-
         letsencrypt:
           enabled: true
             acme:
@@ -255,22 +195,16 @@ You can toggle the boolean in the nginx-role to true and fill you email address 
 This will install certificates and a renewal mechanism.
 
 **Use your own certificates**
+When you want to use your own SSL certificate files, you will need to do the following steps:
+1. Purchase your own SSL certificate files for the [given domains](#domains)
+2. Store the SSL certificate on an NGINX readable location like `/etc/ssl/certs`(Debian based systems) or `/etc/pki/tls/certs`(RHEL/CentOS based systems)
+> Note: The SSL certificate needs to have the certificate, intermediate and root CA certifcate in one file in the same order given here. The certificate files need to be encoded to a PEM file.
+3. Copy the provided example configuration from `/etc/nginx/examples` to `/etc/nginx/default.d/`(RHEL/CentOS) or `/etc/nginx/sites-available/`(Debian/Ubuntu)
+4. The copied files need to be edited, you will need to add the certificate location and the certificate private key location. You need to change `ssl_certificate` and `ssl_certificate_key` in every file to the location from step 2
+5. Remove or disable the the old configuration files(if not done before)
+6. Type in the commandline: `nginx -t` to see if everything is configured correctly, restart NGINX
 
-Below you can find an exmaple configuration for NGINX. The **bold** blocks show what you need to change. NGINX expects the fullchain. So PEM format in short.
-<pre>
-server {
-    listen 443 ssl;
-    server_name domain.org;
-    
-    ssl_certificate /etc/ssl/certs/star.domain.org.crt;
-    ssl_certificate_key /etc/ssl/certs/star.domain.org.key;
-    
-    include /etc/nginx/globals.d/*.conf;
-    
-    ...
-    
-}
-</pre>
+> Note: The SSL certificate(s) have a limited lifespan and need to be changed yearly. You are responsible to renew the SSL certificate(s).
 
 ### Deploy
 Install the prerequisites this way:
@@ -293,87 +227,3 @@ Then install the server with Ansible.
 
 After this the server get's deployed with all the needed configuration.
 
-## Development and testing
-To test the deployment we are using Vagrant to deploy the ansible playbook locally on your machine. You will need some prerequisites to deploy locally.
-
-* [Vagrant](https://www.vagrantup.com/downloads)
-* [Virtualbox](https://www.virtualbox.org/wiki/Downloads)
-* [git](https://git-scm.com/downloads)
-
-### Creating the configuration
-Create a file called: `Vagrant` looking like this:
-
-```javascript
-Vagrant.configure("2") do |config|
-  config.vm.box = "centos/8"
-  config.vm.box_version = "2011.0"
-  config.vm.network "forwarded_port", guest: 80, host: 8080
-  config.vm.provider "virtualbox" do |vb|
-    vb.gui = false
-    vb.customize ['modifyvm', :id, '--graphicscontroller', 'none']
-    vb.customize ['modifyvm', :id, '--audio', 'none']
-  end
-  config.vm.provision "ansible" do |ansible|
-    ansible.limit = "all"
-    ansible.playbook = "playbook.yml"
-    ansible.verbose = false
-  end
-end
-```
-
-Create an file called `playbook.yml` with the content from here: [ansible galaxy content](#creating-playbook.yml).
-
-### Running the VM
-> Caveat for mac!
-Vagrant uses Virtualbox which in turn requires an Oracle kernel extension to work.
-If the installation fails, retry after you enable it in:
-  System Preferences → Security & Privacy → General
-For more information, refer to virtualbox vendor documentation or this [Apple Technical Note](https://developer.apple.com/library/content/technotes/tn2459/_index.html).
-
-### Installing dependencies
-Before you can deploy, you need to install the dependencies by running
-
-```bash
-> ansible-galaxy install -r requirements.yml
-```
-
-### Configure secrets
-By default, uses the Armadillo Localhost application in auth.molgenis.org.
-You have to fill in [OIDC client]() secret and [auth server api key]() in `playbook.yml`.
-
-### Running Vagrant
-Run: `vagrant up`
-
-When you want to provision:
-
-Update playbook: `vagrant up --provision`
-
-To run a specific operating system please run: `VAGRANT_VAGRANTFILE=Vagrantfile.centos7 vagrant up`.
-Make sure you start clean, so remove leftover initialisations of vagrent by executing `rm -rf .vagrant`.
-
-The vagrant box will bind on port 8080 to the host. If you add this block to the `etc/hosts`-file, the domains 
-in NGINX will resolve.
-
-```
-# To allow vagrant httpd to bind to the internal domains
-127.0.0.1 armadillo.local armadillo-storage.local armadillo-auth.local
-# End section
-``` 
-
-You are done. You can reach both services on:
-
-* Armadillo service to wok with DataSHIELD
-  http://armadillo.local
-* Armadillo storage service to store you files on
-  http://armadillo-storage.local
-* Armadillo storage webinterface to store you files on
-  http://armadillo-storage-console.local
-* Armadillo authentication service to store you files on
-  http://armadillo-auth.local
-
-Login with:
-
-* username: **admin**
-* password: **admin**
-
-Only the storage server has a user interface. The DataSHIELD service works with R only.

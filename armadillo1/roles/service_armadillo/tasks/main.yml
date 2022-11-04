@@ -1,5 +1,5 @@
 ---
-- name: create directories | Configuration
+- name: Create directories | Configuration
   ansible.builtin.file:
     path: "{{ item }}"
     owner: armadillo
@@ -10,7 +10,7 @@
     - /etc/armadillo
     - /var/log/armadillo
 
-- name: install armadillo | Installation
+- name: Install armadillo | Installation
   ansible.builtin.template:
     src: armadillo.yml.j2
     dest: /usr/share/armadillo/services/armadillo.yml
@@ -18,7 +18,7 @@
     group: armadillo
     mode: '655'
 
-- name: configure armadillo | Configuration
+- name: Configure armadillo | Configuration
   ansible.builtin.template:
     src: application.yml.j2
     dest: /etc/armadillo/application.yml
