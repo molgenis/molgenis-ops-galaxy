@@ -3,11 +3,11 @@ This guide is to deploy the DataSHIELD Armadillo suite.
 
 > ## If you are interested to try out the DataSHIELD Armadillo suite, let's get in touch and start the conversation. Please mail `molgenis-support@umcg.nl` to say hi. ##
 
-### Note: [Should you have any problems, please click here for common problems and solutions.](./TROUBLESHOOTING.md)
+### Note: [Should you have any problems, please click here for common problems and solutions.](https://github.com/molgenis/molgenis-ops-galaxy/blob/main/armadillo1/TROUBLESHOOTING.md)
 
-### Note: [For information about upgrading, click here](./UPGRADE.md)
+### Note: [For information about upgrading, click here](https://github.com/molgenis/molgenis-ops-galaxy/blob/main/armadillo1/UPGRADE.md)
 
-### Note: [For developers, click here to start developing or testing.](./DEVELOPMENT.md)
+### Note: [For developers, click here to start developing or testing.](https://github.com/molgenis/molgenis-ops-galaxy/blob/main/armadillo1/DEVELOPMENT.md)
 
 > ## Requirements
 >
