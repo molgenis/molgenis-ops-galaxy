@@ -1,18 +1,5 @@
 # Armadillo stack troubleshooting
 
-### "become" needs to work
-When you logging into a VM you log in as a user other than root. After you logged in you need to be able to perform `sudo su` without entering a password. Get that in place and you will be able to run the playbook.
-
-If the user can not execute `sudo su` without entering a password, you will need to change the following things:
-1. Login with the super user(root) account
-2. Type:
-```bash
-root> visudo
-?user? ALL=(ALL) NOPASSWD: ALL
-```
-3. Save the file and close it
-4. Test again
-
 ### Ansible installation: debian.yml not found
 If during deploying armadillo you get the message a file is not found and you have access to the system, please go to `/usr/share/armadillo` and type: `podman-compose up -d` (for RHEL/CentOS) or `docker-compose up -d` (for other systems)..
 

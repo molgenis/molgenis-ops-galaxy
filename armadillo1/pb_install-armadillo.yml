@@ -3,6 +3,10 @@
   become: true
   # connection: local
   become_user: root
+  collections:
+    - ansible.posix
+    - community.general
+    - molgenis.armadillo
   gather_facts: true
   vars:
     ci: false
