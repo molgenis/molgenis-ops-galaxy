@@ -3,6 +3,9 @@
   become: true
   # connection: local 
   become_user: root
+    collections:
+    - community.general
+    - molgenis.armadillo
   gather_facts: true
 
   roles:
