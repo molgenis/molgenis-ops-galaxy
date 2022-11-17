@@ -9,10 +9,10 @@ This guide is to deploy the DataSHIELD Armadillo suite.
 
 ### Note: [For developers, click here to start developing or testing.](https://github.com/molgenis/molgenis-ops-galaxy/blob/main/armadillo1/DEVELOPMENT.md)
 
-> ## Requirements
+> ## Requirements of the server
 >
 > Technical resources needed to run your cohort are here. You need a server / virtual machine (from now on VM) to deploy the 
-> Armadillo. The specifications of the VM are the following depending on the participant size of the cohort you are running.
+> Armadillo stack. The specifications of the VM are the following depending on the participant size of the cohort you are running.
 >
 > | Participants  | Memory (in GB) | Diskspace (in GB) | CPU cores |
 > | ------------- | -------------- | ----------------- | --------- |
@@ -20,8 +20,9 @@ This guide is to deploy the DataSHIELD Armadillo suite.
 > | 20.000-70.000 | 16             | 100               | 4         |
 > | 70.000 >      | 32             | 150               | 8         |
 > 
+> The Armadillo stack runs on the Linux operating system. This installation can be performed on Redhat, CentOS, Rocky, Debian and Ubuntu distro's.
 >
-> ## Prerequirements
+> ## Requirements of the software
 > ### Ansible
 > To install the Armadillo stack we make use of a program called Ansible. Ansible is used to make the installation and configuration eassier. To use Ansible to deploy the Armadillo stack you need to install the binaries on your system. You can install Ansible following this [user guide](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html). You need to be sure to run Ansible **>= 2.9**.
 >
