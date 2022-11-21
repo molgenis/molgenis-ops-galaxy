@@ -45,7 +45,7 @@
           exposed_port: 6311
 
   roles:
-    - role: deps_podman
+    - role: molgenis.armadillo.deps_podman
       vars:
         redhat:
           subscription:
@@ -53,10 +53,10 @@
             username: xxxxxxxx
             password: xxxxxxxx
       when: ansible_distribution == "RedHat" or ansible_distribution == "Rocky"
-    - role: deps_docker
+    - role: molgenis.armadillo.deps_docker
       when: ansible_os_family == "Debian" or ansible_distribution == "CentOS"
-    - role: deps_compose
-    - role: service_armadillo
+    - role: molgenis.armadillo.deps_compose
+    - role: molgenis.armadillo.service_armadillo
       vars:
         version: 2.2.2
         storage:
@@ -86,7 +86,7 @@
               whitelist:
                 - dsBase
                 - dsMediation        
-    - role: service_minio
+    - role: molgenis.armadillo.service_minio
       vars:
         version: 2022-02-26T02-54-46Z
         data: /var/lib/minio/data
@@ -95,7 +95,7 @@
         root_password: "{{ minio.root_password }}"
         console: 
           version: 0.14.8
-    - role: service_auth
+    - role: molgenis.armadillo.service_auth
       vars:
         image: 
           version: 0.3.2
@@ -103,9 +103,9 @@
           name: molgenis-auth
         api_token: xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
         base_url: http://armadillo-auth.local
-    - role: service_rserve 
-    - role: post_assemble
-    - role: post_nginx
+    - role: molgenis.armadillo.service_rserve 
+    - role: molgenis.armadillo.post_assemble
+    - role: molgenis.armadillo.post_nginx
       vars:
         enabled: true
         domains: 
@@ -117,6 +117,6 @@
           enabled: false
           acme: 
             email: user@example.org
-    - role: tools_upgrade
+    - role: molgenis.armadillo.tools_upgrade
       vars:
         enabled: true
