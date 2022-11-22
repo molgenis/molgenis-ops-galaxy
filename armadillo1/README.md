@@ -9,10 +9,10 @@ This guide is to deploy the DataSHIELD Armadillo suite.
 
 ### Note: [For developers, click here to start developing or testing.](https://github.com/molgenis/molgenis-ops-galaxy/blob/main/armadillo1/DEVELOPMENT.md)
 
-> ## Requirements
+> ## Requirements of the server
 >
 > Technical resources needed to run your cohort are here. You need a server / virtual machine (from now on VM) to deploy the 
-> Armadillo. The specifications of the VM are the following depending on the participant size of the cohort you are running.
+> Armadillo stack. The specifications of the VM are the following depending on the participant size of the cohort you are running.
 >
 > | Participants  | Memory (in GB) | Diskspace (in GB) | CPU cores |
 > | ------------- | -------------- | ----------------- | --------- |
@@ -20,8 +20,27 @@ This guide is to deploy the DataSHIELD Armadillo suite.
 > | 20.000-70.000 | 16             | 100               | 4         |
 > | 70.000 >      | 32             | 150               | 8         |
 > 
-> The software required to install Armadillo stack which is called Ansible. To use Ansible to deploy the stack you need to binaries on your system. You can install Ansible following this [user guide](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html). You need to be sure to run Ansible **>= 2.9**.
+> The Armadillo stack runs on the Linux operating system. This installation can be performed on Redhat, CentOS, Rocky, Debian and Ubuntu distro's.
 >
+> ## Requirements of the software
+> ### Ansible
+> To install the Armadillo stack we make use of a program called Ansible. Ansible is used to make the installation and configuration eassier. To use Ansible to deploy the Armadillo stack you need to install the binaries on your system. You can install Ansible following this [user guide](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html). You need to be sure to run Ansible **>= 2.9**.
+>
+> ### The sudo command needs to work
+> When you logging into a VM you log in as a user other than root. After you logged in you need to be able to perform `sudo su` without entering a password. This need to be possible for the `pb_install-armadillo.yml` to function properly. The Ansible function `become` depends on it. Get that in place and you will be able to run the `pb_install-armadillo.yml` playbook.
+> 
+> If the user can not execute `sudo su` without entering a password, you will need to change the following things:
+> 1. Login as the super user(root) account
+> 2. Type:
+> ```bash
+> root> visudo
+> ?user? ALL=(ALL) NOPASSWD: ALL
+> ```
+> Note: the `?user?` is the non-super user(root) user where you want to install the ansible playbook with.
+> 3. Save the file and close it
+> 4. Test again 
+>
+> ### Firewall whitelisting
 > You will need to add whitelisting from your infrastructure to allow the Armadillo application domain to communicate with the central analysis server. You will need to open to this ip-address: `129.125.243.25/32` with port number `443`.
 
 ### Domains
@@ -43,10 +62,9 @@ If you want to secure the connection with an SSL certificate(s) for HTTPS you ne
 Before we start with the deployment of the Armadillo stack you will need to register your domains that you are going to use with your Armadillo stack on the DataSHIELD authentication server. This allows you to delegate the authentication and user management. The authorisation will still be under the control of the Data Manager(who gets access and who don't get access). To registrate you will need to send a mail to `molgenis-support@umcg.nl` with the [chosen domains](#domains) for the authentication, Minio and Minio console applications. Also add to the mail that you want to register for the the DataSHIELD authentication server and if you belong to a project like Lifecycle, Athlete or Longitools. When the Armadillo stack is registrerd you will get an mail back with data that need to be inserted in the [Authentication and authorisation section](#authentication-and-authorisation). 
 
 ## Usage 
-We first begin with creating 3 files for ansible to work, namely:
+We first begin with creating 2 files for ansible to work, namely:
 
 - `inventory.ini`
-- `playbook.yml`
 - `requirements.yml`
 
 ### Creating inventory.ini
@@ -70,8 +88,24 @@ collections:
 - name: community.general
   source: https://galaxy.ansible.com
 ```
+
+### Installation of the requirements
+Install the prerequisites this way:
+
+`ansible-galaxy install -r requirements.yml`
+
+You can install the galaxy collection using the following syntax:
+
+`ansible-galaxy collection install molgenis.armadillo`
+
+When you already installed the collection use the `--force` flag to update.
+
+Example:
+
+`ansible-galaxy collection install --force molgenis.armadillo`
+
 ### Editing pb_install-armadillo.yml
-The playbook [pb_install-armadillo.yml](./pb_install-armadillo.yml) is the base of the rollout for the Armadillo stack. The playbook can be found here: `<user home directory>/.ansible/collections/ansible_collections/molgenis/armadillo/pb_install-armadillo.yml`.
+The playbook [pb_install-armadillo.yml](https://github.com/molgenis/molgenis-ops-galaxy/blob/main/armadillo1/pb_install-armadillo.yml) is the base of the rollout for the Armadillo stack. The playbook can be found here: `<user home directory>/.ansible/collections/ansible_collections/molgenis/armadillo/pb_install-armadillo.yml`.
 We will show snippets of code of the playbook that you need to change down below.
 
 We recommend to copy `pb_install-armadillo.yml` to the `<user home directory>` and edit it there.
@@ -206,24 +240,14 @@ When you want to use your own SSL certificate files, you will need to do the fol
 
 > Note: The SSL certificate(s) have a limited lifespan and need to be changed yearly. You are responsible to renew the SSL certificate(s).
 
-### Deploy
-Install the prerequisites this way:
+### Installation and deployment of the Armadillo stack
+To setup and use the Armadillo stack with Ansible, use the following command:
 
-`ansible-galaxy install -r requirements.yml`
+`ansible-playbook -i inventory.ini pb_install-armadillo.yml`
 
-You can install the galaxy collection using the following syntax:
+When you finish this command you have setup a working Armadillo stack on the server.
 
-`ansible-galaxy collection install molgenis.armadillo`
+## What's next?
 
-When you already installed the collection use the `--force` flag to update.
-
-Example:
-
-`ansible-galaxy collection install --force molgenis.armadillo`
-
-Then install the server with Ansible.
-
-`ansible-playbook -i inventory.ini playbook.yml`
-
-After this the server get's deployed with all the needed configuration.
-
+* [For the server owner or data manager who need to put data on to the server](https://molgenis.github.io/molgenis-r-armadillo/)
+* [For the researcher who want to start analysing the data on the server](https://molgenis.github.io/molgenis-r-datashield/)

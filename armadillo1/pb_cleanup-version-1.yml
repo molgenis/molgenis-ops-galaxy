@@ -3,10 +3,13 @@
   become: true
   # connection: local 
   become_user: root
+  collections:
+    - community.general
+    - molgenis.armadillo
   gather_facts: true
 
   roles:
-    - role: tools_cleanup
+    - role: molgenis.armadillo.tools_cleanup
       vars:
         packages:
           - armadillo
