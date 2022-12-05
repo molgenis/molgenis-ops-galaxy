@@ -90,7 +90,7 @@
       vars:
         version: 2022-02-26T02-54-46Z
         data: /var/lib/minio/data
-        protocol: http
+        protocol: https
         root_user: "{{ minio.root_user }}"
         root_password: "{{ minio.root_password }}"
         console: 

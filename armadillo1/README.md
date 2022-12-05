@@ -113,6 +113,8 @@ We recommend to copy `pb_install-armadillo.yml` to the `<user home directory>` a
 ### Changes that have to be made
 Opened `pb_install-armadillo.yml`, you will need to edit the following parts of the playbook:
 
+`Tip: Encapsulate("") usernames, passwords and secrets in double quotes to prevent login issues.`
+
 1. The `root_user` and `root_password` need to be changed into something unique and secure
 2. The domain of the minio need to be changed to the domain of the MinIO application
 3. If you want to upload data directly into MinIO console(website) you will need to set enabled to true by the console
