@@ -6,4 +6,4 @@
     owner: armadillo
     group: armadillo
     mode: '755'
-  notify: start Armadillo stack
+  notify: "start Armadillo stack"
