@@ -1,3 +1,4 @@
 ---
 - name: Start Armadillo stack
   ansible.builtin.include_tasks: "{{ ansible_os_family | lower }}.yml"
+  listen: "start Armadillo stack"
