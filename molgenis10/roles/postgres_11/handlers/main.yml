@@ -1,13 +1,13 @@
 ---
-- name: restart postgresql service on Centos
+- name: Restart postgresql service on Centos
   ansible.builtin.service:
     name: postgresql-11
     state: restarted
   listen: "restart postgresql"
   when:
-    - ansible_distribution == 'CentOS'
+    - ansible_distribution == 'CentOS' or ansible_distribution == 'Rocky'
 
-- name: restart postgresql service on Ubuntu
+- name: Restart postgresql service on Ubuntu
   ansible.builtin.service:
     name: postgresql
     state: restarted

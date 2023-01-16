@@ -1,0 +1,20 @@
+---
+- name: Add nodejs repo key on debian/ubuntu new way
+  ansible.builtin.get_url:
+    url: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
+    dest: /etc/apt/trusted.gpg.d/nodesource.asc
+    mode: '0644'
+    force: true
+
+- name: Install repo for node 18 LTS on debian/ubuntu
+  ansible.builtin.copy:
+    src: nodesource.list
+    dest: /etc/apt/sources.list.d/
+    mode: '0644'
+
+- name: Install nodejs on debian/ubuntu
+  ansible.builtin.apt:
+    state: present
+    name:
+      - nodejs
+    update_cache: yes

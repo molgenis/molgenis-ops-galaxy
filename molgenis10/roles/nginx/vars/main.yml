@@ -1,6 +1,21 @@
 ---
 frontend:
   version: "{{ molgenis.version | string }}"
+  proxy0:
+    '10.0.0':
+      - 'molgenis-theme@latest'
+    '10.0.1':
+      - 'molgenis-theme@latest'
+    '10.0.2':
+      - 'molgenis-theme@latest'
+    '10.0.3':
+      - 'molgenis-theme@latest'
+    '10.0.4':
+      - 'molgenis-theme@latest'
+    '10.0.5':
+      - 'molgenis-theme@latest'
+    '10.1.0':
+      - 'molgenis-theme@latest'
   proxy:         #  /@molgenis-ui
     '10.0.2':
       - 'data-row-permissions@~0.3'
@@ -53,6 +68,23 @@ frontend:
       - 'components-library@~2.7'
       - 'molgenis-theme@latest'
       - 'navigator@~0.3'
+    '10.1.0':
+      - 'data-row-permissions@~0.3'
+      - 'questionnaires@~3.4'
+      - 'app-manager@~1.1'
+      - 'core-ui@~0.5'
+      - 'legacy-lib@~1.1'
+      - 'data-row-edit@~5.6'
+      - 'metadata-manager@~0.2'
+      - 'one-click-importer@~0.1'
+      - 'scripts@~3.4'
+      - 'searchall@~0.1'
+      - 'security@~0.5'
+      - 'settings@~4.4'
+      - 'data-explorer@~3.13'
+      - 'components-library@~2.7'
+      - 'molgenis-theme@latest'
+      - 'navigator@~0.3'
   proxy2:           #  /@molgenis/
     '10.0.2':
       - 'expressions@~0.21'
@@ -61,5 +93,8 @@ frontend:
       - 'expressions@~0.21'
       - 'molgenis-ui-form@~5.9'
     '10.0.4':
+      - 'expressions@~0.21'
+      - 'molgenis-ui-form@~5.9'
+    '10.1.0':
       - 'expressions@~0.21'
       - 'molgenis-ui-form@~5.9'

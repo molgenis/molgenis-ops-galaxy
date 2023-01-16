@@ -1,0 +1,11 @@
+{% for app in frontend.proxy0[frontend.version] -%}
+@molgenis-ui/{{- app }}
+{% endfor %}
+{% for app in frontend.proxy[frontend.version] -%}
+@molgenis-ui/{{- app }}
+{% endfor %}
+{% if frontend.proxy2[frontend.version] is defined -%}
+{% for app in frontend.proxy2[frontend.version] -%}
+@molgenis/{{- app }}
+{% endfor %}
+{% endif %}

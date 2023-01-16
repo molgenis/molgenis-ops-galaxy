@@ -1,5 +1,5 @@
 ---
-- name: setup molgenis folders
+- name: Setup molgenis folders
   ansible.builtin.file:
     path: "{{ item }}"
     state: directory
@@ -11,7 +11,7 @@
     - /usr/local/share/molgenis/war/
     - /var/log/molgenis-ops-tools/
 
-- name: install war MOLGENIS
+- name: Install war MOLGENIS
   ansible.builtin.get_url:
     url: "https://registry.molgenis.org/repository/maven-public/org/molgenis/molgenis-app/\
           {{ molgenis.version }}/molgenis-app-{{ molgenis.version }}.war"  # yamllint disable-line rule:line-length
@@ -20,7 +20,7 @@
     group: molgenis
     dest: /usr/local/share/molgenis/war/
 
-- name: create symbolic link
+- name: Create symbolic link
   ansible.builtin.file:
     src: /usr/local/share/molgenis/war/molgenis-app-{{ molgenis.version }}.war
     dest: /usr/share/tomcat/webapps/ROOT.war
@@ -28,12 +28,12 @@
     group: molgenis
     state: link
 
-- name: check if molgenis-server.properties exists
+- name: Check if molgenis-server.properties exists
   ansible.builtin.stat:
     path: /usr/local/share/molgenis/molgenis-server.properties
   register: existing_properties
 
-- name: install new molgenis-server.properties
+- name: Install new molgenis-server.properties
   ansible.builtin.copy:
     src: molgenis-server.properties
     dest: /usr/local/share/molgenis/molgenis-server.properties

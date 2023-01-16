@@ -1,5 +1,5 @@
 ---
-- name: install base packages used to configure CentOS properly
+- name: Install base packages used to configure CentOS properly
   ansible.builtin.yum:
     state: present
     name:
@@ -23,34 +23,33 @@
       - dnf
       - java-11-openjdk-headless
 
-- name: create extra symlink for JAVA_HOME
+- name: Create extra symlink for JAVA_HOME
   ansible.builtin.file:
     src: /etc/alternatives/jre_11
     dest: /usr/lib/jvm/java-11-openjdk
     state: link
 
-- name: gathering package facts
-  package_facts:
+- name: Gathering package facts
+  ansible.builtin.package_facts:
     manager: auto
 
-- name: clear versionlocks
+- name: Clear versionlocks
   ansible.builtin.command: yum versionlock clear
   args:
     warn: false        # set warn=false to prevent warning about better using yum module
   changed_when: false
 
-- name: install a ntpd/chronyd when needed
+- name: Install a ntpd/chronyd when needed
   ansible.builtin.systemd:
     state: started
     enabled: yes
     name: chronyd
 
-- name: initial sync of NTP/chronyc
+- name: Initial sync of NTP/chronyc
   ansible.builtin.command: chronyc -a makestep
   changed_when: false
-  when: not ci|bool
 
-- name: enable selinux
+- name: Enable selinux
   ansible.posix.selinux:
     policy: targeted
     state: enforcing

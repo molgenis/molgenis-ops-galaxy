@@ -1,0 +1,5 @@
+---
+- name: Install nodejs 18 LTS on rocky8
+  ansible.builtin.dnf:
+    state: present
+    name: '@nodejs:18'

@@ -1,0 +1,6 @@
+---
+- name: Install new frontends
+  ansible.builtin.command: node ./install-frontend.js
+  args:
+    chdir: /usr/share/nginx/html
+  listen: "new_frontends"
