@@ -1,0 +1,1 @@
+The nodejs role configures the nodejs setup needed for molgenis frontends.

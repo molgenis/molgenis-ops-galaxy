@@ -1,6 +1,6 @@
 ---
 - name: Postgres-11 based on OS
-  include_tasks: "{{ ansible_os_family|lower }}.yml"
+  ansible.builtin.include_tasks: "{{ ansible_os_family | lower }}.yml"
 
 - name: Create 'molgenis'-user for PostgreSQL
   become: true

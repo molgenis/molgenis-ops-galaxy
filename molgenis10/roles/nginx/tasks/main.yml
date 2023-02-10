@@ -1,6 +1,6 @@
 ---
 - name: NginX based on OS
-  include_tasks: "{{ ansible_os_family|lower }}.yml"
+  ansible.builtin.include_tasks: "{{ ansible_os_family | lower }}.yml"
 
 - name: Start and enable nginx (at boot time)
   ansible.builtin.systemd:
