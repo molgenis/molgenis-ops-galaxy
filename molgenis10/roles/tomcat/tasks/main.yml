@@ -1,6 +1,6 @@
 ---
 - name: Pre-install based on OS
-  include_tasks: "{{ ansible_os_family|lower }}.yml"
+  ansible.builtin.include_tasks: "{{ ansible_os_family | lower }}.yml"
 
 - name: Create molgenis group
   ansible.builtin.group:
