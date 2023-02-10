@@ -43,19 +43,19 @@
     - manager
   when: tomcat_first_install.stat.exists
 
-- name: create softlink to tomcat logs
+- name: Create softlink to tomcat logs
   ansible.builtin.file:
     src: /usr/share/apache-tomcat-{{ tomcat_version }}/logs
     dest: /var/log/tomcat
     state: link
 
-- name: create softlink to tomcat conf
+- name: Create softlink to tomcat conf
   ansible.builtin.file:
     src: /usr/share/apache-tomcat-{{ tomcat_version }}/conf
     dest: /etc/tomcat
     state: link
 
-- name: create softlink to tomcat shortname
+- name: Create softlink to tomcat shortname
   ansible.builtin.file:
     src: /usr/share/apache-tomcat-{{ tomcat_version }}
     dest: /usr/share/tomcat

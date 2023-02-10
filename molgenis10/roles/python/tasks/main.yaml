@@ -3,6 +3,6 @@
   include_tasks: "{{ ansible_os_family|lower }}.yml"
 
 - name: Install molgenis-py-client
-  pip:
+  ansible.builtin.pip:
     executable: /usr/bin/pip3
     name: molgenis-py-client

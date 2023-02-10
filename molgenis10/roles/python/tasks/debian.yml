@@ -1,5 +1,5 @@
 ---
-- name: Install Python3.6 and pip3.6
+- name: Install Python3.10 and pip3
   ansible.builtin.apt:
     name:
       - python3

@@ -1,6 +1,6 @@
 ---
 - name: Add elastic repo key
-  apt_key:
+  ansible.builtin.apt_key:
     url: https://artifacts.elastic.co/GPG-KEY-elasticsearch
     state: present
 
@@ -14,4 +14,4 @@
   ansible.builtin.apt:
     pkg:
       - elasticsearch
-    update_cache: yes 
+    update_cache: yes

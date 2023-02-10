@@ -2,7 +2,7 @@
 - name: Import oracle rpm key
   ansible.builtin.rpm_key:
     state: present
-    key:  https://yum.oracle.com/RPM-GPG-KEY-oracle-ol7
+    key: https://yum.oracle.com/RPM-GPG-KEY-oracle-ol7
   when: molgenis.version is version('9.1.0', '>=')
 
 - name: Install JDK-17

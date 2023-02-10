@@ -1,0 +1,16 @@
+---
+- name: Install nodejs 18 LTS on redhat8
+  ansible.builtin.dnf:
+    state: present
+    name: '@nodejs:18'
+  when:
+    - ansible_distribution_major_version == '8'
+
+- name: Install nodejs 16 LTS on redhat7
+  ansible.builtin.dnf:
+    state: present
+    name: 
+     - nodejs
+     - npm
+  when:
+    - ansible_distribution_major_version == '7'

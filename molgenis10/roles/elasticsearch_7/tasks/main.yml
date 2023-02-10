@@ -64,11 +64,9 @@
     state: present
     reload: yes
   notify: "restart elasticsearch"
-  when: not ci|bool
 
-- name: start elasticsearch service
+- name: Start elasticsearch service
   ansible.builtin.systemd:
     name: elasticsearch
     state: started
     enabled: yes
-  when: not ci|bool

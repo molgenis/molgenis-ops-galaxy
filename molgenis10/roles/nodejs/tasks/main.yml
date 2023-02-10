@@ -1,0 +1,17 @@
+---
+- name: NodeJS based on OS
+  ansible.builtin.include_tasks: "{{ ansible_os_family | lower }}.yml"
+
+- name: Insert frontend dependencies file
+  ansible.builtin.template:
+    src: frontend_dependencies.j2
+    dest: /usr/share/nginx/html/frontend_dependencies.yaml
+    mode: '0644'
+  notify: "new_frontends"
+
+- name: Install latest frontend install script
+  ansible.builtin.copy:
+    src: install-frontend.js
+    dest: /usr/share/nginx/html/
+    mode: '0750'
+  notify: "new_frontends"

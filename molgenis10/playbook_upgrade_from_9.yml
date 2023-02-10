@@ -5,22 +5,21 @@
   become: true
   vars:
     host_group: "all"
-    ci: false
     molgenis:
       setup: true
-      version: 10.0.4
+      version: 10.1.0
 
   tasks:
     - name: Gathering package facts
-      package_facts:
+      ansible.builtin.package_facts:
         manager: auto
 
-    - name: clear versionlocks
+    - name: Clear versionlocks
       ansible.builtin.command: yum versionlock clear
       args:
         warn: false        # set warn=false to prevent warning about better using yum module
       changed_when: false
-      when: 
+      when:
         - war_version.stat.isreg is not defined
         - ansible_os_family == 'RedHat'
 
@@ -34,7 +33,7 @@
         name: tomcat
         state: stopped
       when: war_version.stat.isreg is not defined
-  
+
     - name: Remove elastic indexes before upgrade to elastic 7
       ansible.builtin.uri:
         url: http://localhost:9200/*
@@ -53,20 +52,20 @@
         path: "/var/lib/elasticsearch/nodes"
       when: war_version.stat.isreg is not defined
 
-    - name: remove old elastic 5.6 rpm
+    - name: Remove old elastic 5.6 rpm
       ansible.builtin.yum:
         state: absent
         name: elasticsearch
-      when: 
+      when:
         - war_version.stat.isreg is not defined
         - ansible_os_family == 'RedHat'
 
-    - name: purge old elastic 5.6 package
+    - name: Purge old elastic 5.6 package
       ansible.builtin.apt:
         state: absent
         purge: yes
         name: elasticsearch
-      when: 
+      when:
         - war_version.stat.isreg is not defined
         - ansible_os_family == 'Debian'
 
@@ -98,16 +97,18 @@
         mode: '0775'
       when: war_version.stat.isreg is not defined
 
-    - name: install war MOLGENIS
+    - name: Install war MOLGENIS
       ansible.builtin.get_url:
-        url: https://registry.molgenis.org/repository/maven-public/org/molgenis/molgenis-app/{{ molgenis.version }}/molgenis-app-{{ molgenis.version }}.war
+        url: >
+          https://registry.molgenis.org/repository/maven-public/org/molgenis/molgenis-app/{{
+           molgenis.version }}/molgenis-app-{{ molgenis.version }}.war
         mode: '0660'
         owner: molgenis
         group: molgenis
         dest: /usr/local/share/molgenis/war/
       when: war_version.stat.isreg is not defined
 
-    - name: create symbolic link
+    - name: Create symbolic link
       ansible.builtin.file:
         src: /usr/local/share/molgenis/war/molgenis-app-{{ molgenis.version }}.war
         dest: /usr/share/tomcat/webapps/ROOT.war
@@ -126,6 +127,11 @@
       ansible.builtin.systemd:
         name: tomcat
         state: started
+      when: war_version.stat.isreg is not defined
+
+    - name: NodeJs role
+      ansible.builtin.include_role:
+        name: nodejs
       when: war_version.stat.isreg is not defined
 
     - name: Nginx role

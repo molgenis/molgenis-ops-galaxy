@@ -6,7 +6,7 @@
     update_cache: yes
   when: molgenis.version is version('9.1.0', '>=')
 
-- name: create extra symlink for JAVA_HOME
+- name: Create extra symlink for JAVA_HOME
   ansible.builtin.file:
     src: /usr/lib/jvm/java-17-openjdk-amd64
     dest: /usr/lib/jvm/java-17-openjdk

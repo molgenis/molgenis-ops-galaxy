@@ -21,32 +21,16 @@
     line: "{{ ansible_default_ipv4.address }} {{ inventory_hostname }}"
     state: present
 
-- name: Install molgenis frontend config
-  ansible.builtin.template:
-    src: molgenis.j2
-    dest: /etc/nginx/default.d/molgenis.conf
+- name: Install molgenis frontends local config
+  ansible.builtin.copy:
+    src: molgenis.conf
+    dest: /etc/nginx/default.d/
     mode: '0644'
-  when: not ( ansible_distribution == "Ubuntu" and ansible_distribution_major_version == '22' )
   notify: "restart nginx"
-
-- name: Install special molgenis frontend config for OpenSSL 3.x servers
-  ansible.builtin.template:
-    src: molgenis_openssl3.j2
-    dest: /etc/nginx/default.d/molgenis.conf
-    mode: '0644'
-  when: ansible_distribution == "Ubuntu" and ansible_distribution_major_version == '22'
-  notify: "restart nginx"
+  when: molgenis.version is version('10.0.0', '>=')
 
 - name: Register project from molgenis-server.properties
   ansible.builtin.shell:
     cmd: grep project /usr/local/share/molgenis/molgenis-server.properties | cut -d'=' -f2
   changed_when: false
   register: project_name
-
-- name: Ammend nginx frontends for track and trace
-  ansible.builtin.lineinfile:
-    dest: /etc/nginx/default.d/molgenis.conf
-    insertafter: '# extra special frontends below'
-    line: "    rewrite ^/@molgenis-ui/track-and-trace/(.+) /@molgenis-ui/track-and-trace@1.1.4/$1;"
-    state: present
-  when: project_name.stdout == 'trace'

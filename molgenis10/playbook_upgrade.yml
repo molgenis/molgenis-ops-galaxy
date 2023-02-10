@@ -7,11 +7,11 @@
     host_group: "all"
     molgenis:
       setup: true
-      version: 10.0.4
+      version: 10.1.0
 
   tasks:
     - name: Gathering package facts
-      package_facts:
+      ansible.builtin.package_facts:
         manager: auto
 
     - name: Check if war of correct version is present
@@ -36,8 +36,8 @@
         state: absent
         path: "{{ item }}"
       with_items:
-      - /usr/share/tomcat/webapps/ROOT.war
-      - /usr/local/share/molgenis/war/ROOT.war
+        - /usr/share/tomcat/webapps/ROOT.war
+        - /usr/local/share/molgenis/war/ROOT.war
       when:
         - '"molgenis" in ansible_facts.packages'
 
@@ -56,16 +56,18 @@
         mode: '0775'
       when: war_version.stat.isreg is not defined
 
-    - name: install war MOLGENIS
+    - name: Install war MOLGENIS
       ansible.builtin.get_url:
-        url: https://registry.molgenis.org/repository/maven-public/org/molgenis/molgenis-app/{{ molgenis.version }}/molgenis-app-{{ molgenis.version }}.war
+        url: >
+          https://registry.molgenis.org/repository/maven-public/org/molgenis/molgenis-app/{{
+           molgenis.version }}/molgenis-app-{{ molgenis.version }}.war
         mode: '0660'
         owner: molgenis
         group: molgenis
         dest: /usr/local/share/molgenis/war/
       when: war_version.stat.isreg is not defined
 
-    - name: create symbolic link
+    - name: Create symbolic link
       ansible.builtin.file:
         src: /usr/local/share/molgenis/war/molgenis-app-{{ molgenis.version }}.war
         dest: /usr/share/tomcat/webapps/ROOT.war
@@ -74,9 +76,14 @@
         state: link
       when: war_version.stat.isreg is not defined
 
-    - name: role nginx
+    - name: Role nginx
       ansible.builtin.include_role:
         name: nginx
+      when: war_version.isreg is not defined
+
+    - name: Role nodejs
+      ansible.builtin.include_role:
+        name: nodejs
       when: war_version.isreg is not defined
 
     - name: Start elasticsearch
@@ -86,7 +93,7 @@
       when: war_version.isreg is not defined
 
     - name: Start tomcat
-      systemd:
+      ansible.builtin.systemd:
         name: tomcat
         state: started
       when: war_version.isreg is not defined
