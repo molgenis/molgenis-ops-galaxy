@@ -9,7 +9,7 @@ namespace: molgenis
 name: molgenis9
 
 # The version of the collection. Must be compatible with semantic versioning
-version: 1.2.3
+version: 1.2.4
 
 # The path to the Markdown (.md) readme file. This path is relative to the root of the collection
 readme: README.md
@@ -25,7 +25,7 @@ authors:
 ### OPTIONAL but strongly recommended
 
 # A short summary description of the collection
-description: this collection contains roles and playbooks to roll-out and update a Molgenis instance in your own infrastructure (see https://www.molgenis.org)
+description: This collection is no longer supported, please use molgenis.molgenis10 or EMX2 (see https://www.molgenis.org)
 
 # Either a single license or a list of licenses for content inside of a collection. Ansible Galaxy currently only
 # accepts L(SPDX,https://spdx.org/licenses/) licenses. This key is mutually exclusive with 'license_file'
