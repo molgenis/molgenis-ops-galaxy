@@ -1,3 +1,8 @@
+# Armadillo 2 is superceeded by Armadillo 3
+# Please use: [Armadillo 3 guide](https://github.com/molgenis/molgenis-service-armadillo/tree/master/scripts/install)
+
+---
+
 # Armadillo suite
 This guide is to deploy the DataSHIELD Armadillo suite.
 
