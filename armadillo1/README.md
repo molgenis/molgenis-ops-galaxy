@@ -1,5 +1,5 @@
 # Armadillo 2 is superceeded by Armadillo 3
-# Please go to: [Armadillo 3 guide](https://github.com/molgenis/molgenis-service-armadillo/tree/master/scripts/install)
+# Please go to: [Armadillo 3 install guide](https://github.com/molgenis/molgenis-service-armadillo/tree/master/scripts/install)
 
 ---
 
